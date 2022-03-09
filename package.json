@@ -1,0 +1,23 @@
+{
+  "name": "@gigwage/client",
+  "version": "1.0.0",
+  "description": "Node client library for accessing the Gig Wage API",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gigwage/gigwage-client-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gigwage/gigwage-client-node/issues"
+  },
+  "homepage": "https://github.com/gigwage/gigwage-client-node#readme",
+  "dependencies": {
+    "typescript": "^4.6.2"
+  }
+}
