@@ -1,0 +1,47 @@
+module.exports = {
+  ignorePatterns: ['.eslintrc.js', 'yarn.lock'],
+  env: {
+    es2021: true,
+    node: true,
+  },
+  extends: [
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:jest/recommended',
+    'plugin:typescript-sort-keys/recommended',
+    'prettier',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: './tsconfig.json',
+    tsconfigRootDir: './',
+  },
+  plugins: [
+    'jest',
+    'promise',
+    '@typescript-eslint',
+    'prefer-arrow',
+    'typescript-sort-keys',
+    '@typescript-eslint',
+    'prettier',
+  ],
+  rules: {
+    'import/prefer-default-export': 'off',
+    'sort-imports': ['error', { ignoreDeclarationSort: true }],
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: false,
+        },
+      },
+    ],
+    'prettier/prettier': 'error',
+
+  },
+};
