@@ -1,8 +1,59 @@
+import axios, { AxiosResponse } from 'axios';
 import CryptoJS from 'crypto-js';
-import fetch from 'node-fetch';
 
 import { ENVIRONMENTS } from './constants';
 import { GigwageEnvironments } from './types';
+
+type HttpMethods = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+
+interface IGenerateRequestHeadersOptions {
+  apiKey: string;
+  apiSecret: string;
+  /**
+   * Stringified JSON object
+   */
+  data?: any;
+  endpoint: string;
+  /**
+   * HTTP method used
+   */
+  method: HttpMethods;
+}
+
+/**
+ * Generates the request headers for a Gigwage API request.
+ *
+ * These headers are unique per request.
+ */
+const generateRequestHeaders = ({
+  apiSecret,
+  method,
+  endpoint,
+  apiKey,
+  data,
+}: IGenerateRequestHeadersOptions) => {
+  const timestamp = new Date().getTime().toString();
+  const stringifiedData = JSON.stringify(data);
+
+  const payload = [
+    timestamp,
+    method,
+    endpoint,
+    data ? stringifiedData : undefined,
+  ].join('');
+  const bytes = CryptoJS.HmacSHA256(payload, apiSecret);
+  const signature = bytes.toString(CryptoJS.enc.Hex);
+
+  var headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    'X-Gw-Api-Key': apiKey,
+    'X-Gw-Timestamp': timestamp,
+    'X-Gw-Signature': signature,
+  };
+
+  return headers;
+};
 
 interface ICreateHttpClientOptions {
   apiEnvironment?: GigwageEnvironments;
@@ -10,91 +61,109 @@ interface ICreateHttpClientOptions {
   apiSecret: string;
 }
 
+/**
+ * Creates an HTTP client for handling requests to Gigwage API.
+ */
 export const createHttpClient = ({
   apiKey,
   apiEnvironment = 'production',
   apiSecret,
 }: ICreateHttpClientOptions) => {
-  const generateRequestHeaders = (
-    apiSecret: string,
-    method: string,
+  /**
+   * Calls a GET request to Gigwage API.
+   *
+   * Pass in a path like `/api/v1/contractors`
+   */
+  const get = <ResponseData = any>(
     endpoint: string,
-    payload: any = '{}',
-  ) => {
-    const timestamp = new Date().getTime().toString();
-    const data = [timestamp, method, endpoint, payload].join('');
-    const bytes = CryptoJS.HmacSHA256(data, apiSecret);
-    const signature = bytes.toString(CryptoJS.enc.Hex);
-
-    var headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'X-Gw-Api-Key': apiKey,
-      'X-Gw-Timestamp': timestamp,
-      'X-Gw-Signature': signature,
-    };
-
-    return headers;
-  };
-
-  const get = async <ResponseData = any>(
-    endpoint: string,
-  ): Promise<ResponseData> => {
-    const response = await fetch(`${ENVIRONMENTS[apiEnvironment]}${endpoint}`, {
-      method: 'GET',
-      headers: generateRequestHeaders(apiSecret, 'GET', endpoint),
+  ): Promise<AxiosResponse<ResponseData, any>> => {
+    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const method = 'GET';
+    const headers = generateRequestHeaders({
+      apiSecret,
+      method,
+      endpoint,
+      apiKey,
     });
 
-    return (await response.json()) as ResponseData;
+    return axios.get<ResponseData>(url, { headers });
   };
 
+  /**
+   * Calls a POST request to Gigwage API.
+   *
+   * Pass in a path like `/api/v1/contractors`
+   */
   const post = async <ResponseData = any>(
     endpoint: string,
-    body: object = {},
-  ): Promise<ResponseData> => {
-    const stringifiedBody = JSON.stringify(body);
-
-    const response = await fetch(`${ENVIRONMENTS[apiEnvironment]}${endpoint}`, {
-      method: 'POST',
-      headers: generateRequestHeaders(
-        apiSecret,
-        'POST',
-        endpoint,
-        stringifiedBody,
-      ),
+    data: object = {},
+  ): Promise<AxiosResponse<ResponseData, any>> => {
+    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const method = 'POST';
+    const headers = generateRequestHeaders({
+      apiSecret,
+      method,
+      apiKey,
+      endpoint,
+      data,
     });
-
-    return (await response.json()) as ResponseData;
+    return axios.request({
+      url,
+      method,
+      headers,
+      data,
+    });
   };
 
-  const patch = async <ResponseData = any>(
+  /**
+   * Calls a PATCH request to Gigwage API.
+   *
+   * Pass in a path like `/api/v1/contractors`
+   */
+  const patch = <ResponseData = any>(
     endpoint: string,
-    body: object = {},
-  ): Promise<ResponseData> => {
-    const stringifiedBody = JSON.stringify(body);
-    const response = await fetch(`${ENVIRONMENTS[apiEnvironment]}${endpoint}`, {
-      method: 'PATCH',
-      headers: generateRequestHeaders(
-        apiSecret,
-        'PATCH',
-        endpoint,
-        stringifiedBody,
-      ),
-      body: stringifiedBody,
+    data: object = {},
+  ): Promise<AxiosResponse<ResponseData, any>> => {
+    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const method = 'PATCH';
+    const headers = generateRequestHeaders({
+      apiSecret,
+      method,
+      apiKey,
+      endpoint,
+      data,
     });
 
-    return (await response.json()) as ResponseData;
+    return axios.request({
+      url,
+      method,
+      headers,
+      data,
+    });
   };
 
+  /**
+   * Calls a DELETE request to Gigwage API.
+   *
+   * Pass in a path like `/api/v1/contractors`
+   */
   const del = async <ResponseData = any>(
     endpoint: string,
-  ): Promise<ResponseData> => {
-    const response = await fetch(`${ENVIRONMENTS[apiEnvironment]}${endpoint}`, {
-      method: 'DELETE',
-      headers: generateRequestHeaders(apiSecret, 'DELETE', endpoint),
+  ): Promise<AxiosResponse<ResponseData, any>> => {
+    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const method = 'DELETE';
+    const headers = generateRequestHeaders({
+      apiSecret,
+      method,
+      apiKey,
+      endpoint,
     });
 
-    return (await response.json()) as ResponseData;
+    return axios.request({
+      url,
+      method,
+      headers,
+    });
   };
 
   return {
