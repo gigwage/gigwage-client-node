@@ -1,0 +1,13 @@
+{
+  "verbose": true,
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "testPathIgnorePatterns": ["dist/"],
+  "transformIgnorePatterns": [
+  ],
+  "clearMocks": true,
+  "collectCoverage": true,
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8"
+}
