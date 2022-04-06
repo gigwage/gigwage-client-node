@@ -18,21 +18,27 @@ interface IGenerateRequestHeadersOptions {
    * HTTP method used
    */
   method: HttpMethods;
+  /**
+   * only use for testing. Allows for passing the timestamp to create consistent signatures.
+   * `new Date().getTime().toString()`
+   */
+  testTimestamp?: string;
 }
 
 /**
- * Generates the request headers for a Gigwage API request.
+ * Generates the request headers for a Gig Wage API request.
  *
  * These headers are unique per request.
  */
-const generateRequestHeaders = ({
+export const generateRequestHeaders = ({
   apiSecret,
   method,
   endpoint,
   apiKey,
   data,
+  testTimestamp,
 }: IGenerateRequestHeadersOptions) => {
-  const timestamp = new Date().getTime().toString();
+  const timestamp = testTimestamp ?? new Date().getTime().toString();
   const stringifiedData = JSON.stringify(data);
 
   const payload = [
@@ -62,7 +68,7 @@ interface ICreateHttpClientOptions {
 }
 
 /**
- * Creates an HTTP client for handling requests to Gigwage API.
+ * Creates an HTTP client for handling requests to Gig Wage API.
  */
 export const createHttpClient = ({
   apiKey,
@@ -70,7 +76,7 @@ export const createHttpClient = ({
   apiSecret,
 }: ICreateHttpClientOptions) => {
   /**
-   * Calls a GET request to Gigwage API.
+   * Calls a GET request to Gig Wage API.
    *
    * Pass in a path like `/api/v1/contractors`
    */
@@ -86,11 +92,11 @@ export const createHttpClient = ({
       apiKey,
     });
 
-    return axios.get<ResponseData>(url, { headers });
+    return axios.request<ResponseData>({ url, headers });
   };
 
   /**
-   * Calls a POST request to Gigwage API.
+   * Calls a POST request to Gig Wage API.
    *
    * Pass in a path like `/api/v1/contractors`
    */
@@ -116,7 +122,7 @@ export const createHttpClient = ({
   };
 
   /**
-   * Calls a PATCH request to Gigwage API.
+   * Calls a PATCH request to Gig Wage API.
    *
    * Pass in a path like `/api/v1/contractors`
    */
@@ -143,7 +149,7 @@ export const createHttpClient = ({
   };
 
   /**
-   * Calls a DELETE request to Gigwage API.
+   * Calls a DELETE request to Gig Wage API.
    *
    * Pass in a path like `/api/v1/contractors`
    */
