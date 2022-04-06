@@ -3,6 +3,7 @@
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
+  "testPathIgnorePatterns": ["dist/"],
   "transformIgnorePatterns": [
   ],
   "clearMocks": true,

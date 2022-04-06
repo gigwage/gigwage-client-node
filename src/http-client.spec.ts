@@ -1,12 +1,11 @@
 import { faker } from '@faker-js/faker';
-
-import { createGigwageClient } from './index';
+import axios from 'axios';
 
 import 'dotenv/config';
-
-import axios from 'axios';
-import { generateRequestHeaders } from './http-client';
 import { ENVIRONMENTS } from './constants';
+import { generateRequestHeaders } from './http-client';
+
+import { createGigwageClient } from './index';
 
 jest.mock('axios');
 
