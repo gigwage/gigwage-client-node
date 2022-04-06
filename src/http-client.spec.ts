@@ -3,29 +3,28 @@ import { faker } from '@faker-js/faker';
 import { createGigwageClient } from './index';
 
 import 'dotenv/config';
+
+import axios from 'axios';
+import { generateRequestHeaders } from './http-client';
+import { ENVIRONMENTS } from './constants';
+
+jest.mock('axios');
+
+const mockRequest = axios.request as jest.Mock;
+
+const apiKey = 'apiKey';
+const apiSecret = 'apiSecret';
+
 describe('HTTP Client', () => {
-  afterAll(async () => {
-    jest.setTimeout(20000);
-    const client = createGigwageClient({
-      apiKey: process.env.GIGWAGE_API_KEY ?? '',
-      apiSecret: process.env.GIGWAGE_SECRET ?? '',
-      apiEnvironment: 'sandbox',
-    });
-
-    const response = await client.get<{ contractors: [{ id: number }] }>(
-      '/api/v1/contractors',
-    );
-
-    for (let contractor of response.data.contractors) {
-      await client.delete(`/api/v1/contractors/${contractor.id}`);
-    }
+  beforeEach(() => {
+    mockRequest.mockClear();
   });
 
   describe(`createHttpClient`, () => {
     it('should generate client with http verbs', () => {
       const client = createGigwageClient({
-        apiKey: process.env.GIGWAGE_API_KEY ?? '',
-        apiSecret: process.env.GIGWAGE_SECRET ?? '',
+        apiKey,
+        apiSecret,
         apiEnvironment: 'sandbox',
       });
       expect(typeof client.get).toBe('function');
@@ -37,106 +36,80 @@ describe('HTTP Client', () => {
 
   describe(`createHttpClient.get`, () => {
     it('should be able to send get request', async () => {
-      const client = createGigwageClient({
-        apiKey: process.env.GIGWAGE_API_KEY ?? '',
-        apiSecret: process.env.GIGWAGE_SECRET ?? '',
-        apiEnvironment: 'sandbox',
-      });
-      const response = await client.get<{ contractors: [] }>(
-        '/api/v1/contractors',
+      mockRequest.mockImplementationOnce(() =>
+        Promise.resolve({ data: { contractors: [] } }),
       );
-      expect(Array.isArray(response.data?.contractors)).toBe(true);
-    });
-  });
 
-  describe(`createHttpClient.post`, () => {
-    it('should be able to send post request', async () => {
+      const endpoint = '/api/v1/contractors';
+
       const client = createGigwageClient({
-        apiKey: process.env.GIGWAGE_API_KEY ?? '',
-        apiSecret: process.env.GIGWAGE_SECRET ?? '',
+        apiKey,
+        apiSecret,
         apiEnvironment: 'sandbox',
       });
-      const fakeContractor = {
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
-        email: faker.internet.email().toLowerCase(),
-      };
+      await client.get<{ contractors: [] }>(endpoint);
+      const mockArg = mockRequest.mock.calls[0][0];
 
-      const response = await client.post<{
-        contractor: {
-          email: string;
-          first_name: string;
-          id: number;
-          last_name: string;
-        }[];
-      }>('/api/v1/contractors', {
-        contractor: fakeContractor,
+      const expectedHeaders = generateRequestHeaders({
+        apiKey,
+        apiSecret,
+        endpoint: endpoint,
+        method: 'GET',
+        testTimestamp: mockArg.headers['X-Gw-Timestamp'],
       });
 
-      expect(response.data).toMatchObject({
-        contractor: { ...fakeContractor },
-      });
-    });
-  });
-
-  describe(`createHttpClient.patch`, () => {
-    it('should be able to send patch request', async () => {
-      const client = createGigwageClient({
-        apiKey: process.env.GIGWAGE_API_KEY ?? '',
-        apiSecret: process.env.GIGWAGE_SECRET ?? '',
-        apiEnvironment: 'sandbox',
-      });
-      const fakeContractor = {
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
-        email: faker.internet.email().toLowerCase(),
-      };
-
-      const response = await client.post<{
-        contractor: {
-          email: string;
-          first_name: string;
-          id: number;
-          last_name: string;
-        };
-      }>('/api/v1/contractors', {
-        contractor: fakeContractor,
-      });
-
-      expect(response.data).toMatchObject({
-        contractor: { ...fakeContractor },
-      });
-
-      // update contractor
-      const newFirstName = faker.name.firstName();
-      const patchResponse = await client.patch<{
-        contractor: {
-          email: string;
-          first_name: string;
-          id: number;
-          last_name: string;
-        }[];
-      }>(`/api/v1/contractors/${response.data.contractor.id}`, {
-        contractor: {
-          first_name: newFirstName,
-        },
-      });
-
-      expect(patchResponse.data.contractor).toMatchObject({
-        ...fakeContractor,
-        id: response.data.contractor.id,
-        first_name: newFirstName,
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['sandbox']}${endpoint}`,
+        headers: expectedHeaders,
       });
     });
   });
 
   describe(`createHttpClient.delete`, () => {
     it('should be able to send delete request', async () => {
+      mockRequest.mockImplementationOnce(() =>
+        Promise.resolve({ data: { contractors: [] } }),
+      );
+
+      const endpoint = '/api/v1/contractors/id';
+
       const client = createGigwageClient({
-        apiKey: process.env.GIGWAGE_API_KEY ?? '',
-        apiSecret: process.env.GIGWAGE_SECRET ?? '',
+        apiKey,
+        apiSecret,
         apiEnvironment: 'sandbox',
       });
+      await client.delete<{ contractors: [] }>(endpoint);
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      const expectedHeaders = generateRequestHeaders({
+        apiKey,
+        apiSecret,
+        endpoint: endpoint,
+        method: 'DELETE',
+        testTimestamp: mockArg.headers['X-Gw-Timestamp'],
+      });
+
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['sandbox']}${endpoint}`,
+        headers: expectedHeaders,
+      });
+    });
+  });
+
+  describe(`createHttpClient.post`, () => {
+    it('should be able to send post request', async () => {
+      mockRequest.mockImplementationOnce(() =>
+        Promise.resolve({ data: { contractors: [] } }),
+      );
+
+      const endpoint = '/api/v1/contractors';
+
+      const client = createGigwageClient({
+        apiKey,
+        apiSecret,
+        apiEnvironment: 'sandbox',
+      });
+
       const fakeContractor = {
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
@@ -150,30 +123,68 @@ describe('HTTP Client', () => {
           id: number;
           last_name: string;
         };
-      }>('/api/v1/contractors', {
-        contractor: fakeContractor,
+      }>(endpoint, fakeContractor);
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      const expectedHeaders = generateRequestHeaders({
+        apiKey,
+        apiSecret,
+        endpoint: endpoint,
+        method: 'POST',
+        data: fakeContractor,
+        testTimestamp: mockArg.headers['X-Gw-Timestamp'],
       });
-      // Should not throw
-      await client.get<{ contractors: [] }>(
-        `/api/v1/contractors/${response.data.contractor.id}`,
+
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['sandbox']}${endpoint}`,
+        headers: expectedHeaders,
+      });
+    });
+  });
+
+  describe(`createHttpClient.patch`, () => {
+    it('should be able to send patch request', async () => {
+      mockRequest.mockImplementationOnce(() =>
+        Promise.resolve({ data: { contractors: [] } }),
       );
 
-      expect(response.data).toMatchObject({
-        contractor: { ...fakeContractor },
+      const endpoint = '/api/v1/contractors';
+
+      const client = createGigwageClient({
+        apiKey,
+        apiSecret,
+        apiEnvironment: 'sandbox',
       });
 
-      const deleteResponse = await client.delete(
-        `/api/v1/contractors/${response.data.contractor.id}`,
-      );
-      expect(deleteResponse.data).toMatchObject({
-        contractor: { ...fakeContractor },
+      const fakeContractor = {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        email: faker.internet.email().toLowerCase(),
+      };
+
+      const response = await client.patch<{
+        contractor: {
+          email: string;
+          first_name: string;
+          id: number;
+          last_name: string;
+        };
+      }>(endpoint, fakeContractor);
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      const expectedHeaders = generateRequestHeaders({
+        apiKey,
+        apiSecret,
+        endpoint: endpoint,
+        method: 'PATCH',
+        data: fakeContractor,
+        testTimestamp: mockArg.headers['X-Gw-Timestamp'],
       });
 
-      await expect(
-        client.get<{ contractors: [] }>(
-          `/api/v1/contractors/${response.data.contractor.id}`,
-        ),
-      ).rejects.toThrow();
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['sandbox']}${endpoint}`,
+        headers: expectedHeaders,
+      });
     });
   });
 });
