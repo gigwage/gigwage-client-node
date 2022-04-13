@@ -1,0 +1,13 @@
+.github
+coverage
+src
+
+.env
+.env.sample
+.eslintignore
+.eslintrc
+.gitignore
+.npmignore
+.prettierrc
+jest.config.json
+tsconfig.json
