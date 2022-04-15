@@ -1,6 +1,11 @@
 import { createHttpClient } from './http-client';
 import { GigwageEnvironments } from './types';
 
+export {
+  generateRequestHeaders,
+  IGenerateRequestHeadersOptions,
+} from './http-client';
+
 interface IGigwageClientOptions {
   /**
    * The Gig Wage API environment.
