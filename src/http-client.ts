@@ -6,16 +6,35 @@ import { GigwageEnvironments } from './types';
 
 type HttpMethods = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 
-interface IGenerateRequestHeadersOptions {
+export interface IGenerateRequestHeadersOptions {
+  /**
+   * Gig Wage API key
+   *
+   * Learn more about Gigwage API keys at https://developers.gigwage.com/#introduction
+   */
   apiKey: string;
+  /**
+   * Gig Wage API Secret
+   *
+   * Learn more about Gig Wage API keys at https://developers.gigwage.com/#introduction
+   */
   apiSecret: string;
   /**
-   * Stringified JSON object
+   * A Javascript Object `{...}`
+   *
+   * The object is stringified internally.
    */
   data?: any;
+  /**
+   * The endpoint your API it hitting.
+   *
+   * Example: `/api/v1/contractors`
+   */
   endpoint: string;
   /**
    * HTTP method used
+   *
+   * example: `GET` | `POST` | `PATCH` | `DELETE`
    */
   method: HttpMethods;
   /**
@@ -31,10 +50,10 @@ interface IGenerateRequestHeadersOptions {
  * These headers are unique per request.
  */
 export const generateRequestHeaders = ({
-  apiSecret,
-  method,
-  endpoint,
   apiKey,
+  apiSecret,
+  endpoint,
+  method,
   data,
   testTimestamp,
 }: IGenerateRequestHeadersOptions) => {
