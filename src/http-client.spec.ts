@@ -31,6 +31,22 @@ describe('HTTP Client', () => {
       expect(typeof client.patch).toBe('function');
       expect(typeof client.delete).toBe('function');
     });
+
+    it('should allow overriding environment URL', async () => {
+      const client = createGigwageClient({
+        apiKey,
+        apiSecret,
+        apiEnvironment: 'sandbox',
+        baseUrl: 'http://localhost:3000',
+      });
+
+      await client.get('/api/v1/contractors');
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      expect(mockArg).toMatchObject({
+        url: 'http://localhost:3000/api/v1/contractors',
+      });
+    });
   });
 
   describe(`createHttpClient.get`, () => {
