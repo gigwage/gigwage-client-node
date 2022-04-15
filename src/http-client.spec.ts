@@ -32,7 +32,7 @@ describe('HTTP Client', () => {
       expect(typeof client.delete).toBe('function');
     });
 
-    it('should allow overriding environment URL', async () => {
+    it('should allow overriding base URL', async () => {
       const client = createGigwageClient({
         apiKey,
         apiSecret,
@@ -45,6 +45,50 @@ describe('HTTP Client', () => {
 
       expect(mockArg).toMatchObject({
         url: 'http://localhost:3000/api/v1/contractors',
+      });
+    });
+
+    it('should use public base URL for default', async () => {
+      const client = createGigwageClient({
+        apiKey,
+        apiSecret,
+      });
+
+      await client.get('/api/v1/contractors');
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['production']}/api/v1/contractors`,
+      });
+    });
+
+    it('should use public base URL when specified', async () => {
+      const client = createGigwageClient({
+        apiKey,
+        apiSecret,
+        apiEnvironment: 'production',
+      });
+
+      await client.get('/api/v1/contractors');
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['production']}/api/v1/contractors`,
+      });
+    });
+
+    it('should use sandbox base URL when specified', async () => {
+      const client = createGigwageClient({
+        apiKey,
+        apiSecret,
+        apiEnvironment: 'sandbox',
+      });
+
+      await client.get('/api/v1/contractors');
+      const mockArg = mockRequest.mock.calls[0][0];
+
+      expect(mockArg).toMatchObject({
+        url: `${ENVIRONMENTS['sandbox']}/api/v1/contractors`,
       });
     });
   });
