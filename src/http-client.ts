@@ -65,6 +65,7 @@ interface ICreateHttpClientOptions {
   apiEnvironment?: GigwageEnvironments;
   apiKey: string;
   apiSecret: string;
+  baseUrl?: string;
 }
 
 /**
@@ -74,7 +75,10 @@ export const createHttpClient = ({
   apiKey,
   apiEnvironment = 'production',
   apiSecret,
+  baseUrl: baseUrlOverride,
 }: ICreateHttpClientOptions) => {
+  const baseUrl = baseUrlOverride ?? ENVIRONMENTS[apiEnvironment];
+
   /**
    * Calls a GET request to Gig Wage API.
    *
@@ -83,7 +87,7 @@ export const createHttpClient = ({
   const get = <ResponseData = any>(
     endpoint: string,
   ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const url = `${baseUrl}${endpoint}`;
     const method = 'GET';
     const headers = generateRequestHeaders({
       apiSecret,
@@ -104,7 +108,7 @@ export const createHttpClient = ({
     endpoint: string,
     data: object = {},
   ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const url = `${baseUrl}${endpoint}`;
     const method = 'POST';
     const headers = generateRequestHeaders({
       apiSecret,
@@ -130,7 +134,7 @@ export const createHttpClient = ({
     endpoint: string,
     data: object = {},
   ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const url = `${baseUrl}${endpoint}`;
     const method = 'PATCH';
     const headers = generateRequestHeaders({
       apiSecret,
@@ -156,7 +160,7 @@ export const createHttpClient = ({
   const del = async <ResponseData = any>(
     endpoint: string,
   ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${ENVIRONMENTS[apiEnvironment]}${endpoint}`;
+    const url = `${baseUrl}${endpoint}`;
     const method = 'DELETE';
     const headers = generateRequestHeaders({
       apiSecret,
