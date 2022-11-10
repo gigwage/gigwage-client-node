@@ -119,7 +119,7 @@ export const createHttpClient = ({
     return axios.request<ResponseData>({
       url,
       headers,
-      params
+      params,
     });
   };
 
