@@ -105,6 +105,7 @@ export const createHttpClient = ({
    */
   const get = <ResponseData = any>(
     endpoint: string,
+    params: object = {},
   ): Promise<AxiosResponse<ResponseData, any>> => {
     const url = `${baseUrl}${endpoint}`;
     const method = 'GET';
@@ -115,7 +116,11 @@ export const createHttpClient = ({
       apiKey,
     });
 
-    return axios.request<ResponseData>({ url, headers });
+    return axios.request<ResponseData>({
+      url,
+      headers,
+      params
+    });
   };
 
   /**
