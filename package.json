@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "convert":"ts-node ./converttypes.ts"
   },
   "repository": {
     "type": "git",

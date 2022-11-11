@@ -1,4 +1,4 @@
-import { createHttpClient } from './http-client';
+import { GigWageHttpClient, createHttpClient } from './http-client';
 import { GigwageEnvironments } from './types';
 
 export {
@@ -50,6 +50,8 @@ export const createGigwageClient = ({
     apiEnvironment,
     baseUrl,
   });
+
+  const contractors = getContractors(httpClient);
 
   return {
     ...httpClient,

@@ -1,0 +1,47 @@
+first_name
+string
+Contractor's first name
+
+last_name
+string
+Contractor's last name
+
+email
+string
+Contractor email address
+
+social_security
+string
+Contractor's social security number. For example: 123-12-12345
+
+phone_number
+string
+Contractor's phone number. Required if address exists. Example: 123-123-1234 or 1231231234
+
+birthdate
+date
+Contractor's birthdate. Format: YYYY-MM-DD
+
+address1
+string
+Line address 1
+
+address2
+string
+Line address 2
+
+city
+string
+City
+
+zip
+string
+Zip code
+
+state
+string
+State, 2 characters US State Code (ISO 3166-2)
+
+external_id
+string
+Customer assigned ID
