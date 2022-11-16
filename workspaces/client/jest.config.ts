@@ -12,4 +12,21 @@ export default {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
+
+  projects: [
+    {
+      displayName: 'unit',
+      testMatch: ['<rootDir>/src/**/*.spec.ts'],
+      transform: {
+        '^.+\\.ts$': 'ts-jest',
+      },
+    },
+    {
+      displayName: 'e2e',
+      testMatch: ['<rootDir>/src/**/*.e2e.ts'],
+      transform: {
+        '^.+\\.ts$': 'ts-jest',
+      },
+    },
+  ],
 };

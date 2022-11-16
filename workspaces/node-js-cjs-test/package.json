@@ -1,0 +1,18 @@
+{
+  "name": "node-js-cjs-test",
+  "version": "1.0.0",
+  "description": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build":"echo 'no build for test'",
+    "lint":"echo 'no lint for test'"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@gigwage/client": "workspace:../client",
+    "jest": "^29.3.1"
+  }
+}
