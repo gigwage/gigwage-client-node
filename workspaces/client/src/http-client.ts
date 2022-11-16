@@ -66,6 +66,7 @@ export const generateRequestHeaders = ({
     endpoint,
     data ? stringifiedData : undefined,
   ].join('');
+
   const bytes = CryptoJS.HmacSHA256(payload, apiSecret);
   const signature = bytes.toString(CryptoJS.enc.Hex);
 
