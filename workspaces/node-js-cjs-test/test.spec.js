@@ -1,7 +1,7 @@
 const { createGigwageClient } = require("@gigwage/client");
 
 
-describe("node-js-esm-test", () => {
+describe("node-js-cjs-test", () => {
   it('should import', async () => {
     
     const client = createGigwageClient({
