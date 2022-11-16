@@ -23,16 +23,16 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test
-
       - name: Build
         run: yarn build
+
+      - name: Test
+        run: yarn test
 
       - name: Publish to NPM
         run: |
             npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}" --dry-run
-            cd workspace/client
+            cd workspaces/client
             npm publish --tag latest --access public
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
