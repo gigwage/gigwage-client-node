@@ -1,11 +1,11 @@
 {
-  "name": "node-ts-esm-test",
+  "name": "node-ts-cjs-test",
   "version": "1.0.0",
   "description": "",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'skipped due to ci issue'",
+    "test": "jest",
     "build":"echo 'no build for test'",
     "lint":"echo 'no lint for test'"
   },
