@@ -5,6 +5,7 @@
   "description": "Node client library for accessing the Gig Wage API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files":["dist"],
   "scripts": {
     "build": "rm -rf dist && tsc -p ./tsconfig.build.json",
     "test":"yarn test:unit",
