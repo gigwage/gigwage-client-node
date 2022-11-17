@@ -30,7 +30,7 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test
+        run: cd workspaces/client && yarn test
 
       - name: Build
         run: yarn build
