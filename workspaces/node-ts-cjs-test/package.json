@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@gigwage/client": "workspace:../client",
+    "@gigwage/client": "link:../client",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
     "jest": "^29.3.1",

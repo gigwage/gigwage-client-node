@@ -5,14 +5,14 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'skipped due to ci issue'",
+    "test": "jest",
     "build":"echo 'no build for test'",
     "lint":"echo 'no lint for test'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@gigwage/client": "workspace:../client",
+    "@gigwage/client": "link:../client",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
     "jest": "^29.3.1",

@@ -9,5 +9,5 @@ src
 .gitignore
 .npmignore
 .prettierrc
-jest.config.json
+jest.config.ts
 tsconfig.json
