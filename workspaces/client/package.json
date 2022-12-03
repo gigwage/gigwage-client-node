@@ -1,7 +1,7 @@
 {
   "name": "@gigwage/client",
   "type": "commonjs",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Node client library for accessing the Gig Wage API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
