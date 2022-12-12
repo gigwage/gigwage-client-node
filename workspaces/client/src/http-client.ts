@@ -208,3 +208,5 @@ export const createHttpClient = ({
     delete: del,
   };
 };
+
+export type GigWageHttpClient = ReturnType<typeof createHttpClient>;
