@@ -54,6 +54,8 @@ export const createGigwageClient = ({
 
   return {
     ...httpClient,
-    ...contractorEndpoints(httpClient),
+    contractors: {
+      ...contractorEndpoints(httpClient),
+    },
   };
 };

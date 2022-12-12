@@ -13,7 +13,8 @@
     "test": "yarn test:unit",
     "test:unit": "jest --selectProjects unit",
     "test:e2e": "jest --selectProjects e2e",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "convert":"ts-node ./converttypes.ts"
   },
   "repository": {
     "type": "git",

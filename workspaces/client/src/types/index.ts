@@ -58,3 +58,210 @@ export type Contractor = {
   /** The contractor's zip code */
   zip: string;
 };
+
+export type Contractor1099 = {
+  /** Account Number */
+  account_number: string;
+  box1: string;
+  box10: string;
+  box11: string;
+  box12: string;
+  box13: string;
+  box14: string;
+  box15a: string;
+  box15b: string;
+  box16aState: string;
+  box16aStateNo: string;
+  box16bState: string;
+  box16bStateNo: string;
+  box17a: string;
+  box17b: string;
+  box1a: string;
+  box1b: string;
+  box2: string;
+  box3: string;
+  box4: string;
+  box5: string;
+  box5a: string;
+  box5b: string;
+  box5c: string;
+  box5d: string;
+  box5e: string;
+  box5f: string;
+  box5g: string;
+  box5h: string;
+  box5i: string;
+  box5j: string;
+  box5k: string;
+  box5l: string;
+  box6: string;
+  box6a: string;
+  box6b: string;
+  box7: string;
+  box7a: string;
+  box7b: string;
+  box8: string;
+  box8a: string;
+  box8b: string;
+  box9: string;
+  /** The ID of the contractor the 1099 was issued for */
+  contractor_id: number;
+  /** Id of a 1099 corrected by this one */
+  corrected: number;
+  /** Id of this 1099's correction, if it has one */
+  correction: number;
+  /** The 1099's unique identifier */
+  id: number;
+  /** second tin */
+  second_tin: string;
+  /** The status of the 1099 */
+  status: string;
+  /** The 1099 subtype */
+  type: string;
+  /** Validation errors */
+  validation_errors: string[];
+  /** The tax year covered by this 1099 */
+  year: number;
+};
+
+export type TIN = {
+  /** 1st address line */
+  address1: string;
+
+  /** 2nd address line */
+  address2: string;
+
+  /** Birthdate */
+  birthdate: number;
+
+  /** Vendor business name */
+  business_name: string;
+
+  /** City */
+  city: string;
+
+  /** Vendor's DBA */
+  dba: string;
+
+  /** Vendor's EIN */
+  ein: string;
+
+  /** Email */
+  email: string;
+
+  /** Exempt payee code */
+  exempt_payee_code: number;
+
+  /** Exemption from FACTA reporting code */
+  fatca_reporting_exemption_code: string;
+
+  /** First name */
+  first_name: string;
+
+  /** Last name */
+  last_name: string;
+
+  /** Tax classification for LLC */
+  llc_classification: string;
+
+  /** Other Classification for LLC */
+  other_classification: string;
+
+  /** Contractor prefers to receive a paper 1099 */
+  paper_1099: boolean;
+
+  /** Phone number */
+  phone_number: string;
+
+  /** Social security number. */
+  social_security: string;
+
+  /** State */
+  state: string;
+
+  /** Federal tax classification */
+  tax_classification: string;
+
+  /** Reason for TIN check results if applicable */
+  tin_check_reason: string;
+
+  /** Results of instant TIN check */
+  tin_check_status: string;
+
+  /** Vendor or regular contractor */
+  vendor: boolean;
+
+  /** Zip code */
+  zip: string;
+};
+
+export type ContractorW9 = {
+  /** Line address 1 */
+  address1: string;
+
+  /** Line address 2 */
+  address2: string;
+
+  /** Contractor's birthdate. Format: YYYY-MM-DD */
+  birthdate: number;
+
+  /** Vendor business name. Required for vendors */
+  business_name: string;
+
+  /** City */
+  city: string;
+
+  /** Vendor's DBA */
+  dba: string;
+
+  /** Vendor's EIN. Required for vendors. Example: 00-0000000 */
+  ein: string;
+
+  /** Contractor email address */
+  email: string;
+
+  /** Exempt payee code */
+  exempt_payee_code: number;
+
+  /** Exemption from FATCA reporting code */
+  fatca_reporting_exemption_code: string;
+
+  /** Contractor first name */
+  first_name: string;
+
+  /** Contractor last name */
+  last_name: string;
+
+  /** Contractor's tax classification for LLC is required if federal tax classification is Limited Liability Company */
+  llc_classification: string;
+
+  /** Other Classification for LLC is required if Federal Tax Classification is Other */
+  other_classification: string;
+
+  /** Paper or Digital 1099 */
+  paper_1099: boolean;
+
+  /** Contractor's phone number. Example: 123-123-1234 or 1231231234 */
+  phone_number: string;
+
+  /** Contractor's social security number. For example: 123-12-1234 */
+  social_security: string;
+
+  /** State, 2 characters US State Code (ISO 3166-2) */
+  state: string;
+
+  /** Contractor's federal tax classification is required */
+  tax_classification: string;
+
+  /** Reason for TIN check results if applicable */
+  tin_check_reason: string;
+
+  /** Results of instant TIN check */
+  tin_check_status: string;
+
+  /** True when contractor is vendor */
+  vendor: boolean;
+
+  /** Zip code */
+  zip: string;
+};

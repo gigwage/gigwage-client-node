@@ -107,22 +107,18 @@ export const createHttpClient = ({
   const get = <ResponseData = any>(
     endpoint: string,
     params: object = {},
-  ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${baseUrl}${endpoint}`;
-    const method = 'GET';
-    const headers = generateRequestHeaders({
-      apiSecret,
-      method,
-      endpoint,
-      apiKey,
-    });
-
-    return axios.request<ResponseData>({
-      url,
-      headers,
+  ): Promise<AxiosResponse<ResponseData, any>> =>
+    axios.request<ResponseData>({
+      url: `${baseUrl}${endpoint}`,
+      method: 'GET',
+      headers: generateRequestHeaders({
+        apiSecret,
+        method: 'GET',
+        endpoint,
+        apiKey,
+      }),
       params,
     });
-  };
 
   /**
    * Calls a POST request to Gig Wage API.
@@ -132,23 +128,41 @@ export const createHttpClient = ({
   const post = async <ResponseData = any>(
     endpoint: string,
     data: object = {},
-  ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${baseUrl}${endpoint}`;
-    const method = 'POST';
-    const headers = generateRequestHeaders({
-      apiSecret,
-      method,
-      apiKey,
-      endpoint,
+  ): Promise<AxiosResponse<ResponseData, any>> =>
+    axios.request({
+      url: `${baseUrl}${endpoint}`,
+      method: 'POST',
+      headers: generateRequestHeaders({
+        apiSecret,
+        method: 'POST',
+        apiKey,
+        endpoint,
+        data,
+      }),
       data,
     });
-    return axios.request({
-      url,
-      method,
-      headers,
+
+  /**
+   * Calls a PUT request to Gig Wage API.
+   *
+   * Pass in a path like `/api/v1/contractors`
+   */
+  const put = async <ResponseData = any>(
+    endpoint: string,
+    data: object = {},
+  ): Promise<AxiosResponse<ResponseData, any>> =>
+    axios.request({
+      url: `${baseUrl}${endpoint}`,
+      method: 'PUT',
+      headers: generateRequestHeaders({
+        apiSecret,
+        method: 'PUT',
+        apiKey,
+        endpoint,
+        data,
+      }),
       data,
     });
-  };
 
   /**
    * Calls a PATCH request to Gig Wage API.
@@ -158,24 +172,19 @@ export const createHttpClient = ({
   const patch = <ResponseData = any>(
     endpoint: string,
     data: object = {},
-  ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${baseUrl}${endpoint}`;
-    const method = 'PATCH';
-    const headers = generateRequestHeaders({
-      apiSecret,
-      method,
-      apiKey,
-      endpoint,
+  ): Promise<AxiosResponse<ResponseData, any>> =>
+    axios.request({
+      url: `${baseUrl}${endpoint}`,
+      method: 'PATCH',
+      headers: generateRequestHeaders({
+        apiSecret,
+        method: 'PATCH',
+        apiKey,
+        endpoint,
+        data,
+      }),
       data,
     });
-
-    return axios.request({
-      url,
-      method,
-      headers,
-      data,
-    });
-  };
 
   /**
    * Calls a DELETE request to Gig Wage API.
@@ -184,27 +193,23 @@ export const createHttpClient = ({
    */
   const del = async <ResponseData = any>(
     endpoint: string,
-  ): Promise<AxiosResponse<ResponseData, any>> => {
-    const url = `${baseUrl}${endpoint}`;
-    const method = 'DELETE';
-    const headers = generateRequestHeaders({
-      apiSecret,
-      method,
-      apiKey,
-      endpoint,
+  ): Promise<AxiosResponse<ResponseData, any>> =>
+    axios.request({
+      url: `${baseUrl}${endpoint}`,
+      method: 'DELETE',
+      headers: generateRequestHeaders({
+        apiSecret,
+        method: 'DELETE',
+        apiKey,
+        endpoint,
+      }),
     });
-
-    return axios.request({
-      url,
-      method,
-      headers,
-    });
-  };
 
   return {
     get,
     post,
     patch,
+    put,
     delete: del,
   };
 };

@@ -1,5 +1,5 @@
 import { GigWageHttpClient } from '../http-client';
-import { Contractor } from '../types';
+import { Contractor, Contractor1099, ContractorW9, TIN } from '../types';
 
 export type ContractorOptions = {
   /** Contractor email address */
@@ -116,6 +116,18 @@ export type GetContractor1099sOptions = {
   year?: string;
 };
 
+export type CreateTinCheckOptions = {
+  id: number;
+};
+
+export type UpdateContractorW9 = {
+  contractor: Omit<
+    Partial<ContractorW9>,
+    'tin_check_reason' | 'tin_check_status'
+  >;
+  id: string;
+};
+
 export const contractorEndpoints = (httpClient: GigWageHttpClient) => {
   const contractor = (options: ContractorOptions) =>
     httpClient.get<Contractor>(`contractors/find_by`, options);
@@ -146,7 +158,30 @@ export const contractorEndpoints = (httpClient: GigWageHttpClient) => {
   };
 
   const getContractor1099s = ({ id, ...rest }: GetContractor1099sOptions) =>
-    httpClient.get<any>(`/contractors/${id}/1099s`, rest);
+    httpClient.get<Contractor1099[]>(`/contractors/${id}/1099s`, rest);
+
+  /**
+   * Verify a contractor's TIN is valid.
+   * Note: TIN checks are automatically run on POST and PATCH W9 endpoints
+   */
+  const createTinCheck = ({ id }: CreateTinCheckOptions) =>
+    httpClient.post<TIN>(`/contractors/${id}/tin_check`);
+
+  /**
+   * Update W9 information for a contractor.
+   */
+  const updateContractorW9 = ({ id, ...options }: UpdateContractorW9) =>
+    httpClient.patch<ContractorW9>(`/contractors/{id}/w9`, options);
+
+  const getContractorW9 = () => {};
+  const submitW9Information = () => {};
+  const submitWYCInformation = () => {};
+  const sendInviteToContractor = () => {};
+  const addAccountToContractor = () => {};
+  const listContractorAccounts = () => {};
+  const deactivateContractorAccount = () => {};
+  const getContractorAccountDetail = () => {};
+  const createContractorsIdentityDocument = () => {};
 
   return {
     contractor,
@@ -157,5 +192,7 @@ export const contractorEndpoints = (httpClient: GigWageHttpClient) => {
     deleteContractor,
     getContractor,
     getContractor1099s,
+    createTinCheck,
+    updateContractorW9,
   };
 };
