@@ -1,7 +1,6 @@
-import * as contractorEndpoints from './endpoints/contractors';
+import { contractorEndpoints } from './endpoints/contractors';
 import { createHttpClient } from './http-client';
 import { GigwageEnvironments } from './types';
-import { registerEndpoints } from './utils';
 
 export {
   generateRequestHeaders,
@@ -55,6 +54,6 @@ export const createGigwageClient = ({
 
   return {
     ...httpClient,
-    ...registerEndpoints(contractorEndpoints, httpClient),
+    ...contractorEndpoints(httpClient),
   };
 };
