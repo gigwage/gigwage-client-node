@@ -26,6 +26,7 @@ describe('HTTP Client', () => {
         apiSecret,
         apiEnvironment: 'sandbox',
       });
+      client.contractors.findBy({});
       expect(typeof client.get).toBe('function');
       expect(typeof client.post).toBe('function');
       expect(typeof client.patch).toBe('function');
