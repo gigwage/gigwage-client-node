@@ -51,6 +51,7 @@ axios
       parameters:
         | {
             description: string;
+            in: 'path' | 'query';
             name: string;
             required: boolean;
             schema: string;
@@ -191,11 +192,18 @@ axios
     };
 
     const writeEndpointFunction = (endpoint: Endpoint) => {
+      const pathParams = (endpoint.parameters || []).filter(
+        p => p.in === 'path',
+      );
+      const queryParams = (endpoint.parameters || []).filter(
+        p => p.in === 'query',
+      );
+
       return `${endpointName(endpoint)}: (${writeEndpointFunctionParameters(
         endpoint,
       )})=> httpClient.${endpoint.method}<${endpoint.responseType}${
         endpoint.responseTypeIsArray ? '[]' : ''
-      }>(\`${(endpoint.parameters || []).reduce(
+      }>(\`${pathParams.reduce(
         (prev, param) =>
           prev.replace(`{${param.name}}`, '${' + param.name + '}'),
         endpoint.path,
@@ -205,6 +213,8 @@ axios
         endpoint.method === 'put'
           ? ', options'
           : ''
+      },${
+        queryParams.length ? '{' + queryParams.map(p => p.name) + '}' : ''
       }),`; // TODO: add query arguments
     };
 
