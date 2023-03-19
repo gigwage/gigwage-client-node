@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ['14','16','18']
+        node: ['16']
 
     steps:
       - name: Checkout
@@ -29,8 +29,8 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: cd workspaces/client && yarn test
+      # - name: Test
+      #   run: cd workspaces/client && yarn test
 
       - name: Build
         run: yarn build

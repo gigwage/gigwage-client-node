@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Project } from 'ts-morph';
 
 // import { payload as data } from './src/data';
-import payload from '../scripts/openapi.json';
+import payload from './openapi.json';
 
 type Endpoint = {
   description: string;
