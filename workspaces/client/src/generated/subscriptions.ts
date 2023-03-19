@@ -1,58 +1,97 @@
-import { GigWageHttpClient } from "../http-client";
-import { postApiV1Subscriptions, patchApiV1Subscriptions, WebhookSubscriptionEntity } from "../endpoints/entities";
-export type CreatesubscriptionOptions =   postApiV1Subscriptions
-export type ListsubscriptionsOptions = {
-      //** Page offset to fetch. */
-  page?:number
-  
-      //** Number of results to return per page. */
-  per_page?:number
-  
-      //** Pad a number of results. */
-  offset?:number
-  
-}
-export type DeletesubscriptionOptions = {
-      
-  id:number
-  
-}
-export type UpdatesubscriptionURLOptions = {
-      
-  id:number
-  
-} & patchApiV1Subscriptions
-export type ReactivatesubscriptionOptions = {
-      
-  id:number
-  
-}
-export type ShowsubscriptionOptions = {
-      
-  id:number
-  
-}
-export type DeactivatesubscriptionOptions = {
-      
-  id:number
-  
-}
+import { GigWageHttpClient } from '../http-client';
 
-export default function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
-    return {
+import {
+  PatchApiV1Subscriptions,
+  PostApiV1Subscriptions,
+  WebhookSubscriptionEntity,
+} from './types';
+
+export type CreateSubscriptionOptions = {} & PostApiV1Subscriptions;
+
+export type ListSubscriptionsOptions = {
+  /** Page offset to fetch. */
+  page?: number;
+  /** Number of results to return per page. */
+  per_page?: number;
+  /** Pad a number of results. */
+  offset?: number;
+};
+
+export type DeleteSubscriptionOptions = {
+  id: number;
+};
+
+export type UpdateSubscriptionURLOptions = {
+  id: number;
+} & PatchApiV1Subscriptions;
+
+export type ReactivateSubscriptionOptions = {
+  id: number;
+};
+
+export type ShowSubscriptionOptions = {
+  id: number;
+};
+
+export type DeactivateSubscriptionOptions = {
+  id: number;
+};
+
+export function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
+  return {
     /** Subscribe to webhooks of the chosen type. Please note that multiple consecutive failures to deliver webhooks will deactivate this subscription, and it will need to be reactivated. See PUT below. */
-    Createsubscription: ({ ...options}: CreatesubscriptionOptions)=> httpClient.post<WebhookSubscriptionEntity>(`/api/v1/subscriptions`, options),
+
+    createSubscription: ({ ...options }: CreateSubscriptionOptions) =>
+      httpClient.post<WebhookSubscriptionEntity>(
+        `/api/v1/subscriptions`,
+        options,
+      ),
+
     /** Returns a list of all subscriptions. */
-    Listsubscriptions: ({ page, per_page, offset, ...options}: ListsubscriptionsOptions)=> httpClient.get<WebhookSubscriptionEntity[]>(`/api/v1/subscriptions`),
+
+    listSubscriptions: ({ page, per_page, offset }: ListSubscriptionsOptions) =>
+      httpClient.get<WebhookSubscriptionEntity[]>(`/api/v1/subscriptions`, {
+        page,
+        per_page,
+        offset,
+      }),
+
     /** Permanently remove a subscription. */
-    Deletesubscription: ({ id, ...options}: DeletesubscriptionOptions)=> httpClient.delete<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`),
+
+    deleteSubscription: ({ id }: DeleteSubscriptionOptions) =>
+      httpClient.delete<WebhookSubscriptionEntity>(
+        `/api/v1/subscriptions/${id}`,
+      ),
+
     /** Change the URL where webhooks are sent. */
-    UpdatesubscriptionURL: ({ id, ...options}: UpdatesubscriptionURLOptions)=> httpClient.patch<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`, options),
+
+    updateSubscriptionURL: ({ id, ...options }: UpdateSubscriptionURLOptions) =>
+      httpClient.patch<WebhookSubscriptionEntity>(
+        `/api/v1/subscriptions/${id}`,
+        options,
+      ),
+
     /** Reactivate an inactive subscription. */
-    Reactivatesubscription: ({ id, ...options}: ReactivatesubscriptionOptions)=> httpClient.put<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`, options),
+
+    reactivateSubscription: ({
+      id,
+      ...options
+    }: ReactivateSubscriptionOptions) =>
+      httpClient.put<WebhookSubscriptionEntity>(
+        `/api/v1/subscriptions/${id}`,
+        options,
+      ),
+
     /** Get the details of a subscription. */
-    Showsubscription: ({ id, ...options}: ShowsubscriptionOptions)=> httpClient.get<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`),
+
+    showSubscription: ({ id }: ShowSubscriptionOptions) =>
+      httpClient.get<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`),
+
     /** Deactivate a subscription. */
-    Deactivatesubscription: ({ id, ...options}: DeactivatesubscriptionOptions)=> httpClient.delete<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}/deactivate`),
-    }
+
+    deactivateSubscription: ({ id }: DeactivateSubscriptionOptions) =>
+      httpClient.delete<WebhookSubscriptionEntity>(
+        `/api/v1/subscriptions/${id}/deactivate`,
+      ),
+  };
 }

@@ -14,8 +14,9 @@
     "test:unit": "jest --selectProjects unit",
     "test:e2e": "jest --selectProjects e2e",
     "lint": "eslint . --ext .ts",
-    "convert": "ts-node ./converttypes.ts",
-    "parse": " ts-node ./write-endpoints.ts"
+    "generate-openapi-types": "ts-node ./scripts/generate-types.ts && yarn lint --fix",
+    "download-openapi-json": "ts-node ./scripts/download-openapi.ts",
+    "generate-endpoints": " ts-node ./scripts/write-endpoints.ts && yarn lint --fix"
   },
   "repository": {
     "type": "git",

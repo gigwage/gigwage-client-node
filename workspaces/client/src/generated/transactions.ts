@@ -1,17 +1,20 @@
-import { GigWageHttpClient } from "../http-client";
-import { LedgerEntity } from "../endpoints/entities";
-export type ListtransactionsOptions = {
-      
-  page?:number
-  
-      
-  size?:number
-  
-}
+import { GigWageHttpClient } from '../http-client';
 
-export default function transactionsEndpoints(httpClient: GigWageHttpClient) {
-    return {
+import { LedgerEntity } from './types';
+
+export type ListTransactionsOptions = {
+  page?: number;
+  size?: number;
+};
+
+export function transactionsEndpoints(httpClient: GigWageHttpClient) {
+  return {
     /** List transactions. */
-    Listtransactions: ({ page, size, ...options}: ListtransactionsOptions)=> httpClient.get<LedgerEntity[]>(`/api/v1/ledger`),
-    }
+
+    listTransactions: ({ page, size }: ListTransactionsOptions) =>
+      httpClient.get<LedgerEntity[]>(`/api/v1/ledger`, {
+        page,
+        size,
+      }),
+  };
 }

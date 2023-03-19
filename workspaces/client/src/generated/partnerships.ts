@@ -1,7 +1,6 @@
-import axios from "axios";
-import { GigwageHttpClient } from "../http-client";
+import { GigWageHttpClient } from '../http-client';
+import './types';
 
-export default function partnershipsEndpoints(httpClient: GigwageHttpClient) {
-    return {
-    }
+export function partnershipsEndpoints(httpClient: GigWageHttpClient) {
+  return {};
 }

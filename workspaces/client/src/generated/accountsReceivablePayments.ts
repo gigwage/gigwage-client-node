@@ -1,30 +1,51 @@
-import { GigWageHttpClient } from "../http-client";
-import { postApiV1ArPayments, ArPaymentEntity } from "../endpoints/entities";
-export type CreateAccountsReceivablePaymentOptions =   postApiV1ArPayments
-export type ListAccountsReceivablepaymentsOptions = {
-      //** Page offset to fetch. */
-  page?:number
-  
-      //** Number of results to return per page. */
-  per_page?:number
-  
-      //** Pad a number of results. */
-  offset?:number
-  
-}
-export type ReturnanAccountsReceivablePaymentOptions = {
-      
-  id:number
-  
-}
+import { GigWageHttpClient } from '../http-client';
 
-export default function accountsReceivablePaymentsEndpoints(httpClient: GigWageHttpClient) {
-    return {
+import { ArPaymentEntity, PostApiV1ArPayments } from './types';
+
+export type CreateAccountsReceivablePaymentOptions = {} & PostApiV1ArPayments;
+
+export type ListAccountsReceivablePaymentsOptions = {
+  /** Page offset to fetch. */
+  page?: number;
+  /** Number of results to return per page. */
+  per_page?: number;
+  /** Pad a number of results. */
+  offset?: number;
+};
+
+export type ReturnAnAccountsReceivablePaymentOptions = {
+  id: number;
+};
+
+export function accountsReceivablePaymentsEndpoints(
+  httpClient: GigWageHttpClient,
+) {
+  return {
     /** Creates a new Accounts Receivable Payment. */
-    CreateAccountsReceivablePayment: ({ ...options}: CreateAccountsReceivablePaymentOptions)=> httpClient.post<ArPaymentEntity>(`/api/v1/ar_payments`, options),
+
+    createAccountsReceivablePayment: ({
+      ...options
+    }: CreateAccountsReceivablePaymentOptions) =>
+      httpClient.post<ArPaymentEntity>(`/api/v1/ar_payments`, options),
+
     /** List Accounts Receivable payments. */
-    ListAccountsReceivablepayments: ({ page, per_page, offset, ...options}: ListAccountsReceivablepaymentsOptions)=> httpClient.get<ArPaymentEntity[]>(`/api/v1/ar_payments`),
+
+    listAccountsReceivablePayments: ({
+      page,
+      per_page,
+      offset,
+    }: ListAccountsReceivablePaymentsOptions) =>
+      httpClient.get<ArPaymentEntity[]>(`/api/v1/ar_payments`, {
+        page,
+        per_page,
+        offset,
+      }),
+
     /** Returns the details for Accounts Receivable Payment */
-    ReturnanAccountsReceivablePayment: ({ id, ...options}: ReturnanAccountsReceivablePaymentOptions)=> httpClient.get<ArPaymentEntity>(`/api/v1/ar_payments/${id}`),
-    }
+
+    returnAnAccountsReceivablePayment: ({
+      id,
+    }: ReturnAnAccountsReceivablePaymentOptions) =>
+      httpClient.get<ArPaymentEntity>(`/api/v1/ar_payments/${id}`),
+  };
 }

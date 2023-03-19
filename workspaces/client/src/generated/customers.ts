@@ -1,44 +1,63 @@
-import { GigWageHttpClient } from "../http-client";
-import { postApiV1Customers, patchApiV1Customers, CustomerEntity } from "../endpoints/entities";
-export type CreatecustomerOptions =   postApiV1Customers
-export type ListcustomersOptions = {
-      //** Page offset to fetch. */
-  page?:number
-  
-      //** Number of results to return per page. */
-  per_page?:number
-  
-      //** Pad a number of results. */
-  offset?:number
-  
-}
-export type UpdateacustomerOptions = {
-      
-  id:number
-  
-} & patchApiV1Customers
-export type DeleteacustomerOptions = {
-      
-  id:number
-  
-}
-export type ReturnacustomerOptions = {
-      
-  id:number
-  
-}
+import { GigWageHttpClient } from '../http-client';
 
-export default function customersEndpoints(httpClient: GigWageHttpClient) {
-    return {
+import {
+  CustomerEntity,
+  PatchApiV1Customers,
+  PostApiV1Customers,
+} from './types';
+
+export type CreateCustomerOptions = {} & PostApiV1Customers;
+
+export type ListCustomersOptions = {
+  /** Page offset to fetch. */
+  page?: number;
+  /** Number of results to return per page. */
+  per_page?: number;
+  /** Pad a number of results. */
+  offset?: number;
+};
+
+export type UpdateACustomerOptions = {
+  id: number;
+} & PatchApiV1Customers;
+
+export type DeleteACustomerOptions = {
+  id: number;
+};
+
+export type ReturnACustomerOptions = {
+  id: number;
+};
+
+export function customersEndpoints(httpClient: GigWageHttpClient) {
+  return {
     /** Creates a new customer. */
-    Createcustomer: ({ ...options}: CreatecustomerOptions)=> httpClient.post<CustomerEntity>(`/api/v1/customers`, options),
+
+    createCustomer: ({ ...options }: CreateCustomerOptions) =>
+      httpClient.post<CustomerEntity>(`/api/v1/customers`, options),
+
     /** List customers. */
-    Listcustomers: ({ page, per_page, offset, ...options}: ListcustomersOptions)=> httpClient.get<CustomerEntity[]>(`/api/v1/customers`),
+
+    listCustomers: ({ page, per_page, offset }: ListCustomersOptions) =>
+      httpClient.get<CustomerEntity[]>(`/api/v1/customers`, {
+        page,
+        per_page,
+        offset,
+      }),
+
     /** Updates an existing customer */
-    Updateacustomer: ({ id, ...options}: UpdateacustomerOptions)=> httpClient.patch<CustomerEntity>(`/api/v1/customers/${id}`, options),
+
+    updateACustomer: ({ id, ...options }: UpdateACustomerOptions) =>
+      httpClient.patch<CustomerEntity>(`/api/v1/customers/${id}`, options),
+
     /** Delete customer record. Note: You can only destroy customer that not associated with any Accounts Receivable Payments */
-    Deleteacustomer: ({ id, ...options}: DeleteacustomerOptions)=> httpClient.delete<CustomerEntity>(`/api/v1/customers/${id}`),
+
+    deleteACustomer: ({ id }: DeleteACustomerOptions) =>
+      httpClient.delete<CustomerEntity>(`/api/v1/customers/${id}`),
+
     /** Returns the details for a given customer. */
-    Returnacustomer: ({ id, ...options}: ReturnacustomerOptions)=> httpClient.get<CustomerEntity>(`/api/v1/customers/${id}`),
-    }
+
+    returnACustomer: ({ id }: ReturnACustomerOptions) =>
+      httpClient.get<CustomerEntity>(`/api/v1/customers/${id}`),
+  };
 }

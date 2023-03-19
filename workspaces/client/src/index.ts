@@ -1,4 +1,16 @@
-import { contractorEndpoints } from './endpoints/contractors';
+import { accountsReceivablePaymentsEndpoints } from './generated/accountsReceivablePayments';
+import { apiKeysEndpoints } from './generated/apiKeys';
+import { balancesEndpoints } from './generated/balances';
+import { batchesEndpoints } from './generated/batches';
+import { contractorsEndpoints } from './generated/contractors';
+import { customersEndpoints } from './generated/customers';
+import { lineItemsEndpoints } from './generated/lineItems';
+import { paymentsEndpoints } from './generated/payments';
+import { subscriptionsEndpoints } from './generated/subscriptions';
+import { ten99sEndpoints } from './generated/ten99s';
+import { transactionsEndpoints } from './generated/transactions';
+import { transfersEndpoints } from './generated/transfers';
+import { webhooksEndpoints } from './generated/webhooks';
 import { createHttpClient } from './http-client';
 import { GigwageEnvironments } from './types';
 
@@ -6,6 +18,8 @@ export {
   generateRequestHeaders,
   IGenerateRequestHeadersOptions,
 } from './http-client';
+
+export * from './generated/types';
 
 interface IGigwageClientOptions {
   /**
@@ -55,7 +69,20 @@ export const createGigwageClient = ({
   return {
     ...httpClient,
     contractors: {
-      ...contractorEndpoints(httpClient),
+      ...accountsReceivablePaymentsEndpoints(httpClient),
+      ...apiKeysEndpoints(httpClient),
+      ...contractorsEndpoints(httpClient),
+      ...customersEndpoints(httpClient),
+      ...balancesEndpoints(httpClient),
+      ...batchesEndpoints(httpClient),
+      ...customersEndpoints(httpClient),
+      ...lineItemsEndpoints(httpClient),
+      ...paymentsEndpoints(httpClient),
+      ...subscriptionsEndpoints(httpClient),
+      ...ten99sEndpoints(httpClient),
+      ...transactionsEndpoints(httpClient),
+      ...transfersEndpoints(httpClient),
+      ...webhooksEndpoints(httpClient),
     },
   };
 };
