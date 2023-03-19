@@ -244,9 +244,11 @@ const writeEndpointFunction = (endpoint: Endpoint) => {
     ':(',
     writeEndpointFunctionParameters(endpoint),
     ')=>',
-    `httpClient.${endpoint.method}<${writeComponentType(
-      endpoint.responseType,
-    )}${endpoint.responseTypeIsArray ? '[]' : ''}>`,
+    `httpClient.${endpoint.method}`,
+    endpoint.responseType &&
+      `<${writeComponentType(endpoint.responseType)}${
+        endpoint.responseTypeIsArray ? '[]' : ''
+      }>`,
     '(',
     // replace url params with interpolation
     writeList([

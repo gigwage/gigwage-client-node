@@ -71,7 +71,7 @@ export function ten99sEndpoints(httpClient: GigWageHttpClient) {
     /** Returns the URL to a PDF of a submitted 1099. The URL expires in 1 hour. */
 
     get1099PDFURL: ({ id }: Get1099PDFURLOptions) =>
-      httpClient.get<>(`/api/v1/1099s/${id}/retrieve`),
+      httpClient.get(`/api/v1/1099s/${id}/retrieve`),
 
     /** Submit 1099 to the IRS. */
 
