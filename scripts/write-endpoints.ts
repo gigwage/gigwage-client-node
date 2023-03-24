@@ -220,6 +220,13 @@ const writeEndpointType = (endpoint: Endpoint) =>
       : null,
   ]);
 
+const areAllParamsOptional = (endpoint: Endpoint) => {
+  return (
+    endpoint.parameters?.filter(param => param.required).length === 0 &&
+    !endpoint.requestBody
+  );
+};
+
 const writeEndpointFunctionParameters = (endpoint: Endpoint) => {
   return writecode([
     writeObject(
@@ -232,6 +239,7 @@ const writeEndpointFunctionParameters = (endpoint: Endpoint) => {
     ),
     ':',
     `${capitalize(endpointName(endpoint))}Options`,
+    areAllParamsOptional(endpoint) && '= {}',
   ]);
 };
 
@@ -271,7 +279,7 @@ const writeEndpointFunction = (endpoint: Endpoint) => {
           ),
         ),
     ]),
-    '),',
+    ').then(r=>r.data),',
   ]);
 };
 

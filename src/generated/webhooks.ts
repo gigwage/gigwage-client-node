@@ -43,16 +43,18 @@ export function webhooksEndpoints(httpClient: GigWageHttpClient) {
       page,
       per_page,
       offset,
-    }: ListWebhooksOptions) =>
-      httpClient.get<WebhookEntity[]>(`/api/v1/webhooks`, {
-        contractor_id,
-        '1099_id': ten99_id,
-        payment_id,
-        tin_check_id,
-        page,
-        per_page,
-        offset,
-      }),
+    }: ListWebhooksOptions = {}) =>
+      httpClient
+        .get<WebhookEntity[]>(`/api/v1/webhooks`, {
+          contractor_id,
+          '1099_id': ten99_id,
+          payment_id,
+          tin_check_id,
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Get webhook details */
 
@@ -63,11 +65,13 @@ export function webhooksEndpoints(httpClient: GigWageHttpClient) {
       payment_id,
       tin_check_id,
     }: ShowWebhookOptions) =>
-      httpClient.get<WebhookEntity>(`/api/v1/webhooks/${id}`, {
-        contractor_id,
-        '1099_id': ten99_id,
-        payment_id,
-        tin_check_id,
-      }),
+      httpClient
+        .get<WebhookEntity>(`/api/v1/webhooks/${id}`, {
+          contractor_id,
+          '1099_id': ten99_id,
+          payment_id,
+          tin_check_id,
+        })
+        .then(r => r.data),
   };
 }

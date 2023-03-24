@@ -32,16 +32,20 @@ export function batchesEndpoints(httpClient: GigWageHttpClient) {
     /** Creates a new batch of payments. */
 
     createBatch: ({ ...options }: CreateBatchOptions) =>
-      httpClient.post<BatchEntity>(`/api/v1/batches`, options),
+      httpClient
+        .post<BatchEntity>(`/api/v1/batches`, options)
+        .then(r => r.data),
 
     /** Returns a list of batches, sorted newest-first. */
 
-    listBatches: ({ page, per_page, offset }: ListBatchesOptions) =>
-      httpClient.get<BatchEntity[]>(`/api/v1/batches`, {
-        page,
-        per_page,
-        offset,
-      }),
+    listBatches: ({ page, per_page, offset }: ListBatchesOptions = {}) =>
+      httpClient
+        .get<BatchEntity[]>(`/api/v1/batches`, {
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Returns the payments from a single batch. */
 
@@ -51,15 +55,17 @@ export function batchesEndpoints(httpClient: GigWageHttpClient) {
       per_page,
       offset,
     }: ShowBatchPaymentsOptions) =>
-      httpClient.get<BatchEntity>(`/api/v1/batches/${id}/payments`, {
-        page,
-        per_page,
-        offset,
-      }),
+      httpClient
+        .get<BatchEntity>(`/api/v1/batches/${id}/payments`, {
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Returns the details of a single batch. */
 
     showBatch: ({ id }: ShowBatchOptions) =>
-      httpClient.get<BatchEntity>(`/api/v1/batches/${id}`),
+      httpClient.get<BatchEntity>(`/api/v1/batches/${id}`).then(r => r.data),
   };
 }

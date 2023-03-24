@@ -34,30 +34,40 @@ export function customersEndpoints(httpClient: GigWageHttpClient) {
     /** Creates a new customer. */
 
     createCustomer: ({ ...options }: CreateCustomerOptions) =>
-      httpClient.post<CustomerEntity>(`/api/v1/customers`, options),
+      httpClient
+        .post<CustomerEntity>(`/api/v1/customers`, options)
+        .then(r => r.data),
 
     /** List customers. */
 
-    listCustomers: ({ page, per_page, offset }: ListCustomersOptions) =>
-      httpClient.get<CustomerEntity[]>(`/api/v1/customers`, {
-        page,
-        per_page,
-        offset,
-      }),
+    listCustomers: ({ page, per_page, offset }: ListCustomersOptions = {}) =>
+      httpClient
+        .get<CustomerEntity[]>(`/api/v1/customers`, {
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Updates an existing customer */
 
     updateACustomer: ({ id, ...options }: UpdateACustomerOptions) =>
-      httpClient.patch<CustomerEntity>(`/api/v1/customers/${id}`, options),
+      httpClient
+        .patch<CustomerEntity>(`/api/v1/customers/${id}`, options)
+        .then(r => r.data),
 
     /** Delete customer record. Note: You can only destroy customer that not associated with any Accounts Receivable Payments */
 
     deleteACustomer: ({ id }: DeleteACustomerOptions) =>
-      httpClient.delete<CustomerEntity>(`/api/v1/customers/${id}`),
+      httpClient
+        .delete<CustomerEntity>(`/api/v1/customers/${id}`)
+        .then(r => r.data),
 
     /** Returns the details for a given customer. */
 
     returnACustomer: ({ id }: ReturnACustomerOptions) =>
-      httpClient.get<CustomerEntity>(`/api/v1/customers/${id}`),
+      httpClient
+        .get<CustomerEntity>(`/api/v1/customers/${id}`)
+        .then(r => r.data),
   };
 }

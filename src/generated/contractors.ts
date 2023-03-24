@@ -137,64 +137,72 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       email,
       external_id,
       id,
-    }: FindContractorUniquelyOptions) =>
-      httpClient.get<BusinessRelationshipEntity>(
-        `/api/v1/contractors/find_by`,
-        {
+    }: FindContractorUniquelyOptions = {}) =>
+      httpClient
+        .get<BusinessRelationshipEntity>(`/api/v1/contractors/find_by`, {
           email,
           external_id,
           id,
-        },
-      ),
+        })
+        .then(r => r.data),
 
     /** Creates a new contractor. */
 
     createContractor: ({ ...options }: CreateContractorOptions) =>
-      httpClient.post<BusinessRelationshipEntity>(
-        `/api/v1/contractors`,
-        options,
-      ),
+      httpClient
+        .post<BusinessRelationshipEntity>(`/api/v1/contractors`, options)
+        .then(r => r.data),
 
     /** List contractors. */
 
-    listContractors: ({ q, page, per_page, offset }: ListContractorsOptions) =>
-      httpClient.get<BusinessRelationshipEntity[]>(`/api/v1/contractors`, {
-        q,
-        page,
-        per_page,
-        offset,
-      }),
+    listContractors: ({
+      q,
+      page,
+      per_page,
+      offset,
+    }: ListContractorsOptions = {}) =>
+      httpClient
+        .get<BusinessRelationshipEntity[]>(`/api/v1/contractors`, {
+          q,
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Provides invitation information for the contractor to allow you to send the contractoran onboarding email. If the contractor has an outstanding, unaccepted invitation, the old invitation will be invalidated. */
 
     inviteAContractor: ({ id, ...options }: InviteAContractorOptions) =>
-      httpClient.post<ContractorInvitationEntity>(
-        `/api/v1/contractors/${id}/invitations`,
-        options,
-      ),
+      httpClient
+        .post<ContractorInvitationEntity>(
+          `/api/v1/contractors/${id}/invitations`,
+          options,
+        )
+        .then(r => r.data),
 
     /** Updates an existing contractor. If the contractor has already registered, changes to the email address will not affect email delivery. Emails will be delivered to the address managed by the contractor. Any supported attributes not supplied in the request will not be changed. */
 
     updateAContractor: ({ id, ...options }: UpdateAContractorOptions) =>
-      httpClient.patch<BusinessRelationshipEntity>(
-        `/api/v1/contractors/${id}`,
-        options,
-      ),
+      httpClient
+        .patch<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, options)
+        .then(r => r.data),
 
     /** Delete contractor record. Note: You can only destroy new contractors that aren't associated with other businesses or that have payments or 1099s  */
 
     deleteAContractor: ({ id }: DeleteAContractorOptions) =>
-      httpClient.delete<BusinessRelationshipEntity>(
-        `/api/v1/contractors/${id}`,
-      ),
+      httpClient
+        .delete<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`)
+        .then(r => r.data),
 
     /** Returns the details for a given contractor. */
 
     returnAContractor: ({ id, full, include_ssn }: ReturnAContractorOptions) =>
-      httpClient.get<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, {
-        full,
-        include_ssn,
-      }),
+      httpClient
+        .get<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, {
+          full,
+          include_ssn,
+        })
+        .then(r => r.data),
 
     /** List all 1099s for a contractor */
 
@@ -205,42 +213,54 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       offset,
       year,
     }: ListAll1099sForAContractorOptions) =>
-      httpClient.get<Ten99Entity[]>(`/api/v1/contractors/${id}/1099s`, {
-        page,
-        per_page,
-        offset,
-        year,
-      }),
+      httpClient
+        .get<Ten99Entity[]>(`/api/v1/contractors/${id}/1099s`, {
+          page,
+          per_page,
+          offset,
+          year,
+        })
+        .then(r => r.data),
 
     /** Verify a contractor's TIN is valid. Note: TIN checks are automatically run on POST and PATCH W9 endpoints */
 
     createATINCheck: ({ id, ...options }: CreateATINCheckOptions) =>
-      httpClient.post<W9Entity>(`/api/v1/contractors/${id}/tin_check`, options),
+      httpClient
+        .post<W9Entity>(`/api/v1/contractors/${id}/tin_check`, options)
+        .then(r => r.data),
 
     /** Update W9 information for a contractor. */
 
     updateW9Information: ({ id, ...options }: UpdateW9InformationOptions) =>
-      httpClient.patch<W9Entity>(`/api/v1/contractors/${id}/w9`, options),
+      httpClient
+        .patch<W9Entity>(`/api/v1/contractors/${id}/w9`, options)
+        .then(r => r.data),
 
     /** Get W9 information for a contractor. */
 
     showW9Information: ({ id, include_ssn }: ShowW9InformationOptions) =>
-      httpClient.get<W9Entity>(`/api/v1/contractors/${id}/w9`, {
-        include_ssn,
-      }),
+      httpClient
+        .get<W9Entity>(`/api/v1/contractors/${id}/w9`, {
+          include_ssn,
+        })
+        .then(r => r.data),
 
     /** Submit W9 information for a contractor you only want to create a 1099 for. This will also trigger an instant TIN check for the contractor. This contractor won't be able to accept payments, if you need them to receive payments use the KYC endpoint */
 
     submitW9Information: ({ id, ...options }: SubmitW9InformationOptions) =>
-      httpClient.post<W9Entity>(`/api/v1/contractors/${id}/w9`, options),
+      httpClient
+        .post<W9Entity>(`/api/v1/contractors/${id}/w9`, options)
+        .then(r => r.data),
 
     /** Submit KYC (know your customer) information for a contractor */
 
     submitKYCInformation: ({ id, ...options }: SubmitKYCInformationOptions) =>
-      httpClient.post<BusinessRelationshipEntity>(
-        `/api/v1/contractors/${id}/kyc`,
-        options,
-      ),
+      httpClient
+        .post<BusinessRelationshipEntity>(
+          `/api/v1/contractors/${id}/kyc`,
+          options,
+        )
+        .then(r => r.data),
 
     /** Delivers a secure onboarding email invitation to an existing contractor who has never been paid. If the contractor has an outstanding unaccepted invitation, the old invitation will be invalidated. */
 
@@ -248,10 +268,12 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       id,
       ...options
     }: SendInviteToContractorOptions) =>
-      httpClient.post<BusinessRelationshipEntity>(
-        `/api/v1/contractors/${id}/invite`,
-        options,
-      ),
+      httpClient
+        .post<BusinessRelationshipEntity>(
+          `/api/v1/contractors/${id}/invite`,
+          options,
+        )
+        .then(r => r.data),
 
     /** Add a bank account to an existing contractor. */
 
@@ -259,10 +281,12 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       contractor_id,
       ...options
     }: AddAccountToContractorOptions) =>
-      httpClient.post<AccountEntity>(
-        `/api/v1/contractors/${contractor_id}/accounts`,
-        options,
-      ),
+      httpClient
+        .post<AccountEntity>(
+          `/api/v1/contractors/${contractor_id}/accounts`,
+          options,
+        )
+        .then(r => r.data),
 
     /** List all accounts for the contractor. */
 
@@ -272,28 +296,31 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       offset,
       contractor_id,
     }: ListContractorAccountsOptions) =>
-      httpClient.get<AccountEntity[]>(
-        `/api/v1/contractors/${contractor_id}/accounts`,
-        {
+      httpClient
+        .get<AccountEntity[]>(`/api/v1/contractors/${contractor_id}/accounts`, {
           page,
           per_page,
           offset,
-        },
-      ),
+        })
+        .then(r => r.data),
 
     /** Deactivate contractor's bank account. */
 
     deactivateAccount: ({ id, contractor_id }: DeactivateAccountOptions) =>
-      httpClient.delete<AccountEntity>(
-        `/api/v1/contractors/${contractor_id}/accounts/${id}`,
-      ),
+      httpClient
+        .delete<AccountEntity>(
+          `/api/v1/contractors/${contractor_id}/accounts/${id}`,
+        )
+        .then(r => r.data),
 
     /** Get details of an existing bank account. */
 
     getAccountDetail: ({ id, contractor_id }: GetAccountDetailOptions) =>
-      httpClient.get<AccountEntity>(
-        `/api/v1/contractors/${contractor_id}/accounts/${id}`,
-      ),
+      httpClient
+        .get<AccountEntity>(
+          `/api/v1/contractors/${contractor_id}/accounts/${id}`,
+        )
+        .then(r => r.data),
 
     /** Add debit card to contractor */
 
@@ -301,10 +328,12 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       contractor_id,
       ...options
     }: AddContractorDebitCardOptions) =>
-      httpClient.post<AccountEntity>(
-        `/api/v1/contractors/${contractor_id}/cards`,
-        options,
-      ),
+      httpClient
+        .post<AccountEntity>(
+          `/api/v1/contractors/${contractor_id}/cards`,
+          options,
+        )
+        .then(r => r.data),
 
     /** Upload identity document */
 
@@ -312,9 +341,11 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       contractor_id,
       ...options
     }: CreateContractorsIdentityDocumentOptions) =>
-      httpClient.post<AccountEntity>(
-        `/api/v1/contractors/${contractor_id}/identity_document`,
-        options,
-      ),
+      httpClient
+        .post<AccountEntity>(
+          `/api/v1/contractors/${contractor_id}/identity_document`,
+          options,
+        )
+        .then(r => r.data),
   };
 }

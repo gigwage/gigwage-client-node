@@ -11,10 +11,12 @@ export function transactionsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** List transactions. */
 
-    listTransactions: ({ page, size }: ListTransactionsOptions) =>
-      httpClient.get<LedgerEntity[]>(`/api/v1/ledger`, {
-        page,
-        size,
-      }),
+    listTransactions: ({ page, size }: ListTransactionsOptions = {}) =>
+      httpClient
+        .get<LedgerEntity[]>(`/api/v1/ledger`, {
+          page,
+          size,
+        })
+        .then(r => r.data),
   };
 }

@@ -26,7 +26,9 @@ export function accountsReceivablePaymentsEndpoints(
     createAccountsReceivablePayment: ({
       ...options
     }: CreateAccountsReceivablePaymentOptions) =>
-      httpClient.post<ArPaymentEntity>(`/api/v1/ar_payments`, options),
+      httpClient
+        .post<ArPaymentEntity>(`/api/v1/ar_payments`, options)
+        .then(r => r.data),
 
     /** List Accounts Receivable payments. */
 
@@ -34,18 +36,22 @@ export function accountsReceivablePaymentsEndpoints(
       page,
       per_page,
       offset,
-    }: ListAccountsReceivablePaymentsOptions) =>
-      httpClient.get<ArPaymentEntity[]>(`/api/v1/ar_payments`, {
-        page,
-        per_page,
-        offset,
-      }),
+    }: ListAccountsReceivablePaymentsOptions = {}) =>
+      httpClient
+        .get<ArPaymentEntity[]>(`/api/v1/ar_payments`, {
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Returns the details for Accounts Receivable Payment */
 
     returnAnAccountsReceivablePayment: ({
       id,
     }: ReturnAnAccountsReceivablePaymentOptions) =>
-      httpClient.get<ArPaymentEntity>(`/api/v1/ar_payments/${id}`),
+      httpClient
+        .get<ArPaymentEntity>(`/api/v1/ar_payments/${id}`)
+        .then(r => r.data),
   };
 }

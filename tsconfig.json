@@ -7,8 +7,10 @@
     "rootDir": ".",
     "baseUrl":".",
     "strict":true,
+    
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": false
   },
 }

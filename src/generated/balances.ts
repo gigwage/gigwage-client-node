@@ -9,6 +9,6 @@ export function balancesEndpoints(httpClient: GigWageHttpClient) {
     /** Returns the current and available balance for the account. */
 
     showBalance: ({}: ShowBalanceOptions) =>
-      httpClient.get<SubaccountEntity>(`/api/v1/balance`),
+      httpClient.get<SubaccountEntity>(`/api/v1/balance`).then(r => r.data),
   };
 }

@@ -25,26 +25,34 @@ export function transfersEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Get a list of all transfers. */
 
-    listTransfers: ({ page, per_page, offset }: ListTransfersOptions) =>
-      httpClient.get<TransferTransactionEntity[]>(`/api/v1/transfers`, {
-        page,
-        per_page,
-        offset,
-      }),
+    listTransfers: ({ page, per_page, offset }: ListTransfersOptions = {}) =>
+      httpClient
+        .get<TransferTransactionEntity[]>(`/api/v1/transfers`, {
+          page,
+          per_page,
+          offset,
+        })
+        .then(r => r.data),
 
     /** Create a transfer transaction. */
 
     createTransfer: ({ ...options }: CreateTransferOptions) =>
-      httpClient.post<TransferTransactionEntity>(`/api/v1/transfers`, options),
+      httpClient
+        .post<TransferTransactionEntity>(`/api/v1/transfers`, options)
+        .then(r => r.data),
 
     /** Attempt to cancel a transfer. */
 
     deleteTransfer: ({ id }: DeleteTransferOptions) =>
-      httpClient.delete<TransferTransactionEntity>(`/api/v1/transfers/${id}`),
+      httpClient
+        .delete<TransferTransactionEntity>(`/api/v1/transfers/${id}`)
+        .then(r => r.data),
 
     /** Get details of an existing transfer. */
 
     showTransfer: ({ id }: ShowTransferOptions) =>
-      httpClient.get<TransferTransactionEntity>(`/api/v1/transfers/${id}`),
+      httpClient
+        .get<TransferTransactionEntity>(`/api/v1/transfers/${id}`)
+        .then(r => r.data),
   };
 }
