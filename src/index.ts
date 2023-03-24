@@ -58,7 +58,21 @@ export const createGigwageClient = ({
   apiKey,
   apiSecret,
   baseUrl,
-}: IGigwageClientOptions) => {
+}: IGigwageClientOptions): ReturnType<typeof createHttpClient> &
+  ReturnType<typeof accountsReceivablePaymentsEndpoints> &
+  ReturnType<typeof apiKeysEndpoints> &
+  ReturnType<typeof contractorsEndpoints> &
+  ReturnType<typeof customersEndpoints> &
+  ReturnType<typeof balancesEndpoints> &
+  ReturnType<typeof batchesEndpoints> &
+  ReturnType<typeof customersEndpoints> &
+  ReturnType<typeof lineItemsEndpoints> &
+  ReturnType<typeof paymentsEndpoints> &
+  ReturnType<typeof subscriptionsEndpoints> &
+  ReturnType<typeof ten99sEndpoints> &
+  ReturnType<typeof transactionsEndpoints> &
+  ReturnType<typeof transfersEndpoints> &
+  ReturnType<typeof webhooksEndpoints> => {
   const httpClient = createHttpClient({
     apiSecret,
     apiKey,
