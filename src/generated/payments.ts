@@ -37,7 +37,7 @@ export function paymentsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Sends a new payment to a contractor. Note: Payments sent on the sandbox environment typically settle within 5-10 minutes regardless of their type but can sometimes take longer. Please contact support if it takes more than 4 hours. */
 
-    sendPayment: ({ ...options }: SendPaymentOptions) =>
+    sendPayment: ({ ...options }: SendPaymentOptions): Promise<PaymentEntity> =>
       httpClient
         .post<PaymentEntity>(`/api/v1/payments`, options)
         .then(r => r.data),
@@ -50,7 +50,7 @@ export function paymentsEndpoints(httpClient: GigWageHttpClient) {
       offset,
       contractor_id,
       includes,
-    }: ListSentPaymentsOptions = {}) =>
+    }: ListSentPaymentsOptions = {}): Promise<PaymentEntity[]> =>
       httpClient
         .get<PaymentEntity[]>(`/api/v1/payments`, {
           page,
@@ -63,28 +63,34 @@ export function paymentsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Retry a canceled or returned payment. */
 
-    retryPayment: ({ id, ...options }: RetryPaymentOptions) =>
+    retryPayment: ({
+      id,
+      ...options
+    }: RetryPaymentOptions): Promise<PaymentEntity> =>
       httpClient
         .post<PaymentEntity>(`/api/v1/payments/${id}/retry`, options)
         .then(r => r.data),
 
     /** Attempts to cancel a payment. Once the debit from the payer's account has been finalized cancelling is not possible. */
 
-    deletePayment: ({ id }: DeletePaymentOptions) =>
+    deletePayment: ({ id }: DeletePaymentOptions): Promise<PaymentEntity> =>
       httpClient
         .delete<PaymentEntity>(`/api/v1/payments/${id}`)
         .then(r => r.data),
 
     /** Update a payment's metadata. */
 
-    updatePayment: ({ id, ...options }: UpdatePaymentOptions) =>
+    updatePayment: ({
+      id,
+      ...options
+    }: UpdatePaymentOptions): Promise<PaymentEntity> =>
       httpClient
         .put<PaymentEntity>(`/api/v1/payments/${id}`, options)
         .then(r => r.data),
 
     /** Returns the details for a single payment, including an array of line item details and the id of the contractor associated with the payment. */
 
-    showPayment: ({ id }: ShowPaymentOptions) =>
+    showPayment: ({ id }: ShowPaymentOptions): Promise<PaymentEntity> =>
       httpClient.get<PaymentEntity>(`/api/v1/payments/${id}`).then(r => r.data),
   };
 }

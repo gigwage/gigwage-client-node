@@ -1,10 +1,7 @@
-import path from 'path';
-
-import axios from 'axios';
 import { Project } from 'ts-morph';
 
-// import { payload as data } from './src/data';
 import payload from './openapi.json';
+// import { payload as data } from './src/data';
 
 type Endpoint = {
   description: string;
@@ -251,7 +248,12 @@ const writeEndpointFunction = (endpoint: Endpoint) => {
     endpointName(endpoint),
     ':(',
     writeEndpointFunctionParameters(endpoint),
-    ')=>',
+    ')',
+    endpoint.responseType &&
+      `:Promise<${writeComponentType(endpoint.responseType)}${
+        endpoint.responseTypeIsArray ? '[]' : ''
+      }>`,
+    '=>',
     `httpClient.${endpoint.method}`,
     endpoint.responseType &&
       `<${writeComponentType(endpoint.responseType)}${
@@ -331,8 +333,6 @@ tags.forEach(tag => {
 
   tagEndpoints.forEach(endpoint => {
     tagFile.addStatements(writer => {
-      const t = writeEndpointType(endpoint);
-      // const l = JSON.stringify(t);
       writer.writeLine(writeEndpointType(endpoint));
     });
   });
@@ -353,20 +353,6 @@ tags.forEach(tag => {
     });
     writer.writeLine('}');
   });
-  // tagFunction.addStatements([{kind:StructureKind.}])
 });
-
-// endpoints.forEach(endpoint => {
-//   sampleFile.addStatements(writer => {
-//     const name = endpointName(endpoint);
-
-//     writer.write(
-//       `
-//     ${writeEndpointType(endpoint)}
-//     ${writeDescription(endpoint)}
-//     ${writeEndpointFunction(endpoint)}`,
-//     );
-//   });
-// });
 
 project.save();

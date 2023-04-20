@@ -11,7 +11,9 @@ export function transactionsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** List transactions. */
 
-    listTransactions: ({ page, size }: ListTransactionsOptions = {}) =>
+    listTransactions: ({ page, size }: ListTransactionsOptions = {}): Promise<
+      LedgerEntity[]
+    > =>
       httpClient
         .get<LedgerEntity[]>(`/api/v1/ledger`, {
           page,

@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { createGigwageClient } from './index';
 
 import 'dotenv/config';
-describe('HTTP Client', () => {
+describe.skip('HTTP Client', () => {
   afterAll(async () => {
     jest.setTimeout(20000);
     const client = createGigwageClient({

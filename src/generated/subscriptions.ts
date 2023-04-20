@@ -41,7 +41,9 @@ export function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Subscribe to webhooks of the chosen type. Please note that multiple consecutive failures to deliver webhooks will deactivate this subscription, and it will need to be reactivated. See PUT below. */
 
-    createSubscription: ({ ...options }: CreateSubscriptionOptions) =>
+    createSubscription: ({
+      ...options
+    }: CreateSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
       httpClient
         .post<WebhookSubscriptionEntity>(`/api/v1/subscriptions`, options)
         .then(r => r.data),
@@ -52,7 +54,7 @@ export function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
       page,
       per_page,
       offset,
-    }: ListSubscriptionsOptions = {}) =>
+    }: ListSubscriptionsOptions = {}): Promise<WebhookSubscriptionEntity[]> =>
       httpClient
         .get<WebhookSubscriptionEntity[]>(`/api/v1/subscriptions`, {
           page,
@@ -63,14 +65,19 @@ export function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Permanently remove a subscription. */
 
-    deleteSubscription: ({ id }: DeleteSubscriptionOptions) =>
+    deleteSubscription: ({
+      id,
+    }: DeleteSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
       httpClient
         .delete<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`)
         .then(r => r.data),
 
     /** Change the URL where webhooks are sent. */
 
-    updateSubscriptionURL: ({ id, ...options }: UpdateSubscriptionURLOptions) =>
+    updateSubscriptionURL: ({
+      id,
+      ...options
+    }: UpdateSubscriptionURLOptions): Promise<WebhookSubscriptionEntity> =>
       httpClient
         .patch<WebhookSubscriptionEntity>(
           `/api/v1/subscriptions/${id}`,
@@ -83,21 +90,25 @@ export function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
     reactivateSubscription: ({
       id,
       ...options
-    }: ReactivateSubscriptionOptions) =>
+    }: ReactivateSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
       httpClient
         .put<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`, options)
         .then(r => r.data),
 
     /** Get the details of a subscription. */
 
-    showSubscription: ({ id }: ShowSubscriptionOptions) =>
+    showSubscription: ({
+      id,
+    }: ShowSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
       httpClient
         .get<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`)
         .then(r => r.data),
 
     /** Deactivate a subscription. */
 
-    deactivateSubscription: ({ id }: DeactivateSubscriptionOptions) =>
+    deactivateSubscription: ({
+      id,
+    }: DeactivateSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
       httpClient
         .delete<WebhookSubscriptionEntity>(
           `/api/v1/subscriptions/${id}/deactivate`,

@@ -25,7 +25,7 @@ export function accountsReceivablePaymentsEndpoints(
 
     createAccountsReceivablePayment: ({
       ...options
-    }: CreateAccountsReceivablePaymentOptions) =>
+    }: CreateAccountsReceivablePaymentOptions): Promise<ArPaymentEntity> =>
       httpClient
         .post<ArPaymentEntity>(`/api/v1/ar_payments`, options)
         .then(r => r.data),
@@ -36,7 +36,9 @@ export function accountsReceivablePaymentsEndpoints(
       page,
       per_page,
       offset,
-    }: ListAccountsReceivablePaymentsOptions = {}) =>
+    }: ListAccountsReceivablePaymentsOptions = {}): Promise<
+      ArPaymentEntity[]
+    > =>
       httpClient
         .get<ArPaymentEntity[]>(`/api/v1/ar_payments`, {
           page,
@@ -49,7 +51,7 @@ export function accountsReceivablePaymentsEndpoints(
 
     returnAnAccountsReceivablePayment: ({
       id,
-    }: ReturnAnAccountsReceivablePaymentOptions) =>
+    }: ReturnAnAccountsReceivablePaymentOptions): Promise<ArPaymentEntity> =>
       httpClient
         .get<ArPaymentEntity>(`/api/v1/ar_payments/${id}`)
         .then(r => r.data),

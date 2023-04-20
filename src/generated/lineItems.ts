@@ -10,7 +10,10 @@ export function lineItemsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Update a line item's metadata. */
 
-    updateLineItem: ({ id, ...options }: UpdateLineItemOptions) =>
+    updateLineItem: ({
+      id,
+      ...options
+    }: UpdateLineItemOptions): Promise<LineItemEntity> =>
       httpClient
         .put<LineItemEntity>(`/api/v1/line_items/${id}`, options)
         .then(r => r.data),

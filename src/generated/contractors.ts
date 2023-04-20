@@ -137,7 +137,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       email,
       external_id,
       id,
-    }: FindContractorUniquelyOptions = {}) =>
+    }: FindContractorUniquelyOptions = {}): Promise<BusinessRelationshipEntity> =>
       httpClient
         .get<BusinessRelationshipEntity>(`/api/v1/contractors/find_by`, {
           email,
@@ -148,7 +148,9 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Creates a new contractor. */
 
-    createContractor: ({ ...options }: CreateContractorOptions) =>
+    createContractor: ({
+      ...options
+    }: CreateContractorOptions): Promise<BusinessRelationshipEntity> =>
       httpClient
         .post<BusinessRelationshipEntity>(`/api/v1/contractors`, options)
         .then(r => r.data),
@@ -160,7 +162,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       page,
       per_page,
       offset,
-    }: ListContractorsOptions = {}) =>
+    }: ListContractorsOptions = {}): Promise<BusinessRelationshipEntity[]> =>
       httpClient
         .get<BusinessRelationshipEntity[]>(`/api/v1/contractors`, {
           q,
@@ -172,7 +174,10 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Provides invitation information for the contractor to allow you to send the contractoran onboarding email. If the contractor has an outstanding, unaccepted invitation, the old invitation will be invalidated. */
 
-    inviteAContractor: ({ id, ...options }: InviteAContractorOptions) =>
+    inviteAContractor: ({
+      id,
+      ...options
+    }: InviteAContractorOptions): Promise<ContractorInvitationEntity> =>
       httpClient
         .post<ContractorInvitationEntity>(
           `/api/v1/contractors/${id}/invitations`,
@@ -182,21 +187,30 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Updates an existing contractor. If the contractor has already registered, changes to the email address will not affect email delivery. Emails will be delivered to the address managed by the contractor. Any supported attributes not supplied in the request will not be changed. */
 
-    updateAContractor: ({ id, ...options }: UpdateAContractorOptions) =>
+    updateAContractor: ({
+      id,
+      ...options
+    }: UpdateAContractorOptions): Promise<BusinessRelationshipEntity> =>
       httpClient
         .patch<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, options)
         .then(r => r.data),
 
     /** Delete contractor record. Note: You can only destroy new contractors that aren't associated with other businesses or that have payments or 1099s  */
 
-    deleteAContractor: ({ id }: DeleteAContractorOptions) =>
+    deleteAContractor: ({
+      id,
+    }: DeleteAContractorOptions): Promise<BusinessRelationshipEntity> =>
       httpClient
         .delete<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`)
         .then(r => r.data),
 
     /** Returns the details for a given contractor. */
 
-    returnAContractor: ({ id, full, include_ssn }: ReturnAContractorOptions) =>
+    returnAContractor: ({
+      id,
+      full,
+      include_ssn,
+    }: ReturnAContractorOptions): Promise<BusinessRelationshipEntity> =>
       httpClient
         .get<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, {
           full,
@@ -212,7 +226,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       per_page,
       offset,
       year,
-    }: ListAll1099sForAContractorOptions) =>
+    }: ListAll1099sForAContractorOptions): Promise<Ten99Entity[]> =>
       httpClient
         .get<Ten99Entity[]>(`/api/v1/contractors/${id}/1099s`, {
           page,
@@ -224,21 +238,30 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Verify a contractor's TIN is valid. Note: TIN checks are automatically run on POST and PATCH W9 endpoints */
 
-    createATINCheck: ({ id, ...options }: CreateATINCheckOptions) =>
+    createATINCheck: ({
+      id,
+      ...options
+    }: CreateATINCheckOptions): Promise<W9Entity> =>
       httpClient
         .post<W9Entity>(`/api/v1/contractors/${id}/tin_check`, options)
         .then(r => r.data),
 
     /** Update W9 information for a contractor. */
 
-    updateW9Information: ({ id, ...options }: UpdateW9InformationOptions) =>
+    updateW9Information: ({
+      id,
+      ...options
+    }: UpdateW9InformationOptions): Promise<W9Entity> =>
       httpClient
         .patch<W9Entity>(`/api/v1/contractors/${id}/w9`, options)
         .then(r => r.data),
 
     /** Get W9 information for a contractor. */
 
-    showW9Information: ({ id, include_ssn }: ShowW9InformationOptions) =>
+    showW9Information: ({
+      id,
+      include_ssn,
+    }: ShowW9InformationOptions): Promise<W9Entity> =>
       httpClient
         .get<W9Entity>(`/api/v1/contractors/${id}/w9`, {
           include_ssn,
@@ -247,14 +270,20 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Submit W9 information for a contractor you only want to create a 1099 for. This will also trigger an instant TIN check for the contractor. This contractor won't be able to accept payments, if you need them to receive payments use the KYC endpoint */
 
-    submitW9Information: ({ id, ...options }: SubmitW9InformationOptions) =>
+    submitW9Information: ({
+      id,
+      ...options
+    }: SubmitW9InformationOptions): Promise<W9Entity> =>
       httpClient
         .post<W9Entity>(`/api/v1/contractors/${id}/w9`, options)
         .then(r => r.data),
 
     /** Submit KYC (know your customer) information for a contractor */
 
-    submitKYCInformation: ({ id, ...options }: SubmitKYCInformationOptions) =>
+    submitKYCInformation: ({
+      id,
+      ...options
+    }: SubmitKYCInformationOptions): Promise<BusinessRelationshipEntity> =>
       httpClient
         .post<BusinessRelationshipEntity>(
           `/api/v1/contractors/${id}/kyc`,
@@ -267,7 +296,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
     sendInviteToContractor: ({
       id,
       ...options
-    }: SendInviteToContractorOptions) =>
+    }: SendInviteToContractorOptions): Promise<BusinessRelationshipEntity> =>
       httpClient
         .post<BusinessRelationshipEntity>(
           `/api/v1/contractors/${id}/invite`,
@@ -280,7 +309,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
     addAccountToContractor: ({
       contractor_id,
       ...options
-    }: AddAccountToContractorOptions) =>
+    }: AddAccountToContractorOptions): Promise<AccountEntity> =>
       httpClient
         .post<AccountEntity>(
           `/api/v1/contractors/${contractor_id}/accounts`,
@@ -295,7 +324,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
       per_page,
       offset,
       contractor_id,
-    }: ListContractorAccountsOptions) =>
+    }: ListContractorAccountsOptions): Promise<AccountEntity[]> =>
       httpClient
         .get<AccountEntity[]>(`/api/v1/contractors/${contractor_id}/accounts`, {
           page,
@@ -306,7 +335,10 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Deactivate contractor's bank account. */
 
-    deactivateAccount: ({ id, contractor_id }: DeactivateAccountOptions) =>
+    deactivateAccount: ({
+      id,
+      contractor_id,
+    }: DeactivateAccountOptions): Promise<AccountEntity> =>
       httpClient
         .delete<AccountEntity>(
           `/api/v1/contractors/${contractor_id}/accounts/${id}`,
@@ -315,7 +347,10 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
 
     /** Get details of an existing bank account. */
 
-    getAccountDetail: ({ id, contractor_id }: GetAccountDetailOptions) =>
+    getAccountDetail: ({
+      id,
+      contractor_id,
+    }: GetAccountDetailOptions): Promise<AccountEntity> =>
       httpClient
         .get<AccountEntity>(
           `/api/v1/contractors/${contractor_id}/accounts/${id}`,
@@ -327,7 +362,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
     addContractorDebitCard: ({
       contractor_id,
       ...options
-    }: AddContractorDebitCardOptions) =>
+    }: AddContractorDebitCardOptions): Promise<AccountEntity> =>
       httpClient
         .post<AccountEntity>(
           `/api/v1/contractors/${contractor_id}/cards`,
@@ -340,7 +375,7 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
     createContractorsIdentityDocument: ({
       contractor_id,
       ...options
-    }: CreateContractorsIdentityDocumentOptions) =>
+    }: CreateContractorsIdentityDocumentOptions): Promise<AccountEntity> =>
       httpClient
         .post<AccountEntity>(
           `/api/v1/contractors/${contractor_id}/identity_document`,

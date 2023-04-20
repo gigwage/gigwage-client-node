@@ -25,7 +25,11 @@ export function transfersEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Get a list of all transfers. */
 
-    listTransfers: ({ page, per_page, offset }: ListTransfersOptions = {}) =>
+    listTransfers: ({
+      page,
+      per_page,
+      offset,
+    }: ListTransfersOptions = {}): Promise<TransferTransactionEntity[]> =>
       httpClient
         .get<TransferTransactionEntity[]>(`/api/v1/transfers`, {
           page,
@@ -36,21 +40,27 @@ export function transfersEndpoints(httpClient: GigWageHttpClient) {
 
     /** Create a transfer transaction. */
 
-    createTransfer: ({ ...options }: CreateTransferOptions) =>
+    createTransfer: ({
+      ...options
+    }: CreateTransferOptions): Promise<TransferTransactionEntity> =>
       httpClient
         .post<TransferTransactionEntity>(`/api/v1/transfers`, options)
         .then(r => r.data),
 
     /** Attempt to cancel a transfer. */
 
-    deleteTransfer: ({ id }: DeleteTransferOptions) =>
+    deleteTransfer: ({
+      id,
+    }: DeleteTransferOptions): Promise<TransferTransactionEntity> =>
       httpClient
         .delete<TransferTransactionEntity>(`/api/v1/transfers/${id}`)
         .then(r => r.data),
 
     /** Get details of an existing transfer. */
 
-    showTransfer: ({ id }: ShowTransferOptions) =>
+    showTransfer: ({
+      id,
+    }: ShowTransferOptions): Promise<TransferTransactionEntity> =>
       httpClient
         .get<TransferTransactionEntity>(`/api/v1/transfers/${id}`)
         .then(r => r.data),

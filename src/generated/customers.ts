@@ -33,14 +33,20 @@ export function customersEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Creates a new customer. */
 
-    createCustomer: ({ ...options }: CreateCustomerOptions) =>
+    createCustomer: ({
+      ...options
+    }: CreateCustomerOptions): Promise<CustomerEntity> =>
       httpClient
         .post<CustomerEntity>(`/api/v1/customers`, options)
         .then(r => r.data),
 
     /** List customers. */
 
-    listCustomers: ({ page, per_page, offset }: ListCustomersOptions = {}) =>
+    listCustomers: ({
+      page,
+      per_page,
+      offset,
+    }: ListCustomersOptions = {}): Promise<CustomerEntity[]> =>
       httpClient
         .get<CustomerEntity[]>(`/api/v1/customers`, {
           page,
@@ -51,21 +57,28 @@ export function customersEndpoints(httpClient: GigWageHttpClient) {
 
     /** Updates an existing customer */
 
-    updateACustomer: ({ id, ...options }: UpdateACustomerOptions) =>
+    updateACustomer: ({
+      id,
+      ...options
+    }: UpdateACustomerOptions): Promise<CustomerEntity> =>
       httpClient
         .patch<CustomerEntity>(`/api/v1/customers/${id}`, options)
         .then(r => r.data),
 
     /** Delete customer record. Note: You can only destroy customer that not associated with any Accounts Receivable Payments */
 
-    deleteACustomer: ({ id }: DeleteACustomerOptions) =>
+    deleteACustomer: ({
+      id,
+    }: DeleteACustomerOptions): Promise<CustomerEntity> =>
       httpClient
         .delete<CustomerEntity>(`/api/v1/customers/${id}`)
         .then(r => r.data),
 
     /** Returns the details for a given customer. */
 
-    returnACustomer: ({ id }: ReturnACustomerOptions) =>
+    returnACustomer: ({
+      id,
+    }: ReturnACustomerOptions): Promise<CustomerEntity> =>
       httpClient
         .get<CustomerEntity>(`/api/v1/customers/${id}`)
         .then(r => r.data),

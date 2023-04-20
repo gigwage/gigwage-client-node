@@ -43,7 +43,7 @@ export function webhooksEndpoints(httpClient: GigWageHttpClient) {
       page,
       per_page,
       offset,
-    }: ListWebhooksOptions = {}) =>
+    }: ListWebhooksOptions = {}): Promise<WebhookEntity[]> =>
       httpClient
         .get<WebhookEntity[]>(`/api/v1/webhooks`, {
           contractor_id,
@@ -64,7 +64,7 @@ export function webhooksEndpoints(httpClient: GigWageHttpClient) {
       ten99_id,
       payment_id,
       tin_check_id,
-    }: ShowWebhookOptions) =>
+    }: ShowWebhookOptions): Promise<WebhookEntity> =>
       httpClient
         .get<WebhookEntity>(`/api/v1/webhooks/${id}`, {
           contractor_id,

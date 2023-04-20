@@ -41,12 +41,14 @@ export function ten99sEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Create a 1099 for a contractor. */
 
-    create1099: ({ ...options }: Create1099Options) =>
+    create1099: ({ ...options }: Create1099Options): Promise<Ten99Entity> =>
       httpClient.post<Ten99Entity>(`/api/v1/1099s`, options).then(r => r.data),
 
     /** Returns a list of 1099s, sorted newest-first. */
 
-    list1099s: ({ page, per_page, offset }: List1099sOptions = {}) =>
+    list1099s: ({ page, per_page, offset }: List1099sOptions = {}): Promise<
+      Ten99Entity[]
+    > =>
       httpClient
         .get<Ten99Entity[]>(`/api/v1/1099s`, {
           page,
@@ -57,19 +59,19 @@ export function ten99sEndpoints(httpClient: GigWageHttpClient) {
 
     /** Update a 1099 */
 
-    update1099: ({ id, ...options }: Update1099Options) =>
+    update1099: ({ id, ...options }: Update1099Options): Promise<Ten99Entity> =>
       httpClient
         .patch<Ten99Entity>(`/api/v1/1099s/${id}`, options)
         .then(r => r.data),
 
     /** Delete a 1099. */
 
-    delete1099: ({ id }: Delete1099Options) =>
+    delete1099: ({ id }: Delete1099Options): Promise<Ten99Entity> =>
       httpClient.delete<Ten99Entity>(`/api/v1/1099s/${id}`).then(r => r.data),
 
     /** Get details of a 1099. */
 
-    show1099: ({ id }: Show1099Options) =>
+    show1099: ({ id }: Show1099Options): Promise<Ten99Entity> =>
       httpClient.get<Ten99Entity>(`/api/v1/1099s/${id}`).then(r => r.data),
 
     /** Returns the URL to a PDF of a submitted 1099. The URL expires in 1 hour. */
@@ -79,14 +81,20 @@ export function ten99sEndpoints(httpClient: GigWageHttpClient) {
 
     /** Submit 1099 to the IRS. */
 
-    submit1099ToIRS: ({ id, ...options }: Submit1099ToIRSOptions) =>
+    submit1099ToIRS: ({
+      id,
+      ...options
+    }: Submit1099ToIRSOptions): Promise<Ten99Entity> =>
       httpClient
         .post<Ten99Entity>(`/api/v1/1099s/${id}/submit`, options)
         .then(r => r.data),
 
     /** Mark 1099 as ready to submit to the IRS. */
 
-    approve1099: ({ id, ...options }: Approve1099Options) =>
+    approve1099: ({
+      id,
+      ...options
+    }: Approve1099Options): Promise<Ten99Entity> =>
       httpClient
         .post<Ten99Entity>(`/api/v1/1099s/${id}/approve`, options)
         .then(r => r.data),
