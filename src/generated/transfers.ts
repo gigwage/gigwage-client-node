@@ -24,14 +24,15 @@ export type ShowTransferOptions = {
 export function transfersEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Get a list of all transfers. */
-
     listTransfers: ({
       page,
       per_page,
       offset,
-    }: ListTransfersOptions = {}): Promise<TransferTransactionEntity[]> =>
+    }: ListTransfersOptions = {}): Promise<{
+      transfers: TransferTransactionEntity[];
+    }> =>
       httpClient
-        .get<TransferTransactionEntity[]>(`/api/v1/transfers`, {
+        .get<{ transfers: TransferTransactionEntity[] }>(`/api/v1/transfers`, {
           page,
           per_page,
           offset,
@@ -39,30 +40,36 @@ export function transfersEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Create a transfer transaction. */
-
     createTransfer: ({
       ...options
-    }: CreateTransferOptions): Promise<TransferTransactionEntity> =>
+    }: CreateTransferOptions): Promise<{
+      transfer: TransferTransactionEntity;
+    }> =>
       httpClient
-        .post<TransferTransactionEntity>(`/api/v1/transfers`, options)
+        .post<{ transfer: TransferTransactionEntity }>(
+          `/api/v1/transfers`,
+          options,
+        )
         .then(r => r.data),
 
     /** Attempt to cancel a transfer. */
-
     deleteTransfer: ({
       id,
-    }: DeleteTransferOptions): Promise<TransferTransactionEntity> =>
+    }: DeleteTransferOptions): Promise<{
+      transfer: TransferTransactionEntity;
+    }> =>
       httpClient
-        .delete<TransferTransactionEntity>(`/api/v1/transfers/${id}`)
+        .delete<{ transfer: TransferTransactionEntity }>(
+          `/api/v1/transfers/${id}`,
+        )
         .then(r => r.data),
 
     /** Get details of an existing transfer. */
-
     showTransfer: ({
       id,
-    }: ShowTransferOptions): Promise<TransferTransactionEntity> =>
+    }: ShowTransferOptions): Promise<{ transfer: TransferTransactionEntity }> =>
       httpClient
-        .get<TransferTransactionEntity>(`/api/v1/transfers/${id}`)
+        .get<{ transfer: TransferTransactionEntity }>(`/api/v1/transfers/${id}`)
         .then(r => r.data),
   };
 }

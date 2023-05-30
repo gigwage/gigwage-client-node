@@ -41,19 +41,19 @@ export interface components {
       /**
        * Format: date-time
        * @description When the contractor was sent an invitation to onboard
-       * @example 2023-01-04T00:04:07.561Z
+       * @example 2023-05-25T19:24:32.640Z
        */
       invited_at?: string;
       /**
        * Format: date-time
        * @description When the contractor accepted the invitation
-       * @example 2023-01-04T00:04:07.561Z
+       * @example 2023-05-25T19:24:32.641Z
        */
       invitation_accepted_at?: string;
       /**
        * Format: date-time
        * @description When the contractor record was created
-       * @example 2023-01-04T00:04:07.561Z
+       * @example 2023-05-25T19:24:32.641Z
        */
       created_at?: string;
       /**
@@ -101,6 +101,34 @@ export interface components {
       errors?: string[];
     };
     /** @description Creates a new contractor. */
+    postApiV1ContractorsBatch: {
+      contractors: {
+        /** @description Contractor email address */
+        email: string;
+        /** @description Contractor's first name */
+        first_name: string;
+        /** @description Contractor's last name */
+        last_name: string;
+        /** @description Customer assigned ID */
+        external_id?: string;
+        /**
+         * @description Send email invitation when set to TRUE
+         * @default false
+         */
+        send_invite?: boolean;
+      }[];
+    };
+    /** @description RecordError model */
+    RecordError: {
+      /**
+       * @description Summary error messages
+       * @example Required field is missing
+       */
+      error?: string;
+      /** @description Detail per error */
+      messages?: string[];
+    };
+    /** @description Creates a new contractor. */
     postApiV1Contractors: {
       contractor: {
         /** @description Contractor email address */
@@ -117,16 +145,6 @@ export interface components {
          */
         send_invite?: boolean;
       };
-    };
-    /** @description RecordError model */
-    RecordError: {
-      /**
-       * @description Summary error messages
-       * @example Required field is missing
-       */
-      error?: string;
-      /** @description Detail per error */
-      messages?: string[];
     };
     /** @description ContractorInvitationEntity model */
     ContractorInvitationEntity: {
@@ -164,7 +182,7 @@ export interface components {
       /**
        * Format: date-time
        * @description When the contractor was sent an invitation to onboard
-       * @example 2023-01-04T00:04:07.722Z
+       * @example 2023-05-25T19:24:32.761Z
        */
       created_at?: string;
     };
@@ -250,19 +268,28 @@ export interface components {
        * @example 987
        */
       correction?: number;
-      second_tin?: string;
       box1?: string;
-      box2?: string;
-      box4?: string;
-      box5a?: string;
-      box5b?: string;
-      box6a?: string;
-      box6b?: string;
-      box7a?: string;
-      box7b?: string;
+      box10?: string;
+      box11?: string;
+      box12?: string;
+      box13?: string;
+      box14?: string;
+      box15a?: string;
+      box15b?: string;
+      box16aState?: string;
+      box16aStateNo?: string;
+      box16bState?: string;
+      box16bStateNo?: string;
+      box17a?: string;
+      box17b?: string;
       box1a?: string;
       box1b?: string;
+      box2?: string;
       box3?: string;
+      box4?: string;
+      box5?: string;
+      box5a?: string;
+      box5b?: string;
       box5c?: string;
       box5d?: string;
       box5e?: string;
@@ -273,26 +300,17 @@ export interface components {
       box5j?: string;
       box5k?: string;
       box5l?: string;
+      box6?: string;
+      box6a?: string;
+      box6b?: string;
+      box7?: string;
+      box7a?: string;
+      box7b?: string;
+      box8?: string;
       box8a?: string;
       box8b?: string;
-      box5?: string;
-      box6?: string;
-      box7?: string;
-      box8?: string;
       box9?: string;
-      box10?: string;
-      box11?: string;
-      box12?: string;
-      box13?: string;
-      box14?: string;
-      box15a?: string;
-      box15b?: string;
-      box16aStateNo?: string;
-      box16aState?: string;
-      box16bStateNo?: string;
-      box16bState?: string;
-      box17a?: string;
-      box17b?: string;
+      second_tin?: string;
     };
     /** @description W9Entity model */
     W9Entity: {
@@ -477,7 +495,7 @@ export interface components {
         /** @description Paper or Digital 1099 */
         paper_1099?: boolean;
         /**
-         * @description Allow skip TIN check when nine zeros are passed - '0000000000'
+         * @description Skip TIN check
          * @default false
          */
         allow_tin_skip?: boolean;
@@ -544,7 +562,7 @@ export interface components {
         /** @description Paper or Digital 1099 */
         paper_1099?: boolean;
         /**
-         * @description Allow skip TIN check when nine zeros are passed - '0000000000'
+         * @description Skip TIN check
          * @default false
          */
         allow_tin_skip?: boolean;
@@ -634,13 +652,13 @@ export interface components {
       /**
        * Format: date-time
        * @description When the bank account record was created
-       * @example 2023-01-04T00:04:07.739Z
+       * @example 2023-05-25T19:24:32.772Z
        */
       created_at?: string;
       /**
        * Format: date-time
        * @description When the bank account record was deactivated
-       * @example 2023-01-04T00:04:07.739Z
+       * @example 2023-05-25T19:24:32.772Z
        */
       deactivated_at?: string;
     };
@@ -723,13 +741,13 @@ export interface components {
       /**
        * Format: date-time
        * @description When the payment was created
-       * @example 2022-12-04T00:04:07.726Z
+       * @example 2023-04-25T19:24:32.763Z
        */
       created_at?: string;
       /**
        * Format: date-time
        * @description When the payment was completed, if applicable. This is an estimation provided by the receiving bank.
-       * @example 2022-12-07T00:04:07.726Z
+       * @example 2023-04-27T19:24:32.763Z
        */
       completed_at?: string;
       /**
@@ -841,19 +859,19 @@ export interface components {
       /**
        * Format: date-time
        * @description When the contractor was sent an invitation to onboard
-       * @example 2023-01-04T00:04:07.725Z
+       * @example 2023-05-25T19:24:32.763Z
        */
       invited_at?: string;
       /**
        * Format: date-time
        * @description When the contractor accepted the invitation
-       * @example 2023-01-04T00:04:07.725Z
+       * @example 2023-05-25T19:24:32.763Z
        */
       invitation_accepted_at?: string;
       /**
        * Format: date-time
        * @description When the contractor record was created
-       * @example 2023-01-04T00:04:07.726Z
+       * @example 2023-05-25T19:24:32.763Z
        */
       created_at?: string;
       /**
@@ -937,7 +955,7 @@ export interface components {
       /**
        * Format: date-time
        * @description When the transfer was created
-       * @example 2023-01-04T00:04:07.910Z
+       * @example 2023-05-25T19:24:32.896Z
        */
       created_at?: string;
     };
@@ -980,13 +998,13 @@ export interface components {
       /**
        * Format: date-time
        * @description When the api key was revoked
-       * @example 2023-01-04T00:04:07.988Z
+       * @example 2023-05-25T19:24:32.954Z
        */
       revoked_at?: string;
       /**
        * Format: date-time
        * @description When the api key was created
-       * @example 2023-01-04T00:04:07.988Z
+       * @example 2023-05-25T19:24:32.954Z
        */
       created_at?: string;
     };
@@ -1020,13 +1038,13 @@ export interface components {
       /**
        * Format: date-time
        * @description When the subscription was deactivated
-       * @example 2023-01-04T00:04:08.062Z
+       * @example 2023-05-25T19:24:33.020Z
        */
       deactivated_at?: string;
       /**
        * Format: date-time
        * @description When the subscription was created
-       * @example 2023-01-04T00:04:08.062Z
+       * @example 2023-05-25T19:24:33.020Z
        */
       created_at?: string;
     };
@@ -1092,7 +1110,7 @@ export interface components {
       notes?: string;
       /**
        * @description Date when batch was created
-       * @example 2023-01-04T00:04:08.076Z
+       * @example 2023-05-25T19:24:33.029Z
        */
       created_at?: string;
     };
@@ -1118,109 +1136,159 @@ export interface components {
         contractor_id: number;
         /** @enum {string} */
         type: 'K' | 'NEC' | 'MISC';
-        /** @description Box 1 (decimal) - Type NEC only */
-        box1?: string;
-        /** @description Box 1a (decimal) - Type K only */
-        box1a?: string;
-        /** @description Box 1b (decimal) - Type K only */
+        /** @description Box 1b (decimal) */
         box1b?: string;
-        /** @description Box 2 (boolean for NEC, string for K) */
-        box2?: boolean;
-        /** @description Box 3 (decimal) - Type K only */
-        box3?: string;
-        /** @description Box 4 (decimal) */
-        box4?: string;
-        /** @description Box 5a (decimal) */
-        box5a?: string;
-        /** @description Box 5b (decimal) */
-        box5b?: string;
-        /** @description Box 5c (decimal) - Type K only */
-        box5c?: string;
-        /** @description Box 5d (decimal) - Type K only */
-        box5d?: string;
-        /** @description Box 5e (decimal) - Type K only */
-        box5e?: string;
-        /** @description Box 5f (decimal) - Type K only */
-        box5f?: string;
-        /** @description Box 5g (decimal) - Type K only */
-        box5g?: string;
-        /** @description Box 5h (decimal) - Type K only */
-        box5h?: string;
-        /** @description Box 5i (decimal) - Type K only */
-        box5i?: string;
-        /** @description Box 5j (decimal) - Type K only */
-        box5j?: string;
-        /** @description Box 5k (decimal) - Type K only */
-        box5k?: string;
-        /** @description Box 5l (decimal) - Type K only */
-        box5l?: string;
+        /**
+         * Format: float
+         * @description Box 2 (boolean)
+         * @default null
+         * @enum {number}
+         */
+        box2?: number;
+        /**
+         * Format: int32
+         * @description Box 3 (integer)
+         */
+        box3?: number;
+        /**
+         * Format: float
+         * @description Box 5c (decimal)
+         */
+        box5c?: number;
+        /**
+         * Format: float
+         * @description Box 4 (decimal)
+         */
+        box4?: number;
+        /**
+         * Format: float
+         * @description Box 5a (string)
+         */
+        box5a?: number;
+        /**
+         * Format: float
+         * @description Box 5b (string)
+         */
+        box5b?: number;
+        /**
+         * Format: float
+         * @description Box 5d (decimal)
+         */
+        box5d?: number;
+        /**
+         * Format: float
+         * @description Box 5e (decimal)
+         */
+        box5e?: number;
+        /**
+         * Format: float
+         * @description Box 5f (decimal)
+         */
+        box5f?: number;
+        /**
+         * Format: float
+         * @description Box 5g (decimal)
+         */
+        box5g?: number;
+        /**
+         * Format: float
+         * @description Box 5h (decimal)
+         */
+        box5h?: number;
+        /**
+         * Format: float
+         * @description Box 5i (decimal)
+         */
+        box5i?: number;
+        /**
+         * Format: float
+         * @description Box 5j (decimal)
+         */
+        box5j?: number;
+        /**
+         * Format: float
+         * @description Box 5k (decimal)
+         */
+        box5k?: number;
+        /**
+         * Format: float
+         * @description Box 5l (decimal)
+         */
+        box5l?: number;
         /** @description Box 6a (string) */
         box6a?: string;
         /** @description Box 6b (string) */
         box6b?: string;
-        /** @description Box 7a (decimal) - Type NEC only */
-        box7a?: string;
-        /** @description Box 7b (decimal) - Type NEC only */
-        box7b?: string;
-        /** @description Box 8a (decimal) - Type K only */
+        /**
+         * Format: float
+         * @description Box 7a (decimal)
+         */
+        box7a?: number;
+        /**
+         * Format: float
+         * @description Box 7b (decimal)
+         */
+        box7b?: number;
+        /** @description Box 8a (decimal) */
         box8a?: string;
-        /** @description Box 8b (decimal) - Type K only */
+        /** @description Box 8b (decimal) */
         box8b?: string;
-      };
-    };
-    /** @description Update a 1099 */
-    patchApiV11099s: {
-      1099: {
-        /** Format: int32 */
-        contractor_id: number;
-        /** @enum {string} */
-        type: 'K' | 'NEC';
-        /** @description Box 1a (decimal) - Type K only */
-        box1a?: string;
-        /** @description Box 1b (decimal) - Type K only */
-        box1b?: string;
-        /** @description Box 2 (boolean) - Type NEC only */
-        box2?: boolean;
-        /** @description Box 3 (decimal) - Type K only */
-        box3?: string;
-        /** @description Box 4 (decimal) */
-        box4?: string;
-        /** @description Box 5a (decimal) */
-        box5a?: string;
-        /** @description Box 5b (decimal) */
-        box5b?: string;
-        /** @description Box 5c (decimal) - Type K only */
-        box5c?: string;
-        /** @description Box 5d (decimal) - Type K only */
-        box5d?: string;
-        /** @description Box 5e (decimal) - Type K only */
-        box5e?: string;
-        /** @description Box 5f (decimal) - Type K only */
-        box5f?: string;
-        /** @description Box 5g (decimal) - Type K only */
-        box5g?: string;
-        /** @description Box 5h (decimal) - Type K only */
-        box5h?: string;
-        /** @description Box 5i (decimal) - Type K only */
-        box5i?: string;
-        /** @description Box 5j (decimal) - Type K only */
-        box5j?: string;
-        /** @description Box 5k (decimal) - Type K only */
-        box5k?: string;
-        /** @description Box 5l (decimal) - Type K only */
-        box5l?: string;
-        /** @description Box 6a (string) */
-        box6a?: string;
-        /** @description Box 6b (string) */
-        box6b?: string;
-        /** @description Box 7a (decimal) - Type NEC only */
-        box7a?: string;
-        /** @description Box 7b (decimal) - Type NEC only */
-        box7b?: string;
-        /** @description Box 8a (decimal) - Type K only */
-        box8a?: string;
-        /** @description Box 8b (decimal) - Type K only */
-        box8b?: string;
+        /**
+         * Format: float
+         * @description Box 1 (decimal)
+         */
+        box1?: number;
+        /**
+         * Format: float
+         * @description Box 5 (decimal)
+         */
+        box5?: number;
+        /**
+         * Format: float
+         * @description Box 6 (decimal)
+         */
+        box6?: number;
+        /**
+         * @description Box 7 (boolean)
+         * @default null
+         * @enum {string}
+         */
+        box7?: true | '' | 'true' | 'false' | '';
+        /**
+         * Format: float
+         * @description Box 8 (decimal)
+         */
+        box8?: number;
+        /**
+         * Format: float
+         * @description Box 9 (decimal)
+         */
+        box9?: number;
+        /**
+         * Format: float
+         * @description Box 10 (decimal)
+         */
+        box10?: number;
+        /**
+         * Format: float
+         * @description Box 11 (decimal)
+         */
+        box11?: number;
+        /**
+         * Format: float
+         * @description Box 12 (decimal)
+         */
+        box12?: number;
+        /**
+         * Format: float
+         * @description Box 13 (decimal)
+         */
+        box13?: number;
+        /**
+         * Format: float
+         * @description Box 14 (decimal)
+         */
+        box14?: number;
       };
     };
     /** @description WebhookEntity model */
@@ -1255,7 +1323,7 @@ export interface components {
       /**
        * Format: date-time
        * @description When the webhook was sent
-       * @example 2023-01-04T00:04:08.119Z
+       * @example 2023-05-25T19:24:33.061Z
        */
       sent_at?: string;
     };
@@ -1307,7 +1375,7 @@ export interface components {
       /**
        * Format: date-time
        * @description When the transaction was created
-       * @example 2023-01-04T00:04:08.128Z
+       * @example 2023-05-25T19:24:33.067Z
        */
       created_at?: string;
     };
@@ -1371,7 +1439,7 @@ export interface components {
       /**
        * Format: date-time
        * @description When the customer record was created
-       * @example 2023-01-04T00:04:08.135Z
+       * @example 2023-05-25T19:24:33.071Z
        */
       created_at?: string;
       /**
@@ -1381,7 +1449,7 @@ export interface components {
       phone_number?: string;
       /**
        * @description When the customer record was deleted
-       * @example 2023-01-04T00:04:08.135Z
+       * @example 2023-05-25T19:24:33.071Z
        */
       deleted_at?: string;
       /**
@@ -1482,13 +1550,13 @@ export interface components {
       /**
        * Format: date-time
        * @description When the Accounts Receivable payment was created
-       * @example 2022-12-04T00:04:08.144Z
+       * @example 2023-04-25T19:24:33.078Z
        */
       created_at?: string;
       /**
        * Format: date-time
        * @description When the Accounts Receivable payment was completed, if applicable
-       * @example 2022-12-07T00:04:08.144Z
+       * @example 2023-04-27T19:24:33.078Z
        */
       completed_at?: string;
       /**
@@ -1502,6 +1570,24 @@ export interface components {
        */
       external_id?: string;
       customer?: components['schemas']['CustomerEntity'];
+    };
+    /** @description Creates a new contractor. */
+    postApiV1BusinessesBusinessIdContractorsBatch: {
+      contractors: {
+        /** @description Contractor email address */
+        email: string;
+        /** @description Contractor's first name */
+        first_name: string;
+        /** @description Contractor's last name */
+        last_name: string;
+        /** @description Customer assigned ID */
+        external_id?: string;
+        /**
+         * @description Send email invitation when set to TRUE
+         * @default false
+         */
+        send_invite?: boolean;
+      }[];
     };
     /** @description Creates a new contractor. */
     postApiV1BusinessesBusinessIdContractors: {
@@ -1614,7 +1700,7 @@ export interface components {
         /** @description Paper or Digital 1099 */
         paper_1099?: boolean;
         /**
-         * @description Allow skip TIN check when nine zeros are passed - '0000000000'
+         * @description Skip TIN check
          * @default false
          */
         allow_tin_skip?: boolean;
@@ -1681,7 +1767,7 @@ export interface components {
         /** @description Paper or Digital 1099 */
         paper_1099?: boolean;
         /**
-         * @description Allow skip TIN check when nine zeros are passed - '0000000000'
+         * @description Skip TIN check
          * @default false
          */
         allow_tin_skip?: boolean;
@@ -1857,109 +1943,159 @@ export interface components {
         contractor_id: number;
         /** @enum {string} */
         type: 'K' | 'NEC' | 'MISC';
-        /** @description Box 1 (decimal) - Type NEC only */
-        box1?: string;
-        /** @description Box 1a (decimal) - Type K only */
-        box1a?: string;
-        /** @description Box 1b (decimal) - Type K only */
+        /** @description Box 1b (decimal) */
         box1b?: string;
-        /** @description Box 2 (boolean for NEC, string for K) */
-        box2?: boolean;
-        /** @description Box 3 (decimal) - Type K only */
-        box3?: string;
-        /** @description Box 4 (decimal) */
-        box4?: string;
-        /** @description Box 5a (decimal) */
-        box5a?: string;
-        /** @description Box 5b (decimal) */
-        box5b?: string;
-        /** @description Box 5c (decimal) - Type K only */
-        box5c?: string;
-        /** @description Box 5d (decimal) - Type K only */
-        box5d?: string;
-        /** @description Box 5e (decimal) - Type K only */
-        box5e?: string;
-        /** @description Box 5f (decimal) - Type K only */
-        box5f?: string;
-        /** @description Box 5g (decimal) - Type K only */
-        box5g?: string;
-        /** @description Box 5h (decimal) - Type K only */
-        box5h?: string;
-        /** @description Box 5i (decimal) - Type K only */
-        box5i?: string;
-        /** @description Box 5j (decimal) - Type K only */
-        box5j?: string;
-        /** @description Box 5k (decimal) - Type K only */
-        box5k?: string;
-        /** @description Box 5l (decimal) - Type K only */
-        box5l?: string;
+        /**
+         * Format: float
+         * @description Box 2 (boolean)
+         * @default null
+         * @enum {number}
+         */
+        box2?: number;
+        /**
+         * Format: int32
+         * @description Box 3 (integer)
+         */
+        box3?: number;
+        /**
+         * Format: float
+         * @description Box 5c (decimal)
+         */
+        box5c?: number;
+        /**
+         * Format: float
+         * @description Box 4 (decimal)
+         */
+        box4?: number;
+        /**
+         * Format: float
+         * @description Box 5a (string)
+         */
+        box5a?: number;
+        /**
+         * Format: float
+         * @description Box 5b (string)
+         */
+        box5b?: number;
+        /**
+         * Format: float
+         * @description Box 5d (decimal)
+         */
+        box5d?: number;
+        /**
+         * Format: float
+         * @description Box 5e (decimal)
+         */
+        box5e?: number;
+        /**
+         * Format: float
+         * @description Box 5f (decimal)
+         */
+        box5f?: number;
+        /**
+         * Format: float
+         * @description Box 5g (decimal)
+         */
+        box5g?: number;
+        /**
+         * Format: float
+         * @description Box 5h (decimal)
+         */
+        box5h?: number;
+        /**
+         * Format: float
+         * @description Box 5i (decimal)
+         */
+        box5i?: number;
+        /**
+         * Format: float
+         * @description Box 5j (decimal)
+         */
+        box5j?: number;
+        /**
+         * Format: float
+         * @description Box 5k (decimal)
+         */
+        box5k?: number;
+        /**
+         * Format: float
+         * @description Box 5l (decimal)
+         */
+        box5l?: number;
         /** @description Box 6a (string) */
         box6a?: string;
         /** @description Box 6b (string) */
         box6b?: string;
-        /** @description Box 7a (decimal) - Type NEC only */
-        box7a?: string;
-        /** @description Box 7b (decimal) - Type NEC only */
-        box7b?: string;
-        /** @description Box 8a (decimal) - Type K only */
+        /**
+         * Format: float
+         * @description Box 7a (decimal)
+         */
+        box7a?: number;
+        /**
+         * Format: float
+         * @description Box 7b (decimal)
+         */
+        box7b?: number;
+        /** @description Box 8a (decimal) */
         box8a?: string;
-        /** @description Box 8b (decimal) - Type K only */
+        /** @description Box 8b (decimal) */
         box8b?: string;
-      };
-    };
-    /** @description Update a 1099 */
-    patchApiV1BusinessesBusinessId1099s: {
-      1099: {
-        /** Format: int32 */
-        contractor_id: number;
-        /** @enum {string} */
-        type: 'K' | 'NEC';
-        /** @description Box 1a (decimal) - Type K only */
-        box1a?: string;
-        /** @description Box 1b (decimal) - Type K only */
-        box1b?: string;
-        /** @description Box 2 (boolean) - Type NEC only */
-        box2?: boolean;
-        /** @description Box 3 (decimal) - Type K only */
-        box3?: string;
-        /** @description Box 4 (decimal) */
-        box4?: string;
-        /** @description Box 5a (decimal) */
-        box5a?: string;
-        /** @description Box 5b (decimal) */
-        box5b?: string;
-        /** @description Box 5c (decimal) - Type K only */
-        box5c?: string;
-        /** @description Box 5d (decimal) - Type K only */
-        box5d?: string;
-        /** @description Box 5e (decimal) - Type K only */
-        box5e?: string;
-        /** @description Box 5f (decimal) - Type K only */
-        box5f?: string;
-        /** @description Box 5g (decimal) - Type K only */
-        box5g?: string;
-        /** @description Box 5h (decimal) - Type K only */
-        box5h?: string;
-        /** @description Box 5i (decimal) - Type K only */
-        box5i?: string;
-        /** @description Box 5j (decimal) - Type K only */
-        box5j?: string;
-        /** @description Box 5k (decimal) - Type K only */
-        box5k?: string;
-        /** @description Box 5l (decimal) - Type K only */
-        box5l?: string;
-        /** @description Box 6a (string) */
-        box6a?: string;
-        /** @description Box 6b (string) */
-        box6b?: string;
-        /** @description Box 7a (decimal) - Type NEC only */
-        box7a?: string;
-        /** @description Box 7b (decimal) - Type NEC only */
-        box7b?: string;
-        /** @description Box 8a (decimal) - Type K only */
-        box8a?: string;
-        /** @description Box 8b (decimal) - Type K only */
-        box8b?: string;
+        /**
+         * Format: float
+         * @description Box 1 (decimal)
+         */
+        box1?: number;
+        /**
+         * Format: float
+         * @description Box 5 (decimal)
+         */
+        box5?: number;
+        /**
+         * Format: float
+         * @description Box 6 (decimal)
+         */
+        box6?: number;
+        /**
+         * @description Box 7 (boolean)
+         * @default null
+         * @enum {string}
+         */
+        box7?: true | '' | 'true' | 'false' | '';
+        /**
+         * Format: float
+         * @description Box 8 (decimal)
+         */
+        box8?: number;
+        /**
+         * Format: float
+         * @description Box 9 (decimal)
+         */
+        box9?: number;
+        /**
+         * Format: float
+         * @description Box 10 (decimal)
+         */
+        box10?: number;
+        /**
+         * Format: float
+         * @description Box 11 (decimal)
+         */
+        box11?: number;
+        /**
+         * Format: float
+         * @description Box 12 (decimal)
+         */
+        box12?: number;
+        /**
+         * Format: float
+         * @description Box 13 (decimal)
+         */
+        box13?: number;
+        /**
+         * Format: float
+         * @description Box 14 (decimal)
+         */
+        box14?: number;
       };
     };
     /** @description Creates a new customer. */
@@ -2044,7 +2180,60 @@ export interface components {
   };
   responses: never;
   parameters: never;
-  requestBodies: never;
+  requestBodies: {
+    patchApiV11099sId?: {
+      content: {
+        'application/x-www-form-urlencoded': {
+          /** @description Box 1a (decimal) - Type K only */
+          '1099[box1a]'?: string;
+          /** @description Box 1b (decimal) - Type K only */
+          '1099[box1b]'?: string;
+          /** @description Box 2 (boolean) - Type NEC only */
+          '1099[box2]'?: boolean;
+          /** @description Box 3 (decimal) - Type K only */
+          '1099[box3]'?: string;
+          /** @description Box 4 (decimal) */
+          '1099[box4]'?: string;
+          /** @description Box 5a (decimal) */
+          '1099[box5a]'?: string;
+          /** @description Box 5b (decimal) */
+          '1099[box5b]'?: string;
+          /** @description Box 5c (decimal) - Type K only */
+          '1099[box5c]'?: string;
+          /** @description Box 5d (decimal) - Type K only */
+          '1099[box5d]'?: string;
+          /** @description Box 5e (decimal) - Type K only */
+          '1099[box5e]'?: string;
+          /** @description Box 5f (decimal) - Type K only */
+          '1099[box5f]'?: string;
+          /** @description Box 5g (decimal) - Type K only */
+          '1099[box5g]'?: string;
+          /** @description Box 5h (decimal) - Type K only */
+          '1099[box5h]'?: string;
+          /** @description Box 5i (decimal) - Type K only */
+          '1099[box5i]'?: string;
+          /** @description Box 5j (decimal) - Type K only */
+          '1099[box5j]'?: string;
+          /** @description Box 5k (decimal) - Type K only */
+          '1099[box5k]'?: string;
+          /** @description Box 5l (decimal) - Type K only */
+          '1099[box5l]'?: string;
+          /** @description Box 6a (string) */
+          '1099[box6a]'?: string;
+          /** @description Box 6b (string) */
+          '1099[box6b]'?: string;
+          /** @description Box 7a (decimal) - Type NEC only */
+          '1099[box7a]'?: string;
+          /** @description Box 7b (decimal) - Type NEC only */
+          '1099[box7b]'?: string;
+          /** @description Box 8a (decimal) - Type K only */
+          '1099[box8a]'?: string;
+          /** @description Box 8b (decimal) - Type K only */
+          '1099[box8b]'?: string;
+        };
+      };
+    };
+  };
   headers: never;
   pathItems: never;
 }

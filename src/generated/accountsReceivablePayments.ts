@@ -22,25 +22,25 @@ export function accountsReceivablePaymentsEndpoints(
 ) {
   return {
     /** Creates a new Accounts Receivable Payment. */
-
     createAccountsReceivablePayment: ({
       ...options
-    }: CreateAccountsReceivablePaymentOptions): Promise<ArPaymentEntity> =>
+    }: CreateAccountsReceivablePaymentOptions): Promise<{
+      ar_payment: ArPaymentEntity;
+    }> =>
       httpClient
-        .post<ArPaymentEntity>(`/api/v1/ar_payments`, options)
+        .post<{ ar_payment: ArPaymentEntity }>(`/api/v1/ar_payments`, options)
         .then(r => r.data),
 
     /** List Accounts Receivable payments. */
-
     listAccountsReceivablePayments: ({
       page,
       per_page,
       offset,
-    }: ListAccountsReceivablePaymentsOptions = {}): Promise<
-      ArPaymentEntity[]
-    > =>
+    }: ListAccountsReceivablePaymentsOptions = {}): Promise<{
+      ar_payments: ArPaymentEntity[];
+    }> =>
       httpClient
-        .get<ArPaymentEntity[]>(`/api/v1/ar_payments`, {
+        .get<{ ar_payments: ArPaymentEntity[] }>(`/api/v1/ar_payments`, {
           page,
           per_page,
           offset,
@@ -48,12 +48,13 @@ export function accountsReceivablePaymentsEndpoints(
         .then(r => r.data),
 
     /** Returns the details for Accounts Receivable Payment */
-
     returnAnAccountsReceivablePayment: ({
       id,
-    }: ReturnAnAccountsReceivablePaymentOptions): Promise<ArPaymentEntity> =>
+    }: ReturnAnAccountsReceivablePaymentOptions): Promise<{
+      ar_payment: ArPaymentEntity;
+    }> =>
       httpClient
-        .get<ArPaymentEntity>(`/api/v1/ar_payments/${id}`)
+        .get<{ ar_payment: ArPaymentEntity }>(`/api/v1/ar_payments/${id}`)
         .then(r => r.data),
   };
 }

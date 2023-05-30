@@ -26,21 +26,21 @@ export type ShowAPIKeyOptions = {
 export function apiKeysEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Create a new API key. Note: This is the only time you'll get the secret. */
-
     createAPIKey: ({
       ...options
-    }: CreateAPIKeyOptions): Promise<ApiKeyEntity> =>
+    }: CreateAPIKeyOptions): Promise<{ api_key: ApiKeyEntity }> =>
       httpClient
-        .post<ApiKeyEntity>(`/api/v1/api_keys`, options)
+        .post<{ api_key: ApiKeyEntity }>(`/api/v1/api_keys`, options)
         .then(r => r.data),
 
     /** Get a list of all API keys. */
-
-    listAPIKeys: ({ page, per_page, offset }: ListAPIKeysOptions = {}): Promise<
-      ApiKeyEntity[]
-    > =>
+    listAPIKeys: ({
+      page,
+      per_page,
+      offset,
+    }: ListAPIKeysOptions = {}): Promise<{ api_keys: ApiKeyEntity[] }> =>
       httpClient
-        .get<ApiKeyEntity[]>(`/api/v1/api_keys`, {
+        .get<{ api_keys: ApiKeyEntity[] }>(`/api/v1/api_keys`, {
           page,
           per_page,
           offset,
@@ -48,15 +48,19 @@ export function apiKeysEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Revoke an API key. Note: The API key currently in use cannot be revoked. */
-
-    revokeAPIKey: ({ id }: RevokeAPIKeyOptions): Promise<ApiKeyEntity> =>
+    revokeAPIKey: ({
+      id,
+    }: RevokeAPIKeyOptions): Promise<{ api_key: ApiKeyEntity }> =>
       httpClient
-        .delete<ApiKeyEntity>(`/api/v1/api_keys/${id}`)
+        .delete<{ api_key: ApiKeyEntity }>(`/api/v1/api_keys/${id}`)
         .then(r => r.data),
 
     /** Get details of an existing API key. */
-
-    showAPIKey: ({ id }: ShowAPIKeyOptions): Promise<ApiKeyEntity> =>
-      httpClient.get<ApiKeyEntity>(`/api/v1/api_keys/${id}`).then(r => r.data),
+    showAPIKey: ({
+      id,
+    }: ShowAPIKeyOptions): Promise<{ api_key: ApiKeyEntity }> =>
+      httpClient
+        .get<{ api_key: ApiKeyEntity }>(`/api/v1/api_keys/${id}`)
+        .then(r => r.data),
   };
 }

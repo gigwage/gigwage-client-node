@@ -9,13 +9,12 @@ export type UpdateLineItemOptions = {
 export function lineItemsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Update a line item's metadata. */
-
     updateLineItem: ({
       id,
       ...options
-    }: UpdateLineItemOptions): Promise<LineItemEntity> =>
+    }: UpdateLineItemOptions): Promise<{ line_item: LineItemEntity }> =>
       httpClient
-        .put<LineItemEntity>(`/api/v1/line_items/${id}`, options)
+        .put<{ line_item: LineItemEntity }>(`/api/v1/line_items/${id}`, options)
         .then(r => r.data),
   };
 }

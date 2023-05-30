@@ -16,7 +16,12 @@ const downloadOpenApi = async () => {
     {
       headers: {
         'x-requested-with': 'XMLHttpRequest',
-        accept: 'application/json',
+        // accept: 'application/json',
+        accept: '*/*',
+        cookie:
+          'ekfls=2d3c7bdb-a84a-4c1a-97af-7e88a897522f; __cf_bm=Z7nv6lfshwdTlO10MGUaQ4zTx57RiI6AWxm4PdPgNPc-1685070271-0-AetmurAwTT+bx16Peb2oz+RcjpR6yG5aKkWNQmSL+613dZHR1wAK2SbblWl0EBKCw43KojBiXISBlV+GfKkIGW3E0qAixFy7rEGLhY3eWwzW',
+        referer:
+          'https://developers.gigwage.com/reference/postapiv1contractors',
       },
     },
   );

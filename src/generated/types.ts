@@ -22,9 +22,6 @@ export type W9Entity = components['schemas']['W9Entity'];
 export type WebhookEntity = components['schemas']['WebhookEntity'];
 export type WebhookSubscriptionEntity =
   components['schemas']['WebhookSubscriptionEntity'];
-export type PatchApiV11099s = components['schemas']['patchApiV11099s'];
-export type PatchApiV1BusinessesBusinessId1099s =
-  components['schemas']['patchApiV1BusinessesBusinessId1099s'];
 export type PatchApiV1BusinessesBusinessIdContractors =
   components['schemas']['patchApiV1BusinessesBusinessIdContractors'];
 export type PatchApiV1BusinessesBusinessIdContractorsIdW9 =
@@ -50,6 +47,8 @@ export type PostApiV1BusinessesBusinessIdBatches =
   components['schemas']['postApiV1BusinessesBusinessIdBatches'];
 export type PostApiV1BusinessesBusinessIdContractors =
   components['schemas']['postApiV1BusinessesBusinessIdContractors'];
+export type PostApiV1BusinessesBusinessIdContractorsBatch =
+  components['schemas']['postApiV1BusinessesBusinessIdContractorsBatch'];
 export type PostApiV1BusinessesBusinessIdContractorsContractorIdAccounts =
   components['schemas']['postApiV1BusinessesBusinessIdContractorsContractorIdAccounts'];
 export type PostApiV1BusinessesBusinessIdContractorsContractorIdCards =
@@ -68,6 +67,8 @@ export type PostApiV1BusinessesBusinessIdTransfers =
   components['schemas']['postApiV1BusinessesBusinessIdTransfers'];
 export type PostApiV1Contractors =
   components['schemas']['postApiV1Contractors'];
+export type PostApiV1ContractorsBatch =
+  components['schemas']['postApiV1ContractorsBatch'];
 export type PostApiV1ContractorsContractorIdAccounts =
   components['schemas']['postApiV1ContractorsContractorIdAccounts'];
 export type PostApiV1ContractorsContractorIdCards =

@@ -7,6 +7,7 @@ import {
   PatchApiV1Contractors,
   PatchApiV1ContractorsIdW9,
   PostApiV1Contractors,
+  PostApiV1ContractorsBatch,
   PostApiV1ContractorsContractorIdAccounts,
   PostApiV1ContractorsContractorIdCards,
   PostApiV1ContractorsContractorIdIdentityDocument,
@@ -24,6 +25,8 @@ export type FindContractorUniquelyOptions = {
   /** Contractor ID */
   id?: string;
 };
+
+export type BatchCreateContractorOptions = {} & PostApiV1ContractorsBatch;
 
 export type CreateContractorOptions = {} & PostApiV1Contractors;
 
@@ -132,103 +135,141 @@ export type CreateContractorsIdentityDocumentOptions = {
 export function contractorsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Find a contractor by email, external_id or id. */
-
     findContractorUniquely: ({
       email,
       external_id,
       id,
-    }: FindContractorUniquelyOptions = {}): Promise<BusinessRelationshipEntity> =>
+    }: FindContractorUniquelyOptions = {}): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .get<BusinessRelationshipEntity>(`/api/v1/contractors/find_by`, {
-          email,
-          external_id,
-          id,
-        })
+        .get<{ contractor: BusinessRelationshipEntity }>(
+          `/api/v1/contractors/find_by`,
+          {
+            email,
+            external_id,
+            id,
+          },
+        )
         .then(r => r.data),
 
     /** Creates a new contractor. */
+    batchCreateContractor: ({
+      ...options
+    }: BatchCreateContractorOptions): Promise<{
+      contractors: BusinessRelationshipEntity;
+    }> =>
+      httpClient
+        .post<{ contractors: BusinessRelationshipEntity }>(
+          `/api/v1/contractors/batch`,
+          options,
+        )
+        .then(r => r.data),
 
+    /** Creates a new contractor. */
     createContractor: ({
       ...options
-    }: CreateContractorOptions): Promise<BusinessRelationshipEntity> =>
+    }: CreateContractorOptions): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .post<BusinessRelationshipEntity>(`/api/v1/contractors`, options)
+        .post<{ contractor: BusinessRelationshipEntity }>(
+          `/api/v1/contractors`,
+          options,
+        )
         .then(r => r.data),
 
     /** List contractors. */
-
     listContractors: ({
       q,
       page,
       per_page,
       offset,
-    }: ListContractorsOptions = {}): Promise<BusinessRelationshipEntity[]> =>
+    }: ListContractorsOptions = {}): Promise<{
+      contractors: BusinessRelationshipEntity[];
+    }> =>
       httpClient
-        .get<BusinessRelationshipEntity[]>(`/api/v1/contractors`, {
-          q,
-          page,
-          per_page,
-          offset,
-        })
+        .get<{ contractors: BusinessRelationshipEntity[] }>(
+          `/api/v1/contractors`,
+          {
+            q,
+            page,
+            per_page,
+            offset,
+          },
+        )
         .then(r => r.data),
 
     /** Provides invitation information for the contractor to allow you to send the contractoran onboarding email. If the contractor has an outstanding, unaccepted invitation, the old invitation will be invalidated. */
-
     inviteAContractor: ({
       id,
       ...options
-    }: InviteAContractorOptions): Promise<ContractorInvitationEntity> =>
+    }: InviteAContractorOptions): Promise<{
+      invitation: ContractorInvitationEntity;
+    }> =>
       httpClient
-        .post<ContractorInvitationEntity>(
+        .post<{ invitation: ContractorInvitationEntity }>(
           `/api/v1/contractors/${id}/invitations`,
           options,
         )
         .then(r => r.data),
 
     /** Updates an existing contractor. If the contractor has already registered, changes to the email address will not affect email delivery. Emails will be delivered to the address managed by the contractor. Any supported attributes not supplied in the request will not be changed. */
-
     updateAContractor: ({
       id,
       ...options
-    }: UpdateAContractorOptions): Promise<BusinessRelationshipEntity> =>
+    }: UpdateAContractorOptions): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .patch<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, options)
+        .patch<{ contractor: BusinessRelationshipEntity }>(
+          `/api/v1/contractors/${id}`,
+          options,
+        )
         .then(r => r.data),
 
     /** Delete contractor record. Note: You can only destroy new contractors that aren't associated with other businesses or that have payments or 1099s  */
-
     deleteAContractor: ({
       id,
-    }: DeleteAContractorOptions): Promise<BusinessRelationshipEntity> =>
+    }: DeleteAContractorOptions): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .delete<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`)
+        .delete<{ contractor: BusinessRelationshipEntity }>(
+          `/api/v1/contractors/${id}`,
+        )
         .then(r => r.data),
 
     /** Returns the details for a given contractor. */
-
     returnAContractor: ({
       id,
       full,
       include_ssn,
-    }: ReturnAContractorOptions): Promise<BusinessRelationshipEntity> =>
+    }: ReturnAContractorOptions): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .get<BusinessRelationshipEntity>(`/api/v1/contractors/${id}`, {
-          full,
-          include_ssn,
-        })
+        .get<{ contractor: BusinessRelationshipEntity }>(
+          `/api/v1/contractors/${id}`,
+          {
+            full,
+            include_ssn,
+          },
+        )
         .then(r => r.data),
 
     /** List all 1099s for a contractor */
-
     listAll1099sForAContractor: ({
       id,
       page,
       per_page,
       offset,
       year,
-    }: ListAll1099sForAContractorOptions): Promise<Ten99Entity[]> =>
+    }: ListAll1099sForAContractorOptions): Promise<{
+      '1099s': Ten99Entity[];
+    }> =>
       httpClient
-        .get<Ten99Entity[]>(`/api/v1/contractors/${id}/1099s`, {
+        .get<{ '1099s': Ten99Entity[] }>(`/api/v1/contractors/${id}/1099s`, {
           page,
           per_page,
           offset,
@@ -237,147 +278,150 @@ export function contractorsEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Verify a contractor's TIN is valid. Note: TIN checks are automatically run on POST and PATCH W9 endpoints */
-
     createATINCheck: ({
       id,
       ...options
-    }: CreateATINCheckOptions): Promise<W9Entity> =>
+    }: CreateATINCheckOptions): Promise<{ contractor: W9Entity }> =>
       httpClient
-        .post<W9Entity>(`/api/v1/contractors/${id}/tin_check`, options)
+        .post<{ contractor: W9Entity }>(
+          `/api/v1/contractors/${id}/tin_check`,
+          options,
+        )
         .then(r => r.data),
 
     /** Update W9 information for a contractor. */
-
     updateW9Information: ({
       id,
       ...options
-    }: UpdateW9InformationOptions): Promise<W9Entity> =>
+    }: UpdateW9InformationOptions): Promise<{ contractor: W9Entity }> =>
       httpClient
-        .patch<W9Entity>(`/api/v1/contractors/${id}/w9`, options)
+        .patch<{ contractor: W9Entity }>(
+          `/api/v1/contractors/${id}/w9`,
+          options,
+        )
         .then(r => r.data),
 
     /** Get W9 information for a contractor. */
-
     showW9Information: ({
       id,
       include_ssn,
-    }: ShowW9InformationOptions): Promise<W9Entity> =>
+    }: ShowW9InformationOptions): Promise<{ contractor: W9Entity }> =>
       httpClient
-        .get<W9Entity>(`/api/v1/contractors/${id}/w9`, {
+        .get<{ contractor: W9Entity }>(`/api/v1/contractors/${id}/w9`, {
           include_ssn,
         })
         .then(r => r.data),
 
     /** Submit W9 information for a contractor you only want to create a 1099 for. This will also trigger an instant TIN check for the contractor. This contractor won't be able to accept payments, if you need them to receive payments use the KYC endpoint */
-
     submitW9Information: ({
       id,
       ...options
-    }: SubmitW9InformationOptions): Promise<W9Entity> =>
+    }: SubmitW9InformationOptions): Promise<{ contractor: W9Entity }> =>
       httpClient
-        .post<W9Entity>(`/api/v1/contractors/${id}/w9`, options)
+        .post<{ contractor: W9Entity }>(`/api/v1/contractors/${id}/w9`, options)
         .then(r => r.data),
 
     /** Submit KYC (know your customer) information for a contractor */
-
     submitKYCInformation: ({
       id,
       ...options
-    }: SubmitKYCInformationOptions): Promise<BusinessRelationshipEntity> =>
+    }: SubmitKYCInformationOptions): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .post<BusinessRelationshipEntity>(
+        .post<{ contractor: BusinessRelationshipEntity }>(
           `/api/v1/contractors/${id}/kyc`,
           options,
         )
         .then(r => r.data),
 
     /** Delivers a secure onboarding email invitation to an existing contractor who has never been paid. If the contractor has an outstanding unaccepted invitation, the old invitation will be invalidated. */
-
     sendInviteToContractor: ({
       id,
       ...options
-    }: SendInviteToContractorOptions): Promise<BusinessRelationshipEntity> =>
+    }: SendInviteToContractorOptions): Promise<{
+      contractor: BusinessRelationshipEntity;
+    }> =>
       httpClient
-        .post<BusinessRelationshipEntity>(
+        .post<{ contractor: BusinessRelationshipEntity }>(
           `/api/v1/contractors/${id}/invite`,
           options,
         )
         .then(r => r.data),
 
     /** Add a bank account to an existing contractor. */
-
     addAccountToContractor: ({
       contractor_id,
       ...options
-    }: AddAccountToContractorOptions): Promise<AccountEntity> =>
+    }: AddAccountToContractorOptions): Promise<{ account: AccountEntity }> =>
       httpClient
-        .post<AccountEntity>(
+        .post<{ account: AccountEntity }>(
           `/api/v1/contractors/${contractor_id}/accounts`,
           options,
         )
         .then(r => r.data),
 
     /** List all accounts for the contractor. */
-
     listContractorAccounts: ({
       page,
       per_page,
       offset,
       contractor_id,
-    }: ListContractorAccountsOptions): Promise<AccountEntity[]> =>
+    }: ListContractorAccountsOptions): Promise<{ accounts: AccountEntity[] }> =>
       httpClient
-        .get<AccountEntity[]>(`/api/v1/contractors/${contractor_id}/accounts`, {
-          page,
-          per_page,
-          offset,
-        })
+        .get<{ accounts: AccountEntity[] }>(
+          `/api/v1/contractors/${contractor_id}/accounts`,
+          {
+            page,
+            per_page,
+            offset,
+          },
+        )
         .then(r => r.data),
 
     /** Deactivate contractor's bank account. */
-
     deactivateAccount: ({
       id,
       contractor_id,
-    }: DeactivateAccountOptions): Promise<AccountEntity> =>
+    }: DeactivateAccountOptions): Promise<{ account: AccountEntity }> =>
       httpClient
-        .delete<AccountEntity>(
+        .delete<{ account: AccountEntity }>(
           `/api/v1/contractors/${contractor_id}/accounts/${id}`,
         )
         .then(r => r.data),
 
     /** Get details of an existing bank account. */
-
     getAccountDetail: ({
       id,
       contractor_id,
-    }: GetAccountDetailOptions): Promise<AccountEntity> =>
+    }: GetAccountDetailOptions): Promise<{ account: AccountEntity }> =>
       httpClient
-        .get<AccountEntity>(
+        .get<{ account: AccountEntity }>(
           `/api/v1/contractors/${contractor_id}/accounts/${id}`,
         )
         .then(r => r.data),
 
     /** Add debit card to contractor */
-
     addContractorDebitCard: ({
       contractor_id,
       ...options
-    }: AddContractorDebitCardOptions): Promise<AccountEntity> =>
+    }: AddContractorDebitCardOptions): Promise<{ account: AccountEntity }> =>
       httpClient
-        .post<AccountEntity>(
+        .post<{ account: AccountEntity }>(
           `/api/v1/contractors/${contractor_id}/cards`,
           options,
         )
         .then(r => r.data),
 
     /** Upload identity document */
-
     createContractorsIdentityDocument: ({
       contractor_id,
       ...options
-    }: CreateContractorsIdentityDocumentOptions): Promise<AccountEntity> =>
+    }: CreateContractorsIdentityDocumentOptions): Promise<{
+      identity_document: AccountEntity;
+    }> =>
       httpClient
-        .post<AccountEntity>(
+        .post<{ identity_document: AccountEntity }>(
           `/api/v1/contractors/${contractor_id}/identity_document`,
           options,
         )

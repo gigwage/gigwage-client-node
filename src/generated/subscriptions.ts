@@ -40,77 +40,97 @@ export type DeactivateSubscriptionOptions = {
 export function subscriptionsEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Subscribe to webhooks of the chosen type. Please note that multiple consecutive failures to deliver webhooks will deactivate this subscription, and it will need to be reactivated. See PUT below. */
-
     createSubscription: ({
       ...options
-    }: CreateSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
+    }: CreateSubscriptionOptions): Promise<{
+      subscription: WebhookSubscriptionEntity;
+    }> =>
       httpClient
-        .post<WebhookSubscriptionEntity>(`/api/v1/subscriptions`, options)
+        .post<{ subscription: WebhookSubscriptionEntity }>(
+          `/api/v1/subscriptions`,
+          options,
+        )
         .then(r => r.data),
 
     /** Returns a list of all subscriptions. */
-
     listSubscriptions: ({
       page,
       per_page,
       offset,
-    }: ListSubscriptionsOptions = {}): Promise<WebhookSubscriptionEntity[]> =>
+    }: ListSubscriptionsOptions = {}): Promise<{
+      subscriptions: WebhookSubscriptionEntity[];
+    }> =>
       httpClient
-        .get<WebhookSubscriptionEntity[]>(`/api/v1/subscriptions`, {
-          page,
-          per_page,
-          offset,
-        })
+        .get<{ subscriptions: WebhookSubscriptionEntity[] }>(
+          `/api/v1/subscriptions`,
+          {
+            page,
+            per_page,
+            offset,
+          },
+        )
         .then(r => r.data),
 
     /** Permanently remove a subscription. */
-
     deleteSubscription: ({
       id,
-    }: DeleteSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
+    }: DeleteSubscriptionOptions): Promise<{
+      subscription: WebhookSubscriptionEntity;
+    }> =>
       httpClient
-        .delete<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`)
+        .delete<{ subscription: WebhookSubscriptionEntity }>(
+          `/api/v1/subscriptions/${id}`,
+        )
         .then(r => r.data),
 
     /** Change the URL where webhooks are sent. */
-
     updateSubscriptionURL: ({
       id,
       ...options
-    }: UpdateSubscriptionURLOptions): Promise<WebhookSubscriptionEntity> =>
+    }: UpdateSubscriptionURLOptions): Promise<{
+      subscription: WebhookSubscriptionEntity;
+    }> =>
       httpClient
-        .patch<WebhookSubscriptionEntity>(
+        .patch<{ subscription: WebhookSubscriptionEntity }>(
           `/api/v1/subscriptions/${id}`,
           options,
         )
         .then(r => r.data),
 
     /** Reactivate an inactive subscription. */
-
     reactivateSubscription: ({
       id,
       ...options
-    }: ReactivateSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
+    }: ReactivateSubscriptionOptions): Promise<{
+      subscription: WebhookSubscriptionEntity;
+    }> =>
       httpClient
-        .put<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`, options)
+        .put<{ subscription: WebhookSubscriptionEntity }>(
+          `/api/v1/subscriptions/${id}`,
+          options,
+        )
         .then(r => r.data),
 
     /** Get the details of a subscription. */
-
     showSubscription: ({
       id,
-    }: ShowSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
+    }: ShowSubscriptionOptions): Promise<{
+      subscription: WebhookSubscriptionEntity;
+    }> =>
       httpClient
-        .get<WebhookSubscriptionEntity>(`/api/v1/subscriptions/${id}`)
+        .get<{ subscription: WebhookSubscriptionEntity }>(
+          `/api/v1/subscriptions/${id}`,
+        )
         .then(r => r.data),
 
     /** Deactivate a subscription. */
-
     deactivateSubscription: ({
       id,
-    }: DeactivateSubscriptionOptions): Promise<WebhookSubscriptionEntity> =>
+    }: DeactivateSubscriptionOptions): Promise<{
+      subscription: WebhookSubscriptionEntity;
+    }> =>
       httpClient
-        .delete<WebhookSubscriptionEntity>(
+        .delete<{ subscription: WebhookSubscriptionEntity }>(
           `/api/v1/subscriptions/${id}/deactivate`,
         )
         .then(r => r.data),

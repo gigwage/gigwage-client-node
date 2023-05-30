@@ -1,3 +1,4 @@
+import { OpenAPI3 } from 'openapi-typescript';
 import { Project } from 'ts-morph';
 
 import payload from './openapi.json';
@@ -18,7 +19,7 @@ type Endpoint = {
   path: string;
   requestBody: string | null;
   responseType: string;
-  responseTypeIsArray: boolean;
+  renderedResponseType: string;
   summary: string;
   tags: TagMap[keyof TagMap][];
 };
@@ -71,26 +72,75 @@ const extractTags = (oasDefinition: any) =>
     description,
     functionName: tagToFuncName(name),
   }));
+
+const extractResponseSchema = (
+  schema: any,
+): { responseType: string; renderedResponseType: string } => {
+  try {
+    if (!schema) {
+      return {
+        responseType: 'string',
+        renderedResponseType: 'string',
+      };
+    }
+
+    if (schema?.type === 'object') {
+      const objectProperty = Object.keys(schema.properties)[0];
+      const objectSchema = schema.properties[objectProperty];
+
+      const { responseType, renderedResponseType } =
+        extractResponseSchema(objectSchema);
+
+      return {
+        responseType,
+        renderedResponseType: `{ '${objectProperty}': ${renderedResponseType} } `,
+      };
+    }
+
+    if (schema?.type === 'array') {
+      const responseType = capitalize(
+        schema.items.$ref.replace('#/components/schemas/', ''),
+      );
+
+      return {
+        responseType,
+        renderedResponseType: `${responseType}[]`,
+      };
+    }
+
+    const responseType = capitalize(
+      schema.$ref.replace('#/components/schemas/', ''),
+    );
+
+    return {
+      responseType,
+      renderedResponseType: `${responseType}`,
+    };
+  } catch (e) {
+    console.log('Error with', schema);
+    throw e;
+  }
+};
+
 /**
  * Extracts endpoints from OAS defiinition into a flattened list of endpoints.
  * Converts to more useful object pattern for writing TS.
  */
-const extractEndpoints = (oasDefinition: any): Endpoint[] =>
-  Object.entries(oasDefinition.paths).reduce<any>((prev, [path, value]) => {
-    const methods = Object.entries(value as any).map(([method, args]: any) => {
+const extractEndpoints = (oasDefinition: OpenAPI3): Endpoint[] =>
+  Object.entries(oasDefinition.paths!).reduce<any>((prev, [path, value]) => {
+    const methods = Object.entries(value).map(([method, args]) => {
       // Response object definition extracted from possible return codes.
-      const response = (
-        args.responses?.['200'] ??
-        args.responses?.['201'] ??
-        args.responses?.['204']
-      )?.content?.['application/json']?.schema;
+      const responseSchema = (
+        (args.responses?.['200'] ??
+          args.responses?.['201'] ??
+          args.responses?.['204']) as any
+      )?.content?.['application/json']?.schema!;
+      if (!responseSchema) {
+        console.log('No response schema for', path, method, responseSchema);
+      }
 
-      // Extracts the string literal reference name for response type.
-      const responseType = (
-        response?.$ref ??
-        response?.items?.$ref ??
-        ''
-      ).replace('#/components/schemas/', '');
+      const { responseType, renderedResponseType } =
+        extractResponseSchema(responseSchema);
 
       // Includes path and query parameters.
       const parameters =
@@ -112,14 +162,17 @@ const extractEndpoints = (oasDefinition: any): Endpoint[] =>
         method,
         tags: args.tags.map(tagToFuncName),
         responseType,
-        responseTypeIsArray: response?.type === 'array',
+        renderedResponseType,
         parameters,
         requestBody,
+        summary:
+          path === '/api/v1/contractors/batch'
+            ? 'Batch Create Contractor'
+            : args.summary,
       };
     });
-
     return [...prev, ...methods];
-  }, []);
+  }, [] as Endpoint[]);
 
 const mapTypes = (type: string) => {
   switch (type) {
@@ -249,16 +302,10 @@ const writeEndpointFunction = (endpoint: Endpoint) => {
     ':(',
     writeEndpointFunctionParameters(endpoint),
     ')',
-    endpoint.responseType &&
-      `:Promise<${writeComponentType(endpoint.responseType)}${
-        endpoint.responseTypeIsArray ? '[]' : ''
-      }>`,
+    endpoint.responseType && `:Promise<${endpoint.renderedResponseType}>`,
     '=>',
     `httpClient.${endpoint.method}`,
-    endpoint.responseType &&
-      `<${writeComponentType(endpoint.responseType)}${
-        endpoint.responseTypeIsArray ? '[]' : ''
-      }>`,
+    endpoint.responseType && `<${endpoint.renderedResponseType}>`,
     '(',
     // replace url params with interpolation
     writeList([
@@ -291,7 +338,7 @@ const project = new Project({});
 
 /** Create working tags */
 const tags = extractTags(payload);
-const endpoints = extractEndpoints(payload).filter(
+const endpoints = extractEndpoints(payload as any).filter(
   (e: Endpoint) => !e.tags.includes('partnerships'),
 );
 
@@ -310,7 +357,7 @@ tags.forEach(tag => {
     [
       ...tagEndpoints.map(endpoint => endpoint.requestBody),
       ...tagEndpoints.map(endpoint => endpoint.responseType),
-    ].filter(item => !!item) as string[]
+    ].filter(item => !!item && item.toLowerCase() !== 'string') as string[]
   )
     .reduce((prev, cur) => {
       if (prev.includes(cur)) {
@@ -348,8 +395,10 @@ tags.forEach(tag => {
     writer.writeLine('return {');
 
     tagEndpoints.forEach(endpoint => {
-      writer.writeLine(writeDocBlock(endpoint.description));
-      writer.writeLine(writeEndpointFunction(endpoint));
+      writer.writeLine(
+        writeDocBlock(endpoint.description) + writeEndpointFunction(endpoint),
+      );
+      // writer.writeLine(writeEndpointFunction(endpoint));
     });
     writer.writeLine('}');
   });

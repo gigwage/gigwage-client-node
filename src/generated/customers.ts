@@ -32,23 +32,21 @@ export type ReturnACustomerOptions = {
 export function customersEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Creates a new customer. */
-
     createCustomer: ({
       ...options
-    }: CreateCustomerOptions): Promise<CustomerEntity> =>
+    }: CreateCustomerOptions): Promise<{ customer: CustomerEntity }> =>
       httpClient
-        .post<CustomerEntity>(`/api/v1/customers`, options)
+        .post<{ customer: CustomerEntity }>(`/api/v1/customers`, options)
         .then(r => r.data),
 
     /** List customers. */
-
     listCustomers: ({
       page,
       per_page,
       offset,
-    }: ListCustomersOptions = {}): Promise<CustomerEntity[]> =>
+    }: ListCustomersOptions = {}): Promise<{ customers: CustomerEntity[] }> =>
       httpClient
-        .get<CustomerEntity[]>(`/api/v1/customers`, {
+        .get<{ customers: CustomerEntity[] }>(`/api/v1/customers`, {
           page,
           per_page,
           offset,
@@ -56,31 +54,28 @@ export function customersEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Updates an existing customer */
-
     updateACustomer: ({
       id,
       ...options
-    }: UpdateACustomerOptions): Promise<CustomerEntity> =>
+    }: UpdateACustomerOptions): Promise<{ customer: CustomerEntity }> =>
       httpClient
-        .patch<CustomerEntity>(`/api/v1/customers/${id}`, options)
+        .patch<{ customer: CustomerEntity }>(`/api/v1/customers/${id}`, options)
         .then(r => r.data),
 
     /** Delete customer record. Note: You can only destroy customer that not associated with any Accounts Receivable Payments */
-
     deleteACustomer: ({
       id,
-    }: DeleteACustomerOptions): Promise<CustomerEntity> =>
+    }: DeleteACustomerOptions): Promise<{ customer: CustomerEntity }> =>
       httpClient
-        .delete<CustomerEntity>(`/api/v1/customers/${id}`)
+        .delete<{ customer: CustomerEntity }>(`/api/v1/customers/${id}`)
         .then(r => r.data),
 
     /** Returns the details for a given customer. */
-
     returnACustomer: ({
       id,
-    }: ReturnACustomerOptions): Promise<CustomerEntity> =>
+    }: ReturnACustomerOptions): Promise<{ customer: CustomerEntity }> =>
       httpClient
-        .get<CustomerEntity>(`/api/v1/customers/${id}`)
+        .get<{ customer: CustomerEntity }>(`/api/v1/customers/${id}`)
         .then(r => r.data),
   };
 }

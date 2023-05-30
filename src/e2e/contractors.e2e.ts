@@ -11,32 +11,33 @@ const client = createGigwageClient({
 });
 
 describe('contractors', () => {
-  // it('createContractor', async () => {
-  //   const contractor = {
-  //     first_name: faker.name.firstName(),
-  //     last_name: faker.name.lastName(),
-  //     email: faker.internet.email().toLowerCase(),
-  //   };
-  //   const data = await client.createContractor({
-  //     contractor,
-  //   });
+  it('createContractor', async () => {
+    const contractor = {
+      first_name: faker.name.firstName(),
+      last_name: faker.name.lastName(),
+      email: faker.internet.email().toLowerCase(),
+    };
+    const data = await client.createContractor({
+      contractor,
+    });
 
-  //   expect(data).toMatchObject(contractor);
-  // });
+    expect(data).toMatchObject({ contractor });
+  });
 
   it('listContractors', async () => {
     const data = await client.listContractors();
+    console.log(data);
 
-    expect(data).toMatchObject([]);
+    expect(data).toMatchObject({ contractors: expect.any(Array) });
   });
 
-  // it('createApiKey', async () => {
-  //   const data = await client.createAPIKey({
-  //     api_key: { name: 'test', test_key: true },
-  //   });
+  it('createApiKey', async () => {
+    const data = await client.createAPIKey({
+      api_key: { name: 'test', test_key: true },
+    });
 
-  //   expect(data).toMatchObject({
-  //     name: 'test',
-  //   });
-  // });
+    expect(data).toMatchObject({
+      api_key: { name: 'test' },
+    });
+  });
 });

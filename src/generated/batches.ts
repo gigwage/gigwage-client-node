@@ -30,19 +30,21 @@ export type ShowBatchOptions = {
 export function batchesEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** Creates a new batch of payments. */
-
-    createBatch: ({ ...options }: CreateBatchOptions): Promise<BatchEntity> =>
+    createBatch: ({
+      ...options
+    }: CreateBatchOptions): Promise<{ batch: BatchEntity }> =>
       httpClient
-        .post<BatchEntity>(`/api/v1/batches`, options)
+        .post<{ batch: BatchEntity }>(`/api/v1/batches`, options)
         .then(r => r.data),
 
     /** Returns a list of batches, sorted newest-first. */
-
-    listBatches: ({ page, per_page, offset }: ListBatchesOptions = {}): Promise<
-      BatchEntity[]
-    > =>
+    listBatches: ({
+      page,
+      per_page,
+      offset,
+    }: ListBatchesOptions = {}): Promise<{ batches: BatchEntity[] }> =>
       httpClient
-        .get<BatchEntity[]>(`/api/v1/batches`, {
+        .get<{ batches: BatchEntity[] }>(`/api/v1/batches`, {
           page,
           per_page,
           offset,
@@ -50,15 +52,14 @@ export function batchesEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Returns the payments from a single batch. */
-
     showBatchPayments: ({
       id,
       page,
       per_page,
       offset,
-    }: ShowBatchPaymentsOptions): Promise<BatchEntity> =>
+    }: ShowBatchPaymentsOptions): Promise<{ payments: BatchEntity }> =>
       httpClient
-        .get<BatchEntity>(`/api/v1/batches/${id}/payments`, {
+        .get<{ payments: BatchEntity }>(`/api/v1/batches/${id}/payments`, {
           page,
           per_page,
           offset,
@@ -66,8 +67,9 @@ export function batchesEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Returns the details of a single batch. */
-
-    showBatch: ({ id }: ShowBatchOptions): Promise<BatchEntity> =>
-      httpClient.get<BatchEntity>(`/api/v1/batches/${id}`).then(r => r.data),
+    showBatch: ({ id }: ShowBatchOptions): Promise<{ batch: BatchEntity }> =>
+      httpClient
+        .get<{ batch: BatchEntity }>(`/api/v1/batches/${id}`)
+        .then(r => r.data),
   };
 }

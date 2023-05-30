@@ -3,7 +3,7 @@
   "info": {
     "title": "API Endpoints",
     "description": "A description of the API.",
-    "termsOfService": "https://gigwage.com/tos",
+    "termsOfService": "https://gigwage.com/terms",
     "contact": {
       "name": "Gig Wage Team",
       "email": "support@gigwage.com"
@@ -107,7 +107,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -139,6 +144,73 @@
         }
       }
     },
+    "/api/v1/contractors/batch": {
+      "post": {
+        "summary": "Create contractor",
+        "description": "Creates a new contractor.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postApiV1ContractorsBatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a new contractor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contractors": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contractors"
+        ],
+        "operationId": "postApiV1ContractorsBatch",
+        "x-readme": {
+          "samples-languages": [
+            "ruby",
+            "javascript"
+          ],
+          "explorer-enabled": false,
+          "code-samples": [
+            {
+              "language": "ruby",
+              "code": "require 'httparty'\nbody = { contractor: {\n  first_name: 'John',\n  last_name: 'Smith',\n  email: 'jsmith@gigwage.com'\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/contractors',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+            },
+            {
+              "language": "javascript",
+              "code": "let body = JSON.stringify({\"contractor\": {\n  \"first_name\": \"John\",\n  \"last_name\": \"Smith\",\n  \"email\": \"jsmith@gigwage.com\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/contractors\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+            }
+          ]
+        }
+      }
+    },
     "/api/v1/contractors": {
       "post": {
         "summary": "Create contractor",
@@ -159,7 +231,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -253,9 +330,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -309,7 +391,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContractorInvitationEntity"
+                  "type": "object",
+                  "properties": {
+                    "invitation": {
+                      "$ref": "#/components/schemas/ContractorInvitationEntity"
+                    }
+                  }
                 }
               }
             }
@@ -375,7 +462,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -429,7 +521,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -498,7 +595,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -595,9 +697,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099s": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Ten99Entity"
+                      }
+                    }
                   }
                 }
               }
@@ -651,7 +758,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -717,7 +829,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -780,7 +897,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -844,7 +966,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -910,7 +1037,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -966,7 +1098,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1032,7 +1169,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1064,11 +1206,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { account: { \n  account_number: '123', \n  routing_number: '456', \n  name: 'Schwab Checking', \n  account_type: 'checking' \n} }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/contractors/1/accounts',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { account: {\n  account_number: '123',\n  routing_number: '456',\n  name: 'Schwab Checking',\n  account_type: 'checking'\n} }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/contractors/1/accounts',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"account\": {\n  \"account_number\": '123', \n  \"routing_number\": '456', \n  \"name\": 'Schwab Checking', \n  \"account_type\": 'checking' \n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/contractors/1/accounts\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body \n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"account\": {\n  \"account_number\": '123',\n  \"routing_number\": '456',\n  \"name\": 'Schwab Checking',\n  \"account_type\": 'checking'\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/contractors/1/accounts\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -1126,9 +1268,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AccountEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -1192,7 +1339,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1253,7 +1405,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1316,7 +1473,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1389,7 +1551,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "identity_document": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1411,11 +1578,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { identity_document: { \n  subtype: 'driver_license', \n  front: File.new(\"front.jpg\", \"rb\"), \n  back: File.new(\"back.jpg\", \"rb\") \n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/contractors/1/identity_document',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { identity_document: {\n  subtype: 'driver_license',\n  front: File.new(\"front.jpg\", \"rb\"),\n  back: File.new(\"back.jpg\", \"rb\")\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/contractors/1/identity_document',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"identity_document\": {\n  \"subtype\": \"driver_license\" \n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/contractors/1/identity_document\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"identity_document\": {\n  \"subtype\": \"driver_license\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/contractors/1/identity_document\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -1441,7 +1608,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1547,9 +1719,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PaymentEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -1603,7 +1780,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1659,7 +1841,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1730,7 +1917,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1784,7 +1976,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1850,7 +2047,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LineItemEntity"
+                  "type": "object",
+                  "properties": {
+                    "line_item": {
+                      "$ref": "#/components/schemas/LineItemEntity"
+                    }
+                  }
                 }
               }
             }
@@ -1930,9 +2132,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TransferTransactionEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -1983,7 +2190,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfer": {
+                      "$ref": "#/components/schemas/TransferTransactionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2015,11 +2227,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { transfer: { \n  amount: 10.25, \n  direction: 'fund', \n  nonce: 'abc123' \n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/transfers',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { transfer: {\n  amount: 10.25,\n  direction: 'fund',\n  nonce: 'abc123'\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/transfers',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"transfer\": {\n  \"amount\": 10.25, \n  \"direction\": \"fund\", \n  \"nonce\": \"abc123\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/transfers\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"transfer\": {\n  \"amount\": 10.25,\n  \"direction\": \"fund\",\n  \"nonce\": \"abc123\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/transfers\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -2046,7 +2258,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfer": {
+                      "$ref": "#/components/schemas/TransferTransactionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2107,7 +2324,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfer": {
+                      "$ref": "#/components/schemas/TransferTransactionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2162,7 +2384,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiKeyEntity"
+                  "type": "object",
+                  "properties": {
+                    "api_key": {
+                      "$ref": "#/components/schemas/ApiKeyEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2247,9 +2474,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ApiKeyEntity"
+                  "type": "object",
+                  "properties": {
+                    "api_keys": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ApiKeyEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -2303,7 +2535,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiKeyEntity"
+                  "type": "object",
+                  "properties": {
+                    "api_key": {
+                      "$ref": "#/components/schemas/ApiKeyEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2357,7 +2594,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiKeyEntity"
+                  "type": "object",
+                  "properties": {
+                    "api_key": {
+                      "$ref": "#/components/schemas/ApiKeyEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2412,7 +2654,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2497,9 +2744,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscriptions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -2553,7 +2805,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2617,7 +2874,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2678,7 +2940,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2732,7 +2999,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2788,7 +3060,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscriptionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2843,7 +3120,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "batch": {
+                      "$ref": "#/components/schemas/BatchEntity"
+                    }
+                  }
                 }
               }
             }
@@ -2875,11 +3157,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { 'batch': { \n  nonce: 'abc123', \n  payments: [{\n    contractor_id: 234,\n    line_items: [{\n      amount: 10.25\n    }]\n  }] \n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/1099s/1/submit',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { 'batch': {\n  nonce: 'abc123',\n  payments: [{\n    contractor_id: 234,\n    line_items: [{\n      amount: 10.25\n    }]\n  }]\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/1099s/1/submit',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"batch\": {\n  \"nonce\": \"abc123\", \n  \"payments\": [{\n    \"contractor_id\": 234,\n    \"line_items\": [{\n      \"amount\": 10.25\n    }]\n  }]\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/1099s/1/submit\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"batch\": {\n  \"nonce\": \"abc123\",\n  \"payments\": [{\n    \"contractor_id\": 234,\n    \"line_items\": [{\n      \"amount\": 10.25\n    }]\n  }]\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/1099s/1/submit\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -2928,9 +3210,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "batches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BatchEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -3017,7 +3304,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "payments": {
+                      "$ref": "#/components/schemas/BatchEntity"
+                    }
+                  }
                 }
               }
             }
@@ -3073,7 +3365,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "batch": {
+                      "$ref": "#/components/schemas/BatchEntity"
+                    }
+                  }
                 }
               }
             }
@@ -3118,7 +3415,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SubaccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "gigwage_account": {
+                      "$ref": "#/components/schemas/SubaccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -3170,7 +3472,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -3255,9 +3562,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099s": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Ten99Entity"
+                      }
+                    }
                   }
                 }
               }
@@ -3306,14 +3618,7 @@
           }
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/patchApiV11099s"
-              }
-            }
-          },
-          "required": true
+          "$ref": "#/components/requestBodies/patchApiV11099sId"
         },
         "responses": {
           "200": {
@@ -3321,7 +3626,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -3353,11 +3663,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { '1099': { contractor_id: 123, type: 'K' } }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/1099s/1',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { '1099': { contractor_id: 123, box1a: 100.25 } }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/1099s/1',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"1099\": {\"contractor_id\": \"123\", \"type\": \"K\"}});\nfetch(\"https://sandbox.gigwage.com/api/v1/1099s/1\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"1099\": {\"contractor_id\": \"123\", \"box1a\": \"100.25\"}});\nfetch(\"https://sandbox.gigwage.com/api/v1/1099s/1\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -3382,7 +3692,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -3443,7 +3758,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -3555,7 +3875,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -3618,7 +3943,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -3745,9 +4075,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WebhookEntity"
+                  "type": "object",
+                  "properties": {
+                    "webhooks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -3844,7 +4179,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebhookEntity"
+                  "type": "object",
+                  "properties": {
+                    "webhook": {
+                      "$ref": "#/components/schemas/WebhookEntity"
+                    }
+                  }
                 }
               }
             }
@@ -3968,7 +4308,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4053,9 +4398,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CustomerEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -4119,7 +4469,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4173,7 +4528,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4224,7 +4584,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4279,7 +4644,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArPaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "ar_payment": {
+                      "$ref": "#/components/schemas/ArPaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4364,9 +4734,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ArPaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "ar_payments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ArPaymentEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -4420,7 +4795,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArPaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "ar_payment": {
+                      "$ref": "#/components/schemas/ArPaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4503,7 +4883,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4531,6 +4916,85 @@
             {
               "language": "javascript",
               "code": "fetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/contractors/find_by?email=karen@example.com\", {\n  \"headers\": headers\n}).then((response) => {\n  console.log(response.body)\n})\n"
+            }
+          ]
+        }
+      }
+    },
+    "/api/v1/businesses/{business_id}/contractors/batch": {
+      "post": {
+        "summary": "Create contractor",
+        "description": "Creates a new contractor.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "business_id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postApiV1BusinessesBusinessIdContractorsBatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a new contractor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contractors": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Partnerships",
+          "Contractors"
+        ],
+        "operationId": "postApiV1BusinessesBusinessIdContractorsBatch",
+        "x-readme": {
+          "samples-languages": [
+            "ruby",
+            "javascript"
+          ],
+          "explorer-enabled": false,
+          "code-samples": [
+            {
+              "language": "ruby",
+              "code": "require 'httparty'\nbody = { contractor: {\n  first_name: 'John',\n  last_name: 'Smith',\n  email: 'jsmith@gigwage.com'\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/contractors',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+            },
+            {
+              "language": "javascript",
+              "code": "let body = JSON.stringify({\"contractor\": {\n  \"first_name\": \"John\",\n  \"last_name\": \"Smith\",\n  \"email\": \"jsmith@gigwage.com\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/contractors\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -4567,7 +5031,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4671,9 +5140,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -4737,7 +5211,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContractorInvitationEntity"
+                  "type": "object",
+                  "properties": {
+                    "invitation": {
+                      "$ref": "#/components/schemas/ContractorInvitationEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4813,7 +5292,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4877,7 +5361,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -4956,7 +5445,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5063,9 +5557,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099s": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Ten99Entity"
+                      }
+                    }
                   }
                 }
               }
@@ -5129,7 +5628,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -5205,7 +5709,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -5278,7 +5787,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -5352,7 +5866,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/W9Entity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/W9Entity"
+                    }
+                  }
                 }
               }
             }
@@ -5428,7 +5947,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5494,7 +6018,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                  "type": "object",
+                  "properties": {
+                    "contractor": {
+                      "$ref": "#/components/schemas/BusinessRelationshipEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5570,7 +6099,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5603,11 +6137,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { account: { \n  account_number: '123', \n  routing_number: '456', \n  name: 'Schwab Checking', \n  account_type: 'checking' \n} }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/accounts',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { account: {\n  account_number: '123',\n  routing_number: '456',\n  name: 'Schwab Checking',\n  account_type: 'checking'\n} }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/accounts',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"account\": {\n  \"account_number\": '123', \n  \"routing_number\": '456', \n  \"name\": 'Schwab Checking', \n  \"account_type\": 'checking' \n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/accounts\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body \n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"account\": {\n  \"account_number\": '123',\n  \"routing_number\": '456',\n  \"name\": 'Schwab Checking',\n  \"account_type\": 'checking'\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/accounts\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -5674,9 +6208,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AccountEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -5750,7 +6289,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5821,7 +6365,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5894,7 +6443,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -5977,7 +6531,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "identity_document": {
+                      "$ref": "#/components/schemas/AccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6000,11 +6559,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { identity_document: { \n  subtype: 'driver_license', \n  front: File.new(\"front.jpg\", \"rb\"), \n  back: File.new(\"back.jpg\", \"rb\") \n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/identity_document',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { identity_document: {\n  subtype: 'driver_license',\n  front: File.new(\"front.jpg\", \"rb\"),\n  back: File.new(\"back.jpg\", \"rb\")\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/identity_document',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"identity_document\": {\n  \"subtype\": \"driver_license\" \n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/identity_document\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"identity_document\": {\n  \"subtype\": \"driver_license\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/contractors/1/identity_document\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -6041,7 +6600,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6157,9 +6721,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PaymentEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -6223,7 +6792,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6289,7 +6863,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6370,7 +6949,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6434,7 +7018,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "$ref": "#/components/schemas/PaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6510,7 +7099,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LineItemEntity"
+                  "type": "object",
+                  "properties": {
+                    "line_item": {
+                      "$ref": "#/components/schemas/LineItemEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6600,9 +7194,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TransferTransactionEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -6665,7 +7264,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfer": {
+                      "$ref": "#/components/schemas/TransferTransactionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6698,11 +7302,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { transfer: { \n  amount: 10.25, \n  direction: 'fund', \n  nonce: 'abc123' \n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/transfers',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { transfer: {\n  amount: 10.25,\n  direction: 'fund',\n  nonce: 'abc123'\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/transfers',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"transfer\": {\n  \"amount\": 10.25, \n  \"direction\": \"fund\", \n  \"nonce\": \"abc123\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/transfers\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"transfer\": {\n  \"amount\": 10.25,\n  \"direction\": \"fund\",\n  \"nonce\": \"abc123\"\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/transfers\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -6738,7 +7342,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfer": {
+                      "$ref": "#/components/schemas/TransferTransactionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6809,7 +7418,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferTransactionEntity"
+                  "type": "object",
+                  "properties": {
+                    "transfer": {
+                      "$ref": "#/components/schemas/TransferTransactionEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6876,7 +7490,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "batch": {
+                      "$ref": "#/components/schemas/BatchEntity"
+                    }
+                  }
                 }
               }
             }
@@ -6909,11 +7528,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { 'batch': { \n  nonce: 'abc123', \n  payments: [{\n    contractor_id: 234,\n    line_items: [{\n      amount: 10.25\n    }]\n  }] \n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1/submit',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { 'batch': {\n  nonce: 'abc123',\n  payments: [{\n    contractor_id: 234,\n    line_items: [{\n      amount: 10.25\n    }]\n  }]\n} }.to_json\nresponse = HTTParty.post(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1/submit',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"batch\": {\n  \"nonce\": \"abc123\", \n  \"payments\": [{\n    \"contractor_id\": 234,\n    \"line_items\": [{\n      \"amount\": 10.25\n    }]\n  }]\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1/submit\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"batch\": {\n  \"nonce\": \"abc123\",\n  \"payments\": [{\n    \"contractor_id\": 234,\n    \"line_items\": [{\n      \"amount\": 10.25\n    }]\n  }]\n}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1/submit\", {\n  \"method\": \"POST\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -6971,9 +7590,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "batches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BatchEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -7070,7 +7694,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "payments": {
+                      "$ref": "#/components/schemas/BatchEntity"
+                    }
+                  }
                 }
               }
             }
@@ -7136,7 +7765,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchEntity"
+                  "type": "object",
+                  "properties": {
+                    "batch": {
+                      "$ref": "#/components/schemas/BatchEntity"
+                    }
+                  }
                 }
               }
             }
@@ -7193,7 +7827,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SubaccountEntity"
+                  "type": "object",
+                  "properties": {
+                    "gigwage_account": {
+                      "$ref": "#/components/schemas/SubaccountEntity"
+                    }
+                  }
                 }
               }
             }
@@ -7257,7 +7896,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -7352,9 +7996,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099s": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Ten99Entity"
+                      }
+                    }
                   }
                 }
               }
@@ -7413,14 +8062,7 @@
           }
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/patchApiV1BusinessesBusinessId1099s"
-              }
-            }
-          },
-          "required": true
+          "$ref": "#/components/requestBodies/patchApiV11099sId"
         },
         "responses": {
           "200": {
@@ -7428,7 +8070,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -7461,11 +8108,11 @@
           "code-samples": [
             {
               "language": "ruby",
-              "code": "require 'httparty'\nbody = { '1099': { contractor_id: 123, type: 'K' } }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
+              "code": "require 'httparty'\nbody = { '1099': { contractor_id: 123, box1a: 100.25 } }.to_json\nresponse = HTTParty.patch(\n  'https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1',\n  headers: headers_hash,\n  body: body\n)\nputs response.body\n"
             },
             {
               "language": "javascript",
-              "code": "let body = JSON.stringify({\"1099\": {\"contractor_id\": \"123\", \"type\": \"K\"}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
+              "code": "let body = JSON.stringify({\"1099\": {\"contractor_id\": \"123\", \"box1a\": \"100.25\"}});\nfetch(\"https://sandbox.gigwage.com/api/v1/businesses/230/1099s/1\", {\n  \"method\": \"PATCH\",\n  \"headers\": headers,\n  \"body\": body\n}).then((response) => {\n  console.log(response.body)\n})\n"
             }
           ]
         }
@@ -7499,7 +8146,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -7570,7 +8222,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -7702,7 +8359,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -7775,7 +8437,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ten99Entity"
+                  "type": "object",
+                  "properties": {
+                    "1099": {
+                      "$ref": "#/components/schemas/Ten99Entity"
+                    }
+                  }
                 }
               }
             }
@@ -7849,7 +8516,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -7944,9 +8616,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CustomerEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -8020,7 +8697,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -8084,7 +8766,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -8145,7 +8832,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEntity"
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/CustomerEntity"
+                    }
+                  }
                 }
               }
             }
@@ -8212,7 +8904,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArPaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "ar_payment": {
+                      "$ref": "#/components/schemas/ArPaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -8307,9 +9004,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ArPaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "ar_payments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ArPaymentEntity"
+                      }
+                    }
                   }
                 }
               }
@@ -8373,7 +9075,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArPaymentEntity"
+                  "type": "object",
+                  "properties": {
+                    "ar_payment": {
+                      "$ref": "#/components/schemas/ArPaymentEntity"
+                    }
+                  }
                 }
               }
             }
@@ -8416,6 +9123,111 @@
     }
   ],
   "components": {
+    "requestBodies": {
+      "patchApiV11099sId": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "1099[box1a]": {
+                  "description": "Box 1a (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box1b]": {
+                  "description": "Box 1b (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box2]": {
+                  "description": "Box 2 (boolean) - Type NEC only",
+                  "type": "boolean"
+                },
+                "1099[box3]": {
+                  "description": "Box 3 (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box4]": {
+                  "description": "Box 4 (decimal)",
+                  "type": "string"
+                },
+                "1099[box5a]": {
+                  "description": "Box 5a (decimal)",
+                  "type": "string"
+                },
+                "1099[box5b]": {
+                  "description": "Box 5b (decimal)",
+                  "type": "string"
+                },
+                "1099[box5c]": {
+                  "description": "Box 5c (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5d]": {
+                  "description": "Box 5d (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5e]": {
+                  "description": "Box 5e (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5f]": {
+                  "description": "Box 5f (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5g]": {
+                  "description": "Box 5g (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5h]": {
+                  "description": "Box 5h (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5i]": {
+                  "description": "Box 5i (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5j]": {
+                  "description": "Box 5j (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5k]": {
+                  "description": "Box 5k (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box5l]": {
+                  "description": "Box 5l (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box6a]": {
+                  "description": "Box 6a (string)",
+                  "type": "string"
+                },
+                "1099[box6b]": {
+                  "description": "Box 6b (string)",
+                  "type": "string"
+                },
+                "1099[box7a]": {
+                  "description": "Box 7a (decimal) - Type NEC only",
+                  "type": "string"
+                },
+                "1099[box7b]": {
+                  "description": "Box 7b (decimal) - Type NEC only",
+                  "type": "string"
+                },
+                "1099[box8a]": {
+                  "description": "Box 8a (decimal) - Type K only",
+                  "type": "string"
+                },
+                "1099[box8b]": {
+                  "description": "Box 8b (decimal) - Type K only",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "api_key": {
         "type": "apiKey",
@@ -8481,19 +9293,19 @@
           "invited_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.561Z",
+            "example": "2023-05-25T19:24:32.640Z",
             "description": "When the contractor was sent an invitation to onboard"
           },
           "invitation_accepted_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.561Z",
+            "example": "2023-05-25T19:24:32.641Z",
             "description": "When the contractor accepted the invitation"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.561Z",
+            "example": "2023-05-25T19:24:32.641Z",
             "description": "When the contractor record was created"
           },
           "phone_number": {
@@ -8548,6 +9360,71 @@
         },
         "description": "BusinessRelationshipEntity model"
       },
+      "postApiV1ContractorsBatch": {
+        "type": "object",
+        "properties": {
+          "contractors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "Contractor email address"
+                },
+                "first_name": {
+                  "type": "string",
+                  "description": "Contractor's first name"
+                },
+                "last_name": {
+                  "type": "string",
+                  "description": "Contractor's last name"
+                },
+                "external_id": {
+                  "type": "string",
+                  "description": "Customer assigned ID"
+                },
+                "send_invite": {
+                  "type": "boolean",
+                  "description": "Send email invitation when set to TRUE",
+                  "default": false
+                }
+              },
+              "required": [
+                "email",
+                "first_name",
+                "last_name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "contractors"
+        ],
+        "description": "Creates a new contractor."
+      },
+      "RecordError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Required field is missing",
+            "description": "Summary error messages"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "First name is missing",
+                "Last name is missing"
+              ]
+            },
+            "description": "Detail per error"
+          }
+        },
+        "description": "RecordError model"
+      },
       "postApiV1Contractors": {
         "type": "object",
         "properties": {
@@ -8588,28 +9465,6 @@
         ],
         "description": "Creates a new contractor."
       },
-      "RecordError": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string",
-            "example": "Required field is missing",
-            "description": "Summary error messages"
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": [
-                "First name is missing",
-                "Last name is missing"
-              ]
-            },
-            "description": "Detail per error"
-          }
-        },
-        "description": "RecordError model"
-      },
       "ContractorInvitationEntity": {
         "type": "object",
         "properties": {
@@ -8647,7 +9502,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.722Z",
+            "example": "2023-05-25T19:24:32.761Z",
             "description": "When the contractor was sent an invitation to onboard"
           }
         },
@@ -8768,34 +9623,46 @@
             "example": 987,
             "description": "Id of this 1099's correction, if it has one"
           },
-          "second_tin": {
-            "type": "string"
-          },
           "box1": {
             "type": "string"
           },
-          "box2": {
+          "box10": {
             "type": "string"
           },
-          "box4": {
+          "box11": {
             "type": "string"
           },
-          "box5a": {
+          "box12": {
             "type": "string"
           },
-          "box5b": {
+          "box13": {
             "type": "string"
           },
-          "box6a": {
+          "box14": {
             "type": "string"
           },
-          "box6b": {
+          "box15a": {
             "type": "string"
           },
-          "box7a": {
+          "box15b": {
             "type": "string"
           },
-          "box7b": {
+          "box16aState": {
+            "type": "string"
+          },
+          "box16aStateNo": {
+            "type": "string"
+          },
+          "box16bState": {
+            "type": "string"
+          },
+          "box16bStateNo": {
+            "type": "string"
+          },
+          "box17a": {
+            "type": "string"
+          },
+          "box17b": {
             "type": "string"
           },
           "box1a": {
@@ -8804,7 +9671,22 @@
           "box1b": {
             "type": "string"
           },
+          "box2": {
+            "type": "string"
+          },
           "box3": {
+            "type": "string"
+          },
+          "box4": {
+            "type": "string"
+          },
+          "box5": {
+            "type": "string"
+          },
+          "box5a": {
+            "type": "string"
+          },
+          "box5b": {
             "type": "string"
           },
           "box5c": {
@@ -8837,64 +9719,37 @@
           "box5l": {
             "type": "string"
           },
+          "box6": {
+            "type": "string"
+          },
+          "box6a": {
+            "type": "string"
+          },
+          "box6b": {
+            "type": "string"
+          },
+          "box7": {
+            "type": "string"
+          },
+          "box7a": {
+            "type": "string"
+          },
+          "box7b": {
+            "type": "string"
+          },
+          "box8": {
+            "type": "string"
+          },
           "box8a": {
             "type": "string"
           },
           "box8b": {
             "type": "string"
           },
-          "box5": {
-            "type": "string"
-          },
-          "box6": {
-            "type": "string"
-          },
-          "box7": {
-            "type": "string"
-          },
-          "box8": {
-            "type": "string"
-          },
           "box9": {
             "type": "string"
           },
-          "box10": {
-            "type": "string"
-          },
-          "box11": {
-            "type": "string"
-          },
-          "box12": {
-            "type": "string"
-          },
-          "box13": {
-            "type": "string"
-          },
-          "box14": {
-            "type": "string"
-          },
-          "box15a": {
-            "type": "string"
-          },
-          "box15b": {
-            "type": "string"
-          },
-          "box16aStateNo": {
-            "type": "string"
-          },
-          "box16aState": {
-            "type": "string"
-          },
-          "box16bStateNo": {
-            "type": "string"
-          },
-          "box16bState": {
-            "type": "string"
-          },
-          "box17a": {
-            "type": "string"
-          },
-          "box17b": {
+          "second_tin": {
             "type": "string"
           }
         },
@@ -9131,7 +9986,7 @@
               },
               "allow_tin_skip": {
                 "type": "boolean",
-                "description": "Allow skip TIN check when nine zeros are passed - '0000000000'",
+                "description": "Skip TIN check",
                 "default": false
               }
             }
@@ -9246,7 +10101,7 @@
               },
               "allow_tin_skip": {
                 "type": "boolean",
-                "description": "Allow skip TIN check when nine zeros are passed - '0000000000'",
+                "description": "Skip TIN check",
                 "default": false
               }
             },
@@ -9421,13 +10276,13 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.739Z",
+            "example": "2023-05-25T19:24:32.772Z",
             "description": "When the bank account record was created"
           },
           "deactivated_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.739Z",
+            "example": "2023-05-25T19:24:32.772Z",
             "description": "When the bank account record was deactivated"
           }
         },
@@ -9616,13 +10471,13 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2022-12-04T00:04:07.726Z",
+            "example": "2023-04-25T19:24:32.763Z",
             "description": "When the payment was created"
           },
           "completed_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2022-12-07T00:04:07.726Z",
+            "example": "2023-04-27T19:24:32.763Z",
             "description": "When the payment was completed, if applicable. This is an estimation provided by the receiving bank."
           },
           "status": {
@@ -9741,19 +10596,19 @@
           "invited_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.725Z",
+            "example": "2023-05-25T19:24:32.763Z",
             "description": "When the contractor was sent an invitation to onboard"
           },
           "invitation_accepted_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.725Z",
+            "example": "2023-05-25T19:24:32.763Z",
             "description": "When the contractor accepted the invitation"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.726Z",
+            "example": "2023-05-25T19:24:32.763Z",
             "description": "When the contractor record was created"
           },
           "phone_number": {
@@ -9861,7 +10716,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.910Z",
+            "example": "2023-05-25T19:24:32.896Z",
             "description": "When the transfer was created"
           }
         },
@@ -9943,13 +10798,13 @@
           "revoked_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.988Z",
+            "example": "2023-05-25T19:24:32.954Z",
             "description": "When the api key was revoked"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:07.988Z",
+            "example": "2023-05-25T19:24:32.954Z",
             "description": "When the api key was created"
           }
         },
@@ -10003,13 +10858,13 @@
           "deactivated_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:08.062Z",
+            "example": "2023-05-25T19:24:33.020Z",
             "description": "When the subscription was deactivated"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:08.062Z",
+            "example": "2023-05-25T19:24:33.020Z",
             "description": "When the subscription was created"
           }
         },
@@ -10163,7 +11018,7 @@
           },
           "created_at": {
             "type": "string",
-            "example": "2023-01-04T00:04:08.076Z",
+            "example": "2023-05-25T19:24:33.029Z",
             "description": "Date when batch was created"
           }
         },
@@ -10205,77 +11060,92 @@
                   "MISC"
                 ]
               },
-              "box1": {
-                "type": "string",
-                "description": "Box 1 (decimal) - Type NEC only"
-              },
-              "box1a": {
-                "type": "string",
-                "description": "Box 1a (decimal) - Type K only"
-              },
               "box1b": {
                 "type": "string",
-                "description": "Box 1b (decimal) - Type K only"
+                "description": "Box 1b (decimal)"
               },
               "box2": {
-                "type": "boolean",
-                "description": "Box 2 (boolean for NEC, string for K)"
+                "type": "number",
+                "format": "float",
+                "description": "Box 2 (boolean)",
+                "enum": [
+                  true,
+                  false,
+                  "true",
+                  "false",
+                  null
+                ],
+                "default": null
               },
               "box3": {
-                "type": "string",
-                "description": "Box 3 (decimal) - Type K only"
+                "type": "integer",
+                "format": "int32",
+                "description": "Box 3 (integer)"
+              },
+              "box5c": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 5c (decimal)"
               },
               "box4": {
-                "type": "string",
+                "type": "number",
+                "format": "float",
                 "description": "Box 4 (decimal)"
               },
               "box5a": {
-                "type": "string",
-                "description": "Box 5a (decimal)"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5a (string)"
               },
               "box5b": {
-                "type": "string",
-                "description": "Box 5b (decimal)"
-              },
-              "box5c": {
-                "type": "string",
-                "description": "Box 5c (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5b (string)"
               },
               "box5d": {
-                "type": "string",
-                "description": "Box 5d (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5d (decimal)"
               },
               "box5e": {
-                "type": "string",
-                "description": "Box 5e (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5e (decimal)"
               },
               "box5f": {
-                "type": "string",
-                "description": "Box 5f (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5f (decimal)"
               },
               "box5g": {
-                "type": "string",
-                "description": "Box 5g (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5g (decimal)"
               },
               "box5h": {
-                "type": "string",
-                "description": "Box 5h (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5h (decimal)"
               },
               "box5i": {
-                "type": "string",
-                "description": "Box 5i (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5i (decimal)"
               },
               "box5j": {
-                "type": "string",
-                "description": "Box 5j (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5j (decimal)"
               },
               "box5k": {
-                "type": "string",
-                "description": "Box 5k (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5k (decimal)"
               },
               "box5l": {
-                "type": "string",
-                "description": "Box 5l (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5l (decimal)"
               },
               "box6a": {
                 "type": "string",
@@ -10286,20 +11156,84 @@
                 "description": "Box 6b (string)"
               },
               "box7a": {
-                "type": "string",
-                "description": "Box 7a (decimal) - Type NEC only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 7a (decimal)"
               },
               "box7b": {
-                "type": "string",
-                "description": "Box 7b (decimal) - Type NEC only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 7b (decimal)"
               },
               "box8a": {
                 "type": "string",
-                "description": "Box 8a (decimal) - Type K only"
+                "description": "Box 8a (decimal)"
               },
               "box8b": {
                 "type": "string",
-                "description": "Box 8b (decimal) - Type K only"
+                "description": "Box 8b (decimal)"
+              },
+              "box1": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 1 (decimal)"
+              },
+              "box5": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 5 (decimal)"
+              },
+              "box6": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 6 (decimal)"
+              },
+              "box7": {
+                "type": "string",
+                "description": "Box 7 (boolean)",
+                "enum": [
+                  true,
+                  false,
+                  "true",
+                  "false",
+                  null
+                ],
+                "default": null
+              },
+              "box8": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 8 (decimal)"
+              },
+              "box9": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 9 (decimal)"
+              },
+              "box10": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 10 (decimal)"
+              },
+              "box11": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 11 (decimal)"
+              },
+              "box12": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 12 (decimal)"
+              },
+              "box13": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 13 (decimal)"
+              },
+              "box14": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 14 (decimal)"
               }
             },
             "required": [
@@ -10312,127 +11246,6 @@
           "1099"
         ],
         "description": "Create a 1099 for a contractor."
-      },
-      "patchApiV11099s": {
-        "type": "object",
-        "properties": {
-          "1099": {
-            "type": "object",
-            "properties": {
-              "contractor_id": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "K",
-                  "NEC"
-                ]
-              },
-              "box1a": {
-                "type": "string",
-                "description": "Box 1a (decimal) - Type K only"
-              },
-              "box1b": {
-                "type": "string",
-                "description": "Box 1b (decimal) - Type K only"
-              },
-              "box2": {
-                "type": "boolean",
-                "description": "Box 2 (boolean) - Type NEC only"
-              },
-              "box3": {
-                "type": "string",
-                "description": "Box 3 (decimal) - Type K only"
-              },
-              "box4": {
-                "type": "string",
-                "description": "Box 4 (decimal)"
-              },
-              "box5a": {
-                "type": "string",
-                "description": "Box 5a (decimal)"
-              },
-              "box5b": {
-                "type": "string",
-                "description": "Box 5b (decimal)"
-              },
-              "box5c": {
-                "type": "string",
-                "description": "Box 5c (decimal) - Type K only"
-              },
-              "box5d": {
-                "type": "string",
-                "description": "Box 5d (decimal) - Type K only"
-              },
-              "box5e": {
-                "type": "string",
-                "description": "Box 5e (decimal) - Type K only"
-              },
-              "box5f": {
-                "type": "string",
-                "description": "Box 5f (decimal) - Type K only"
-              },
-              "box5g": {
-                "type": "string",
-                "description": "Box 5g (decimal) - Type K only"
-              },
-              "box5h": {
-                "type": "string",
-                "description": "Box 5h (decimal) - Type K only"
-              },
-              "box5i": {
-                "type": "string",
-                "description": "Box 5i (decimal) - Type K only"
-              },
-              "box5j": {
-                "type": "string",
-                "description": "Box 5j (decimal) - Type K only"
-              },
-              "box5k": {
-                "type": "string",
-                "description": "Box 5k (decimal) - Type K only"
-              },
-              "box5l": {
-                "type": "string",
-                "description": "Box 5l (decimal) - Type K only"
-              },
-              "box6a": {
-                "type": "string",
-                "description": "Box 6a (string)"
-              },
-              "box6b": {
-                "type": "string",
-                "description": "Box 6b (string)"
-              },
-              "box7a": {
-                "type": "string",
-                "description": "Box 7a (decimal) - Type NEC only"
-              },
-              "box7b": {
-                "type": "string",
-                "description": "Box 7b (decimal) - Type NEC only"
-              },
-              "box8a": {
-                "type": "string",
-                "description": "Box 8a (decimal) - Type K only"
-              },
-              "box8b": {
-                "type": "string",
-                "description": "Box 8b (decimal) - Type K only"
-              }
-            },
-            "required": [
-              "contractor_id",
-              "type"
-            ]
-          }
-        },
-        "required": [
-          "1099"
-        ],
-        "description": "Update a 1099"
       },
       "WebhookEntity": {
         "type": "object",
@@ -10467,7 +11280,7 @@
           "sent_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:08.119Z",
+            "example": "2023-05-25T19:24:33.061Z",
             "description": "When the webhook was sent"
           }
         },
@@ -10531,7 +11344,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:08.128Z",
+            "example": "2023-05-25T19:24:33.067Z",
             "description": "When the transaction was created"
           }
         }
@@ -10646,7 +11459,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2023-01-04T00:04:08.135Z",
+            "example": "2023-05-25T19:24:33.071Z",
             "description": "When the customer record was created"
           },
           "phone_number": {
@@ -10656,7 +11469,7 @@
           },
           "deleted_at": {
             "type": "string",
-            "example": "2023-01-04T00:04:08.135Z",
+            "example": "2023-05-25T19:24:33.071Z",
             "description": "When the customer record was deleted"
           },
           "address1": {
@@ -10818,13 +11631,13 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2022-12-04T00:04:08.144Z",
+            "example": "2023-04-25T19:24:33.078Z",
             "description": "When the Accounts Receivable payment was created"
           },
           "completed_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2022-12-07T00:04:08.144Z",
+            "example": "2023-04-27T19:24:33.078Z",
             "description": "When the Accounts Receivable payment was completed, if applicable"
           },
           "status": {
@@ -10842,6 +11655,49 @@
           }
         },
         "description": "ArPaymentEntity model"
+      },
+      "postApiV1BusinessesBusinessIdContractorsBatch": {
+        "type": "object",
+        "properties": {
+          "contractors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "Contractor email address"
+                },
+                "first_name": {
+                  "type": "string",
+                  "description": "Contractor's first name"
+                },
+                "last_name": {
+                  "type": "string",
+                  "description": "Contractor's last name"
+                },
+                "external_id": {
+                  "type": "string",
+                  "description": "Customer assigned ID"
+                },
+                "send_invite": {
+                  "type": "boolean",
+                  "description": "Send email invitation when set to TRUE",
+                  "default": false
+                }
+              },
+              "required": [
+                "email",
+                "first_name",
+                "last_name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "contractors"
+        ],
+        "description": "Creates a new contractor."
       },
       "postApiV1BusinessesBusinessIdContractors": {
         "type": "object",
@@ -11052,7 +11908,7 @@
               },
               "allow_tin_skip": {
                 "type": "boolean",
-                "description": "Allow skip TIN check when nine zeros are passed - '0000000000'",
+                "description": "Skip TIN check",
                 "default": false
               }
             }
@@ -11167,7 +12023,7 @@
               },
               "allow_tin_skip": {
                 "type": "boolean",
-                "description": "Allow skip TIN check when nine zeros are passed - '0000000000'",
+                "description": "Skip TIN check",
                 "default": false
               }
             },
@@ -11645,77 +12501,92 @@
                   "MISC"
                 ]
               },
-              "box1": {
-                "type": "string",
-                "description": "Box 1 (decimal) - Type NEC only"
-              },
-              "box1a": {
-                "type": "string",
-                "description": "Box 1a (decimal) - Type K only"
-              },
               "box1b": {
                 "type": "string",
-                "description": "Box 1b (decimal) - Type K only"
+                "description": "Box 1b (decimal)"
               },
               "box2": {
-                "type": "boolean",
-                "description": "Box 2 (boolean for NEC, string for K)"
+                "type": "number",
+                "format": "float",
+                "description": "Box 2 (boolean)",
+                "enum": [
+                  true,
+                  false,
+                  "true",
+                  "false",
+                  null
+                ],
+                "default": null
               },
               "box3": {
-                "type": "string",
-                "description": "Box 3 (decimal) - Type K only"
+                "type": "integer",
+                "format": "int32",
+                "description": "Box 3 (integer)"
+              },
+              "box5c": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 5c (decimal)"
               },
               "box4": {
-                "type": "string",
+                "type": "number",
+                "format": "float",
                 "description": "Box 4 (decimal)"
               },
               "box5a": {
-                "type": "string",
-                "description": "Box 5a (decimal)"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5a (string)"
               },
               "box5b": {
-                "type": "string",
-                "description": "Box 5b (decimal)"
-              },
-              "box5c": {
-                "type": "string",
-                "description": "Box 5c (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5b (string)"
               },
               "box5d": {
-                "type": "string",
-                "description": "Box 5d (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5d (decimal)"
               },
               "box5e": {
-                "type": "string",
-                "description": "Box 5e (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5e (decimal)"
               },
               "box5f": {
-                "type": "string",
-                "description": "Box 5f (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5f (decimal)"
               },
               "box5g": {
-                "type": "string",
-                "description": "Box 5g (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5g (decimal)"
               },
               "box5h": {
-                "type": "string",
-                "description": "Box 5h (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5h (decimal)"
               },
               "box5i": {
-                "type": "string",
-                "description": "Box 5i (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5i (decimal)"
               },
               "box5j": {
-                "type": "string",
-                "description": "Box 5j (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5j (decimal)"
               },
               "box5k": {
-                "type": "string",
-                "description": "Box 5k (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5k (decimal)"
               },
               "box5l": {
-                "type": "string",
-                "description": "Box 5l (decimal) - Type K only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 5l (decimal)"
               },
               "box6a": {
                 "type": "string",
@@ -11726,20 +12597,84 @@
                 "description": "Box 6b (string)"
               },
               "box7a": {
-                "type": "string",
-                "description": "Box 7a (decimal) - Type NEC only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 7a (decimal)"
               },
               "box7b": {
-                "type": "string",
-                "description": "Box 7b (decimal) - Type NEC only"
+                "type": "number",
+                "format": "float",
+                "description": "Box 7b (decimal)"
               },
               "box8a": {
                 "type": "string",
-                "description": "Box 8a (decimal) - Type K only"
+                "description": "Box 8a (decimal)"
               },
               "box8b": {
                 "type": "string",
-                "description": "Box 8b (decimal) - Type K only"
+                "description": "Box 8b (decimal)"
+              },
+              "box1": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 1 (decimal)"
+              },
+              "box5": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 5 (decimal)"
+              },
+              "box6": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 6 (decimal)"
+              },
+              "box7": {
+                "type": "string",
+                "description": "Box 7 (boolean)",
+                "enum": [
+                  true,
+                  false,
+                  "true",
+                  "false",
+                  null
+                ],
+                "default": null
+              },
+              "box8": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 8 (decimal)"
+              },
+              "box9": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 9 (decimal)"
+              },
+              "box10": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 10 (decimal)"
+              },
+              "box11": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 11 (decimal)"
+              },
+              "box12": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 12 (decimal)"
+              },
+              "box13": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 13 (decimal)"
+              },
+              "box14": {
+                "type": "number",
+                "format": "float",
+                "description": "Box 14 (decimal)"
               }
             },
             "required": [
@@ -11752,127 +12687,6 @@
           "1099"
         ],
         "description": "Create a 1099 for a contractor."
-      },
-      "patchApiV1BusinessesBusinessId1099s": {
-        "type": "object",
-        "properties": {
-          "1099": {
-            "type": "object",
-            "properties": {
-              "contractor_id": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "K",
-                  "NEC"
-                ]
-              },
-              "box1a": {
-                "type": "string",
-                "description": "Box 1a (decimal) - Type K only"
-              },
-              "box1b": {
-                "type": "string",
-                "description": "Box 1b (decimal) - Type K only"
-              },
-              "box2": {
-                "type": "boolean",
-                "description": "Box 2 (boolean) - Type NEC only"
-              },
-              "box3": {
-                "type": "string",
-                "description": "Box 3 (decimal) - Type K only"
-              },
-              "box4": {
-                "type": "string",
-                "description": "Box 4 (decimal)"
-              },
-              "box5a": {
-                "type": "string",
-                "description": "Box 5a (decimal)"
-              },
-              "box5b": {
-                "type": "string",
-                "description": "Box 5b (decimal)"
-              },
-              "box5c": {
-                "type": "string",
-                "description": "Box 5c (decimal) - Type K only"
-              },
-              "box5d": {
-                "type": "string",
-                "description": "Box 5d (decimal) - Type K only"
-              },
-              "box5e": {
-                "type": "string",
-                "description": "Box 5e (decimal) - Type K only"
-              },
-              "box5f": {
-                "type": "string",
-                "description": "Box 5f (decimal) - Type K only"
-              },
-              "box5g": {
-                "type": "string",
-                "description": "Box 5g (decimal) - Type K only"
-              },
-              "box5h": {
-                "type": "string",
-                "description": "Box 5h (decimal) - Type K only"
-              },
-              "box5i": {
-                "type": "string",
-                "description": "Box 5i (decimal) - Type K only"
-              },
-              "box5j": {
-                "type": "string",
-                "description": "Box 5j (decimal) - Type K only"
-              },
-              "box5k": {
-                "type": "string",
-                "description": "Box 5k (decimal) - Type K only"
-              },
-              "box5l": {
-                "type": "string",
-                "description": "Box 5l (decimal) - Type K only"
-              },
-              "box6a": {
-                "type": "string",
-                "description": "Box 6a (string)"
-              },
-              "box6b": {
-                "type": "string",
-                "description": "Box 6b (string)"
-              },
-              "box7a": {
-                "type": "string",
-                "description": "Box 7a (decimal) - Type NEC only"
-              },
-              "box7b": {
-                "type": "string",
-                "description": "Box 7b (decimal) - Type NEC only"
-              },
-              "box8a": {
-                "type": "string",
-                "description": "Box 8a (decimal) - Type K only"
-              },
-              "box8b": {
-                "type": "string",
-                "description": "Box 8b (decimal) - Type K only"
-              }
-            },
-            "required": [
-              "contractor_id",
-              "type"
-            ]
-          }
-        },
-        "required": [
-          "1099"
-        ],
-        "description": "Update a 1099"
       },
       "postApiV1BusinessesBusinessIdCustomers": {
         "type": "object",

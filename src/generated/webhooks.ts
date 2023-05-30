@@ -34,7 +34,6 @@ export type ShowWebhookOptions = {
 export function webhooksEndpoints(httpClient: GigWageHttpClient) {
   return {
     /** List all webhooks */
-
     listWebhooks: ({
       contractor_id,
       ten99_id,
@@ -43,9 +42,9 @@ export function webhooksEndpoints(httpClient: GigWageHttpClient) {
       page,
       per_page,
       offset,
-    }: ListWebhooksOptions = {}): Promise<WebhookEntity[]> =>
+    }: ListWebhooksOptions = {}): Promise<{ webhooks: WebhookEntity[] }> =>
       httpClient
-        .get<WebhookEntity[]>(`/api/v1/webhooks`, {
+        .get<{ webhooks: WebhookEntity[] }>(`/api/v1/webhooks`, {
           contractor_id,
           '1099_id': ten99_id,
           payment_id,
@@ -57,16 +56,15 @@ export function webhooksEndpoints(httpClient: GigWageHttpClient) {
         .then(r => r.data),
 
     /** Get webhook details */
-
     showWebhook: ({
       id,
       contractor_id,
       ten99_id,
       payment_id,
       tin_check_id,
-    }: ShowWebhookOptions): Promise<WebhookEntity> =>
+    }: ShowWebhookOptions): Promise<{ webhook: WebhookEntity }> =>
       httpClient
-        .get<WebhookEntity>(`/api/v1/webhooks/${id}`, {
+        .get<{ webhook: WebhookEntity }>(`/api/v1/webhooks/${id}`, {
           contractor_id,
           '1099_id': ten99_id,
           payment_id,
