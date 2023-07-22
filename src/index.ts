@@ -11,6 +11,17 @@ import { ten99sEndpoints } from './generated/ten99s';
 import { transactionsEndpoints } from './generated/transactions';
 import { transfersEndpoints } from './generated/transfers';
 import { webhooksEndpoints } from './generated/webhooks';
+
+import { accountsReceivablePaymentsPartnershipsEndpoints } from './generated/accountsReceivablePaymentsPartnerships';
+import { balancesPartnershipsEndpoints } from './generated/balancesPartnerships';
+import { batchesPartnershipsEndpoints } from './generated/batchesPartnerships';
+import { contractorsPartnershipsEndpoints } from './generated/contractorsPartnerships';
+import { customersPartnershipsEndpoints } from './generated/customersPartnerships';
+import { lineItemsPartnershipsEndpoints } from './generated/lineItemsPartnerships';
+import { paymentsPartnershipsEndpoints } from './generated/paymentsPartnerships';
+import { ten99sPartnershipsEndpoints } from './generated/ten99sPartnerships';
+import { transfersPartnershipsEndpoints } from './generated/transfersPartnerships';
+
 import { createHttpClient } from './http-client';
 import { GigwageEnvironments } from './types';
 
@@ -72,7 +83,19 @@ export const createGigwageClient = ({
   ReturnType<typeof ten99sEndpoints> &
   ReturnType<typeof transactionsEndpoints> &
   ReturnType<typeof transfersEndpoints> &
-  ReturnType<typeof webhooksEndpoints> => {
+  ReturnType<typeof webhooksEndpoints> & {
+    partnerships: ReturnType<
+      typeof accountsReceivablePaymentsPartnershipsEndpoints
+    > &
+      ReturnType<typeof balancesPartnershipsEndpoints> &
+      ReturnType<typeof batchesPartnershipsEndpoints> &
+      ReturnType<typeof contractorsPartnershipsEndpoints> &
+      ReturnType<typeof customersPartnershipsEndpoints> &
+      ReturnType<typeof lineItemsPartnershipsEndpoints> &
+      ReturnType<typeof paymentsPartnershipsEndpoints> &
+      ReturnType<typeof ten99sPartnershipsEndpoints> &
+      ReturnType<typeof transfersPartnershipsEndpoints>;
+  } => {
   const httpClient = createHttpClient({
     apiSecret,
     apiKey,
@@ -96,5 +119,16 @@ export const createGigwageClient = ({
     ...transactionsEndpoints(httpClient),
     ...transfersEndpoints(httpClient),
     ...webhooksEndpoints(httpClient),
+    partnerships: {
+      ...accountsReceivablePaymentsPartnershipsEndpoints(httpClient),
+      ...balancesPartnershipsEndpoints(httpClient),
+      ...batchesPartnershipsEndpoints(httpClient),
+      ...contractorsPartnershipsEndpoints(httpClient),
+      ...customersPartnershipsEndpoints(httpClient),
+      ...lineItemsPartnershipsEndpoints(httpClient),
+      ...paymentsPartnershipsEndpoints(httpClient),
+      ...ten99sPartnershipsEndpoints(httpClient),
+      ...transfersPartnershipsEndpoints(httpClient),
+    },
   };
 };

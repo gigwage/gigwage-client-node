@@ -249,10 +249,10 @@ const hasPayoad = (endpoint: Endpoint) => {
 
 const writeComponentType = (type: string) => capitalize(type);
 
-const writeEndpointType = (endpoint: Endpoint) =>
+const writeEndpointType = (endpoint: Endpoint, suffix = '') =>
   writecode([
     'export type',
-    `${capitalize(endpointName(endpoint))}Options`,
+    `${capitalize(endpointName(endpoint))}${suffix}Options`,
     '=',
     '{',
     endpoint.parameters?.map(param => [
@@ -277,7 +277,7 @@ const areAllParamsOptional = (endpoint: Endpoint) => {
   );
 };
 
-const writeEndpointFunctionParameters = (endpoint: Endpoint) => {
+const writeEndpointFunctionParameters = (endpoint: Endpoint, suffix = '') => {
   return writecode([
     writeObject(
       writeList([
@@ -288,19 +288,19 @@ const writeEndpointFunctionParameters = (endpoint: Endpoint) => {
       ]),
     ),
     ':',
-    `${capitalize(endpointName(endpoint))}Options`,
+    `${capitalize(endpointName(endpoint))}${suffix}Options`,
     areAllParamsOptional(endpoint) && '= {}',
   ]);
 };
 
-const writeEndpointFunction = (endpoint: Endpoint) => {
+const writeEndpointFunction = (endpoint: Endpoint, suffix = '') => {
   const pathParams = (endpoint.parameters || []).filter(p => p.in === 'path');
   const queryParams = (endpoint.parameters || []).filter(p => p.in === 'query');
 
   return writecode([
     endpointName(endpoint),
     ':(',
-    writeEndpointFunctionParameters(endpoint),
+    writeEndpointFunctionParameters(endpoint, suffix),
     ')',
     endpoint.responseType && `:Promise<${endpoint.renderedResponseType}>`,
     '=>',
@@ -337,71 +337,103 @@ const backTicks = (code: string) => `\`${code}\``;
 const project = new Project({});
 
 /** Create working tags */
-const tags = extractTags(payload);
-const endpoints = extractEndpoints(payload as any).filter(
+const allTags = extractTags(payload);
+const allEndpoints = extractEndpoints(payload as any);
+
+const standardTags = allTags.filter(tag => tag.functionName !== 'partnerships');
+const standardEndpoints = allEndpoints.filter(
   (e: Endpoint) => !e.tags.includes('partnerships'),
 );
+const partnershipEndpoints = allEndpoints.filter((e: Endpoint) =>
+  e.tags.includes('partnerships'),
+);
+const partnershipTagsUsed = partnershipEndpoints
+  .map(e => e.tags.filter(t => t !== 'partnerships')[0])
+  //only unique
+  .filter((value, index, array) => array.indexOf(value) === index);
 
-tags.forEach(tag => {
-  const tagFile = project.createSourceFile(
-    `src/generated/${tag.functionName}.ts`,
-    '',
-    {
-      overwrite: true,
-    },
-  );
+const partershipTags = allTags
+  .filter(tag => partnershipTagsUsed.includes(tag.functionName))
+  .map(tag => ({ ...tag, functionName: tag.functionName + 'Partnerships' }));
 
-  const tagEndpoints = getTagEndpoints(tag.functionName, endpoints);
+const generateFiles = (
+  tags: typeof allTags,
+  endpoints: Endpoint[],
+  isPartnerships = false,
+) => {
+  tags.forEach(tag => {
+    const tagFile = project.createSourceFile(
+      `src/generated/${tag.functionName}.ts`,
+      '',
+      {
+        overwrite: true,
+      },
+    );
 
-  const generatedImports: string[] = (
-    [
-      ...tagEndpoints.map(endpoint => endpoint.requestBody),
-      ...tagEndpoints.map(endpoint => endpoint.responseType),
-    ].filter(item => !!item && item.toLowerCase() !== 'string') as string[]
-  )
-    .reduce((prev, cur) => {
-      if (prev.includes(cur)) {
-        return prev;
-      }
-      return [...prev, cur];
-    }, [] as string[])
-    .map(capitalize);
+    const tagEndpoints = getTagEndpoints(
+      tag.functionName.replace('Partnerships', ''),
+      endpoints,
+    );
 
-  tagFile.addImportDeclarations([
-    {
-      moduleSpecifier: '../http-client',
-      namedImports: [{ name: 'GigWageHttpClient' }],
-    },
-    {
-      moduleSpecifier: './types',
-      namedImports: generatedImports.map(name => ({ name })).sort(),
-    },
-  ]);
+    const generatedImports: string[] = (
+      [
+        ...tagEndpoints.map(endpoint => endpoint.requestBody),
+        ...tagEndpoints.map(endpoint => endpoint.responseType),
+      ].filter(item => !!item && item.toLowerCase() !== 'string') as string[]
+    )
+      .reduce((prev, cur) => {
+        if (prev.includes(cur)) {
+          return prev;
+        }
+        return [...prev, cur];
+      }, [] as string[])
+      .map(capitalize);
 
-  tagEndpoints.forEach(endpoint => {
-    tagFile.addStatements(writer => {
-      writer.writeLine(writeEndpointType(endpoint));
-    });
-  });
-
-  const tagFunction = tagFile.addFunction({
-    isDefaultExport: false,
-    isExported: true,
-    name: `${tag.functionName}Endpoints`,
-    parameters: [{ name: 'httpClient', type: 'GigWageHttpClient' }],
-  });
-
-  tagFunction.setBodyText(writer => {
-    writer.writeLine('return {');
+    tagFile.addImportDeclarations([
+      {
+        moduleSpecifier: '../http-client',
+        namedImports: [{ name: 'GigWageHttpClient' }],
+      },
+      {
+        moduleSpecifier: './types',
+        namedImports: generatedImports.map(name => ({ name })).sort(),
+      },
+    ]);
 
     tagEndpoints.forEach(endpoint => {
-      writer.writeLine(
-        writeDocBlock(endpoint.description) + writeEndpointFunction(endpoint),
-      );
-      // writer.writeLine(writeEndpointFunction(endpoint));
+      tagFile.addStatements(writer => {
+        writer.writeLine(
+          writeEndpointType(endpoint, isPartnerships ? 'Partnerships' : ''),
+        );
+      });
     });
-    writer.writeLine('}');
-  });
-});
 
+    const tagFunction = tagFile.addFunction({
+      isDefaultExport: false,
+      isExported: true,
+      name: `${tag.functionName}Endpoints`,
+      parameters: [{ name: 'httpClient', type: 'GigWageHttpClient' }],
+    });
+
+    tagFunction.setBodyText(writer => {
+      writer.writeLine('return {');
+
+      tagEndpoints.forEach(endpoint => {
+        writer.writeLine(
+          writeDocBlock(endpoint.description) +
+            writeEndpointFunction(
+              endpoint,
+              isPartnerships ? 'Partnerships' : '',
+            ),
+        );
+        // writer.writeLine(writeEndpointFunction(endpoint));
+      });
+      writer.writeLine('}');
+    });
+  });
+};
+
+generateFiles(standardTags, standardEndpoints);
+
+generateFiles(partershipTags, partnershipEndpoints, true);
 project.save();

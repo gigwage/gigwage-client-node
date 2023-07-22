@@ -11,11 +11,6 @@ const client = createGigwageClient({
   apiEnvironment: 'sandbox',
 });
 
-client.listContractors({}).then(c => console.log(c));
-
-// const data = await client.listContractors();
-
-// client
-//   .get('/api/v1/contractors')
-//   .then(res => console.log(res.data))
-//   .catch(e => console.log(e.response.statusText));
+async function run() {
+  const { contractors } = await client.listContractors();
+}
